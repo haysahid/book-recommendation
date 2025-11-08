@@ -1,3 +1,4 @@
 <template>
-    <h1>Welcome to Laravel + Inertia.js + Vue 3</h1>
+    <h1 class="">Heading 1</h1>
+    <h2 class="">Heading 2</h2>
 </template>
