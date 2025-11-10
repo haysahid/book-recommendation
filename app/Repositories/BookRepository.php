@@ -9,6 +9,8 @@ class BookRepository
     static public function getBooks(
         $search = null,
         $limit = 10,
+        $orderBy = 'created_at',
+        $orderDirection = 'desc'
     ) {
         $query = Book::query();
 
@@ -17,10 +19,12 @@ class BookRepository
                 ->orWhere('author', 'like', '%' . $search . '%');
         }
 
+        $query->orderBy($orderBy, $orderDirection);
+
         return $query->paginate($limit);
     }
 
-    static public function findBySlug($slug)
+    static public function findBookBySlug($slug)
     {
         return Book::where('slug', $slug)->first();
     }

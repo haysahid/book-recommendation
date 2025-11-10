@@ -18,4 +18,9 @@ class Book extends Model
         'store_name',
         'isbn',
     ];
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'book_category', 'book_id', 'category_id');
+    }
 }
