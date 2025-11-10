@@ -3,35 +3,15 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import DefaultCard from "@/Components/DefaultCard.vue";
 import useBookService from "@/services/book-service";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import ThreeDotsLoading from "@/Components/ThreeDotsLoading.vue";
 import SummaryCard from "@/Components/SummaryCard.vue";
-import DropdownSearchInputMultiple from "@/Components/DropdownSearchInputMultiple.vue";
 import CheckBox from "@/Components/CheckBox.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-
-const props = defineProps({
-    books: {
-        type: Object as () => PaginationModel<BookEntity>,
-        required: true,
-    },
-});
 
 const categories = ref<CategoryModel[]>([]);
 const getCategoriesStatus = ref<string>("");
 const saveCategoriesStatus = ref<string>("");
 
-const searchCategories = ref<string>("");
-const filteredCategories = computed(() => {
-    if (searchCategories.value === "") {
-        return categories.value;
-    }
-    return categories.value.filter((category) =>
-        category.title
-            .toLowerCase()
-            .includes(searchCategories.value.toLowerCase())
-    );
-});
 const selectedCategories = ref<CategoryModel[]>([]);
 
 const books = ref<BookEntity[]>([]);
@@ -174,12 +154,6 @@ function saveBooks() {
                 >
                     <div>
                         <h3 class="text-lg font-semibold">Categories</h3>
-                        <!-- <a
-                            href="https://api-service.gramedia.com/api/v2/public/subcategory?parent_category=buku"
-                            class="text-sm text-gray-500 hover:underline hover:text-gray-700 break-all"
-                        >
-                            https://api-service.gramedia.com/api/v2/public/subcategory?parent_category=buku
-                        </a> -->
                         <div class="text-sm text-blue-500 mt-1 font-semibold">
                             {{ categories.length }} Loaded
                         </div>

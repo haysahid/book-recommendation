@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Book;
+use Illuminate\Support\Facades\Log;
 
 class BookRepository
 {
@@ -59,5 +60,60 @@ class BookRepository
     static public function deleteBook($book)
     {
         return $book->delete();
+    }
+
+    static public function cleanTitle($book)
+    {
+        if ($book->cleaned_title) {
+            return $book;
+        }
+
+        // Remove extra spaces, special characters, and convert to lowercase
+        $cleanedTitle = preg_replace('/[^a-zA-Z0-9\s]/', '', $book->title);
+        $cleanedTitle = strtolower(trim($cleanedTitle));
+
+        // Remove stopwords
+        $stopwordFactory = new \Sastrawi\StopWordRemover\StopWordRemoverFactory();
+        $stopwordRemover = $stopwordFactory->createStopWordRemover();
+        $titleWithoutStopwords = $stopwordRemover->remove($cleanedTitle);
+
+        $book->cleaned_title = $titleWithoutStopwords;
+        $book->save();
+        return $book;
+    }
+
+    static public function cleanTitles($books)
+    {
+        $cleanedBooks = [];
+        foreach ($books as $book) {
+            $cleanedBooks[] = self::cleanTitle($book);
+        }
+        return $cleanedBooks;
+    }
+
+    static public function stemTitleWithSastrawi($book)
+    {
+        if ($book->stemmed_title) {
+            return $book;
+        }
+
+        $stemmerFactory = new \Sastrawi\Stemmer\StemmerFactory();
+        $stemmer = $stemmerFactory->createStemmer();
+
+        // Perform stemming
+        $stemmedTitle = $stemmer->stem($book->cleaned_title);
+
+        $book->stemmed_title = $stemmedTitle;
+        $book->save();
+        return $book;
+    }
+
+    static public function stemTitlesWithSastrawi($books)
+    {
+        $stemmedBooks = [];
+        foreach ($books as $book) {
+            $stemmedBooks[] = self::stemTitleWithSastrawi($book);
+        }
+        return $stemmedBooks;
     }
 }

@@ -2,6 +2,8 @@ interface BookEntity {
     id: number;
     title: string;
     translated_title: string | null;
+    cleaned_title: string | null;
+    stemmed_title: string | null;
     image: string | null;
     slug: string;
     author: string | null;

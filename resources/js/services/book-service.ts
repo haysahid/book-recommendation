@@ -304,10 +304,106 @@ export default function useBookService() {
         }
     }
 
+    async function cleanBookTitles(
+        bookIds: number[] | undefined,
+        {
+            autoShowDialog = false,
+            onSuccess = (response: any) => {},
+            onError = (error: any) => {},
+            onChangeStatus = (status: string) => {},
+        } = {}
+    ) {
+        onChangeStatus("loading");
+
+        await axios
+            .post(
+                "/api/admin/books/clean-titles",
+                {
+                    book_ids: bookIds.length > 0 ? bookIds : undefined,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: token,
+                    },
+                }
+            )
+            .then((response) => {
+                onChangeStatus("success");
+                onSuccess(response);
+                if (autoShowDialog) {
+                    dialogStore.openSuccessDialog(
+                        response.data.meta.message ||
+                            "Data judul buku berhasil dibersihkan."
+                    );
+                }
+            })
+            .catch((error) => {
+                console.error("Error cleaning book titles:", error);
+                onChangeStatus("error");
+                onError(error);
+                if (autoShowDialog) {
+                    dialogStore.openErrorDialog(
+                        error.response?.data?.meta?.message ||
+                            "Terjadi kesalahan saat membersihkan judul buku."
+                    );
+                }
+            });
+    }
+
+    async function stemBookTitles(
+        bookIds: number[] | undefined,
+        {
+            autoShowDialog = false,
+            onSuccess = (response: any) => {},
+            onError = (error: any) => {},
+            onChangeStatus = (status: string) => {},
+        } = {}
+    ) {
+        onChangeStatus("loading");
+
+        await axios
+            .post(
+                "/api/admin/books/stem-titles",
+                {
+                    book_ids: bookIds.length > 0 ? bookIds : undefined,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: token,
+                    },
+                }
+            )
+            .then((response) => {
+                onChangeStatus("success");
+                onSuccess(response);
+                if (autoShowDialog) {
+                    dialogStore.openSuccessDialog(
+                        response.data.meta.message ||
+                            "Data judul buku berhasil distem."
+                    );
+                }
+            })
+            .catch((error) => {
+                console.error("Error stemming book titles:", error);
+                onChangeStatus("error");
+                onError(error);
+                if (autoShowDialog) {
+                    dialogStore.openErrorDialog(
+                        error.response?.data?.meta?.message ||
+                            "Terjadi kesalahan saat stemming judul buku."
+                    );
+                }
+            });
+    }
+
     return {
         loadCategories,
         saveCategories,
         loadBooks,
         saveBooks,
+        cleanBookTitles,
+        stemBookTitles,
     };
 }

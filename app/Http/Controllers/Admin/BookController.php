@@ -104,4 +104,14 @@ class BookController extends Controller
 
         return redirect()->route('admin.book.index')->with('success', 'Book deleted successfully.');
     }
+
+    public function scraping()
+    {
+        return Inertia::render('Admin/Book/Scraping');
+    }
+
+    public function preprocessing()
+    {
+        return Inertia::render('Admin/Book/Preprocessing');
+    }
 }
