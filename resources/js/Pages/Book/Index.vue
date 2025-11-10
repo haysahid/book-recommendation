@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { router } from "@inertiajs/vue3";
+import CustomPageProps from "@/types/model/CustomPageProps";
 
 const props = defineProps({
     books: {
@@ -13,9 +15,24 @@ const searchQuery = ref("");
 const books = ref<BookEntity[]>(props.books.data);
 
 const handleSearch = () => {
-    console.log("Searching for:", searchQuery.value);
-    // Add your search logic
+    router.get(
+        "/book",
+        { search: searchQuery.value },
+        {
+            preserveState: true,
+            onSuccess: (page: CustomPageProps) => {
+                books.value = page.props.books.data;
+            },
+        }
+    );
 };
+
+onMounted(() => {
+    // Get the search query from url params
+    searchQuery.value = new URLSearchParams(window.location.search).get(
+        "search"
+    ) as string;
+});
 </script>
 
 <template>
@@ -96,6 +113,7 @@ const handleSearch = () => {
                                 <input
                                     v-model="searchQuery"
                                     @keyup.enter="handleSearch"
+                                    autofocus
                                     placeholder="Search for books, authors, ISBN..."
                                     class="w-full pl-12 h-12 border-0 bg-transparent text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary rounded-lg outline-none"
                                 />
@@ -113,10 +131,10 @@ const handleSearch = () => {
 
             <!-- Decorative Elements -->
             <div
-                class="absolute top-20 left-10 w-72 h-72 bg-accent/20 rounded-full blur-3xl"
+                class="absolute top-20 left-10 w-72 h-72 bg-accent/20 rounded-full blur-3xl pointer-events-none"
             />
             <div
-                class="absolute bottom-20 right-10 w-96 h-96 bg-secondary/20 rounded-full blur-3xl"
+                class="absolute bottom-20 right-10 w-96 h-96 bg-secondary/20 rounded-full blur-3xl pointer-events-none"
             />
         </div>
 

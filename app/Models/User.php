@@ -24,6 +24,8 @@ class User extends Authenticatable
         'password',
     ];
 
+    protected $appends = ['profile_photo_url'];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -45,5 +47,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getProfilePhotoUrlAttribute(): string
+    {
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
     }
 }
