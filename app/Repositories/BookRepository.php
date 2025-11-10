@@ -31,7 +31,23 @@ class BookRepository
 
     static public function createBook($data)
     {
-        return Book::create($data);
+        $book = Book::create($data);
+
+        if (isset($data['category_slug'])) {
+            $category = CategoryRepository::findCategoryBySlug($data['category_slug']);
+            if ($category) {
+                $book->categories()->attach($category->id);
+            }
+        }
+
+        return $book;
+    }
+
+    static public function insertBooks($books)
+    {
+        foreach ($books as $bookData) {
+            self::createBook($bookData);
+        }
     }
 
     static public function updateBook($book, $data)

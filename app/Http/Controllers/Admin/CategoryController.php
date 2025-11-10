@@ -52,20 +52,6 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
     }
 
-    public function storeBulk(Request $request)
-    {
-        $data = $request->validate([
-            'categories' => 'required|array',
-            'categories.*.title' => 'required|string|max:255',
-            'categories.*.slug' => 'nullable|string|max:255|unique:categories,slug',
-            'categories.*.image' => 'nullable|string|max:255',
-        ]);
-
-        CategoryRepository::insertCategories($data['categories']);
-
-        return redirect()->route('admin.categories.index')->with('success', 'Categories created successfully.');
-    }
-
     /**
      * Display the specified resource.
      */

@@ -15,6 +15,8 @@ class CategoryController extends Controller
             'categories' => 'required|array',
             'categories.*.title' => 'required|string|max:255',
             'categories.*.slug' => 'nullable|string|max:255|unique:categories,slug',
+            'categories.*.image' => 'nullable|string|max:255',
+            'categories.*.subcategory' => 'nullable|array',
         ]);
 
         try {

@@ -30,24 +30,25 @@ class CategoryRepository
         return Category::where('slug', $slug)->first();
     }
 
-    static public function createCategory($data)
+    static public function createCategory($data, $parentId = null)
     {
         try {
             DB::beginTransaction();
 
-            $category = Category::create([
-                'title' => $data['title'],
-                'slug' => $data['slug'] ?? null,
-                'image' => $data['image'] ?? null,
-            ]);
+            $category = Category::where('slug', $data['slug'] ?? '')->first();
 
-            if (isset($data['subcategories']) && is_array($data['subcategories'])) {
-                foreach ($data['subcategories'] as $subcategoryData) {
-                    $category->subcategories()->create([
-                        'title' => $subcategoryData['title'],
-                        'slug' => $subcategoryData['slug'] ?? null,
-                        'image' => $subcategoryData['image'] ?? null,
-                    ]);
+            if (!$category) {
+                $category = new Category();
+                $category->title = $data['title'];
+                $category->slug = $data['slug'] ?? null;
+                $category->image = $data['image'] ?? null;
+                $category->parent_id = $parentId;
+                $category->save();
+            }
+
+            if (isset($data['subcategory']) && is_array($data['subcategory'])) {
+                foreach ($data['subcategory'] as $subcategoryData) {
+                    self::createCategory($subcategoryData, $category->id);
                 }
             }
 
@@ -62,7 +63,9 @@ class CategoryRepository
 
     static public function insertCategories($categories)
     {
-        return Category::insert($categories);
+        foreach ($categories as $categoryData) {
+            self::createCategory($categoryData);
+        }
     }
 
     static public function updateCategory($category, $data)
