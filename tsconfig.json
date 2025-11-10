@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["resources/js/*"]
+        },
+        "target": "ES2020",
+        "module": "es2020",
+        "skipLibCheck": true,
+        "moduleResolution": "node",
+        "lib": ["DOM", "ES2020", "DOM.Iterable", "ESNext"],
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "types": ["vite/client"]
+    },
+    "include": [
+        "resources/js/**/*.ts",
+        "resources/js/**/*.d.ts",
+        "resources/js/**/*.vue"
+    ],
+    "exclude": ["node_modules", "public"]
+}

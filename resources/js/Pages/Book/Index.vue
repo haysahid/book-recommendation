@@ -1,0 +1,239 @@
+<script setup lang="ts">
+import { ref } from "vue";
+
+const props = defineProps({
+    books: {
+        type: Object as () => PaginationModel<BookEntity>,
+        required: true,
+    },
+});
+
+const searchQuery = ref("");
+
+const books = ref<BookEntity[]>(props.books.data);
+
+const handleSearch = () => {
+    console.log("Searching for:", searchQuery.value);
+    // Add your search logic
+};
+</script>
+
+<template>
+    <div class="min-h-screen bg-background">
+        <!-- Hero Section -->
+        <div
+            class="relative overflow-hidden bg-gradient-hero py-20 px-6 mb-12 animate-fade-in"
+        >
+            <div class="max-w-4xl mx-auto text-center">
+                <div
+                    class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6 text-white border border-white/30"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-book-open w-4 h-4"
+                    >
+                        <path d="M12 7v14"></path>
+                        <path
+                            d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+                        ></path>
+                    </svg>
+                    <span class="text-sm font-medium"
+                        >Discover Your Next Favorite Read</span
+                    >
+                </div>
+
+                <h1
+                    class="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight"
+                >
+                    Find Books That
+                    <br />
+                    <span
+                        class="bg-linear-to-r from-white to-white/80 bg-clip-text text-transparent"
+                    >
+                        Inspire You
+                    </span>
+                </h1>
+
+                <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                    Search through thousands of books and find the perfect story
+                    for your journey
+                </p>
+
+                <!-- Search Bar -->
+                <div class="max-w-2xl mx-auto">
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-0 bg-white/20 rounded-2xl blur-xl group-hover:bg-white/30 transition-all duration-300"
+                        />
+                        <div
+                            class="relative flex gap-3 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-glow"
+                        >
+                            <div class="relative flex-1">
+                                <!-- Search icon -->
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="lucide lucide-search absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"
+                                >
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="m21 21-4.3-4.3"></path>
+                                </svg>
+                                <input
+                                    v-model="searchQuery"
+                                    @keyup.enter="handleSearch"
+                                    placeholder="Search for books, authors, ISBN..."
+                                    class="w-full pl-12 h-12 border-0 bg-transparent text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary rounded-lg outline-none"
+                                />
+                            </div>
+                            <button
+                                @click="handleSearch"
+                                class="px-8 h-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 font-medium"
+                            >
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Decorative Elements -->
+            <div
+                class="absolute top-20 left-10 w-72 h-72 bg-accent/20 rounded-full blur-3xl"
+            />
+            <div
+                class="absolute bottom-20 right-10 w-96 h-96 bg-secondary/20 rounded-full blur-3xl"
+            />
+        </div>
+
+        <!-- Results Section -->
+        <div class="max-w-7xl mx-auto px-6 pb-20">
+            <div v-if="books.length > 0">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-3xl font-bold text-foreground">
+                        Trending Books
+                    </h2>
+                    <span class="text-muted-foreground">
+                        {{ books.length }} results found
+                    </span>
+                </div>
+
+                <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                >
+                    <div
+                        v-for="(book, index) in books"
+                        :key="book.id"
+                        class="group relative overflow-hidden rounded-xl border-0 bg-gradient-card hover:shadow-lg transition-all duration-300 hover:-translate-y-2 animate-slide-up cursor-pointer p-6"
+                        :style="{ animationDelay: `${index * 0.1}s` }"
+                    >
+                        <!-- Ranking Badge -->
+                        <div
+                            v-if="index < 3"
+                            class="absolute top-4 left-4 z-10 inline-flex items-center gap-1 bg-linear-to-r from-primary to-accent text-white border-0 rounded-full shadow-md px-3 py-1 text-sm"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-star w-3 h-3 mr-1 fill-current"
+                            >
+                                <path
+                                    d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"
+                                ></path>
+                            </svg>
+
+                            #{{ index + 1 }}
+                        </div>
+
+                        <!-- Book Cover -->
+                        <div
+                            class="relative mb-4 overflow-hidden rounded-xl bg-muted aspect-3/4 flex items-center justify-center group-hover:scale-105 transition-transform duration-300"
+                        >
+                            <img
+                                v-if="book.image"
+                                :src="book.image"
+                                :alt="book.title"
+                                class="w-full h-full object-cover"
+                            />
+                            <div
+                                v-else
+                                class="flex flex-col items-center justify-center gap-3"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="lucide lucide-book-open w-12 h-12 text-muted-foreground/50"
+                                >
+                                    <path d="M12 7v14"></path>
+                                    <path
+                                        d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+                                    ></path>
+                                </svg>
+                                <span class="text-sm text-muted-foreground"
+                                    >No Cover</span
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Book Info -->
+                        <div class="space-y-2">
+                            <h3
+                                class="text-xl font-bold text-foreground line-clamp-2 group-hover:text-primary transition-colors"
+                            >
+                                {{ book.title }}
+                            </h3>
+                            <p class="text-sm text-muted-foreground">
+                                by {{ book.author }}
+                            </p>
+                            <div
+                                class="flex items-center justify-between pt-2 border-t border-border/50"
+                            >
+                                <span class="text-xs text-muted-foreground">
+                                    {{ book.store_name }}
+                                </span>
+                                <span
+                                    class="text-xs font-mono text-muted-foreground"
+                                >
+                                    {{ book.isbn }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Hover Glow Effect -->
+                        <div
+                            class="absolute inset-0 bg-linear-to-t from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
