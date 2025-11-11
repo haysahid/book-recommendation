@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import DefaultCard from "@/Components/DefaultCard.vue";
 import { computed, onMounted, ref } from "vue";
 import { router } from "@inertiajs/vue3";
 import CustomPageProps from "@/types/model/CustomPageProps";
 import cookieManager from "@/plugins/cookie-manager";
-import DefaultTable from "@/Components/DefaultTable.vue";
 import DefaultPagination from "@/Components/DefaultPagination.vue";
 import BookCard from "./BookCard.vue";
 import SearchInput from "@/Components/SearchInput.vue";
-import DropdownSearchInputMultiple from "@/Components/DropdownSearchInputMultiple.vue";
 import DropdownSearchInput from "@/Components/DropdownSearchInput.vue";
 import { scrollToTop } from "@/plugins/helpers";
 

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AdminItemAction from "@/Components/AdminItemAction.vue";
-import { Link } from "@inertiajs/vue3";
 import { computed, getCurrentInstance } from "vue";
 
 const props = defineProps({
