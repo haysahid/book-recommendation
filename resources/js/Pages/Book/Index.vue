@@ -55,7 +55,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-background">
+    <div class="min-h-screen bg-white">
         <!-- Hero Section -->
         <div
             class="relative overflow-hidden bg-gradient-hero py-20 px-6 mb-12 animate-fade-in"
@@ -187,7 +187,7 @@ onMounted(() => {
                         <!-- Ranking Badge -->
                         <div
                             v-if="index < 3 && book.score"
-                            class="absolute top-4 left-4 z-10 inline-flex items-center gap-1 bg-linear-to-br from-primary to-accent text-white border-0 rounded-full shadow-md px-3 py-1 text-sm"
+                            class="absolute top-4 left-4 z-10 inline-flex items-center gap-1 bg-primary text-white border-0 rounded-full shadow-md px-3 py-1 text-sm"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"

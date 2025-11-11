@@ -2,406 +2,192 @@
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import DefaultCard from "@/Components/DefaultCard.vue";
-import useBookService from "@/services/book-service";
-import { computed, ref } from "vue";
-import ThreeDotsLoading from "@/Components/ThreeDotsLoading.vue";
-import SummaryCard from "@/Components/SummaryCard.vue";
+import { computed, onMounted, ref } from "vue";
+import { router } from "@inertiajs/vue3";
+import CustomPageProps from "@/types/model/CustomPageProps";
+import cookieManager from "@/plugins/cookie-manager";
+import DefaultTable from "@/Components/DefaultTable.vue";
+import DefaultPagination from "@/Components/DefaultPagination.vue";
+import BookCard from "./BookCard.vue";
+import SearchInput from "@/Components/SearchInput.vue";
 import DropdownSearchInputMultiple from "@/Components/DropdownSearchInputMultiple.vue";
-import CheckBox from "@/Components/CheckBox.vue";
-import InputLabel from "@/Components/InputLabel.vue";
+import DropdownSearchInput from "@/Components/DropdownSearchInput.vue";
+import { scrollToTop } from "@/plugins/helpers";
 
 const props = defineProps({
     books: {
         type: Object as () => PaginationModel<BookEntity>,
         required: true,
     },
+    categories: {
+        type: Array as () => CategoryModel[],
+        required: true,
+    },
 });
 
-const categories = ref<CategoryModel[]>([]);
-const getCategoriesStatus = ref<string>("");
-const saveCategoriesStatus = ref<string>("");
+const categories = ref<CategoryModel[]>(props.categories);
 
-const searchCategories = ref<string>("");
-const filteredCategories = computed(() => {
-    if (searchCategories.value === "") {
-        return categories.value;
-    }
-    return categories.value.filter((category) =>
-        category.title
-            .toLowerCase()
-            .includes(searchCategories.value.toLowerCase())
+const books = ref<PaginationModel<BookEntity>>(props.books);
+const selectedBookIds = ref<number[]>([]);
+
+const filters = ref({
+    page: null,
+    search: null,
+    limit: null,
+    category_slug: null,
+});
+
+const selectedCategory = computed(() => {
+    return categories.value.find(
+        (category) => category.slug === filters.value.category_slug
     );
 });
-const selectedCategories = ref<CategoryModel[]>([]);
 
-const books = ref<BookEntity[]>([]);
-const loadBooksStatus = ref<string>("");
+const currentSearch = ref(null);
 
-const bookService = useBookService();
+function getQueryParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    filters.value.page = parseInt(urlParams.get("page")) || 1;
+    filters.value.search = urlParams.get("search") || null;
+    filters.value.limit = urlParams.get("limit") || null;
+    filters.value.category_slug = urlParams.get("category_slug") || null;
 
-const loadBookCurrentCategory = ref<CategoryModel | null>(null);
-const loadBookCurrentPage = ref(0);
-const loadBookPage = ref(1);
-const loadBookLimit = 28;
+    currentSearch.value = filters.value.search;
+}
 
-const totalBooksLoaded = ref(0);
+const queryParams = computed(() => {
+    return {
+        page: filters.value.page || undefined,
+        search: filters.value.search || undefined,
+        limit: filters.value.limit || undefined,
+        category_slug: filters.value.category_slug || undefined,
+    };
+});
 
-function loadBooksByCategory(category: CategoryModel) {
-    if (
-        loadBookCurrentCategory.value!.count_loaded_books! >=
-        loadBookCurrentCategory.value!.total_data_books!
-    ) {
-        loadBooksStatus.value = "success";
-        return;
-    }
-
-    // Load books page by page with delay 3 - 5 seconds
-    loadBooksStatus.value = "loading";
-    bookService.loadBooks(
-        {
-            page: loadBookPage.value,
-            limit: loadBookLimit,
-            category: category,
+function getBooks() {
+    router.get("/admin/book", queryParams.value, {
+        preserveState: true,
+        preserveScroll: true,
+        onSuccess: (page: CustomPageProps) => {
+            books.value = page.props.books;
+            getQueryParams();
+            scrollToTop({ id: "main-area" });
         },
-        {
-            onSuccess: (response, totalData, isFromCache) => {
-                // Book just to preview per page
-                books.value = response;
-
-                // Update selected category
-                loadBookCurrentCategory.value = {
-                    ...loadBookCurrentCategory.value,
-                    count_loaded_books:
-                        (loadBookCurrentCategory.value?.count_loaded_books ||
-                            0) + response.length,
-                    total_data_books: totalData,
-                };
-
-                selectedCategories.value = selectedCategories.value.map(
-                    (cat) => {
-                        if (cat.slug === loadBookCurrentCategory.value.slug) {
-                            return loadBookCurrentCategory.value;
-                        }
-                        return cat;
-                    }
-                );
-
-                totalBooksLoaded.value += response.length;
-
-                if (
-                    loadBookCurrentCategory.value!.count_loaded_books! <
-                    loadBookCurrentCategory.value!.total_data_books!
-                ) {
-                    loadBookCurrentPage.value = loadBookPage.value;
-                    loadBookPage.value += 1;
-
-                    if (!isFromCache) {
-                        // Delay 3 - 5 seconds
-                        const delay = Math.floor(Math.random() * 2000) + 3000;
-                        setTimeout(() => {
-                            loadBooksByCategory(category);
-                        }, delay);
-                    } else {
-                        setTimeout(() => {
-                            loadBooksByCategory(category);
-                        }, 200);
-                    }
-                } else {
-                    loadBooksStatus.value = "success";
-                }
-            },
-            onChangeStatus: (status) => {
-                // getBooksStatus.value = status;
-            },
-        }
-    );
-}
-
-function loadBooks() {
-    // For each selected category, load books
-    if (selectedCategories.value.length === 0) {
-        alert("Please select at least one category");
-        return;
-    }
-
-    // Reset
-    for (const category of selectedCategories.value) {
-        loadBookCurrentCategory.value = category;
-        books.value = [];
-        loadBookCurrentPage.value = 0;
-        loadBookPage.value = 1;
-        loadBooksByCategory(category);
-    }
-}
-
-const saveBooksStatus = ref<string>("");
-
-function saveBooksByCategory(category: CategoryModel) {
-    saveBooksStatus.value = "loading";
-    bookService.saveBooks(category, {
-        onSuccess: (response) => {
-            saveBooksStatus.value = "success";
+        headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookieManager.getItem("access_token")}`,
         },
     });
 }
 
-function saveBooks() {
-    // For each selected category, save books
-    if (selectedCategories.value.length === 0) {
-        alert("Please select at least one category");
-        return;
-    }
-
-    for (const category of selectedCategories.value) {
-        if (category.count_loaded_books && category.count_loaded_books > 0) {
-            saveBooksByCategory(category);
-        }
-    }
-}
+onMounted(() => {
+    getQueryParams();
+});
 </script>
 
 <template>
-    <AdminLayout title="Scraping Data" :showTitle="true">
+    <AdminLayout title="Books" :showTitle="true">
         <div class="p-4">
-            <h1 class="text-2xl font-bold mb-1">Scraping Data</h1>
-
-            <p class="text-base mb-6 text-gray-600">Source: Gramedia</p>
-
-            <!-- Get Categories -->
-            <DefaultCard class="mb-6">
-                <div
-                    class="flex flex-col sm:flex-row gap-2.5 sm:items-start sm:justify-between mb-4"
-                >
-                    <div>
-                        <h3 class="text-lg font-semibold">Categories</h3>
-                        <!-- <a
-                            href="https://api-service.gramedia.com/api/v2/public/subcategory?parent_category=buku"
-                            class="text-sm text-gray-500 hover:underline hover:text-gray-700 break-all"
-                        >
-                            https://api-service.gramedia.com/api/v2/public/subcategory?parent_category=buku
-                        </a> -->
-                        <div class="text-sm text-blue-500 mt-1 font-semibold">
-                            {{ categories.length }} Loaded
-                        </div>
-                    </div>
-                    <div class="flex gap-2 items-center">
-                        <PrimaryButton
-                            @click="
-                                bookService.loadCategories(
-                                    {},
-                                    {
-                                        onSuccess: (response) => {
-                                            categories = response.data.data;
-                                        },
-                                        onChangeStatus: (status) => {
-                                            getCategoriesStatus = status;
-                                        },
-                                    }
-                                )
-                            "
-                        >
-                            Load Categories
-                        </PrimaryButton>
-                        <PrimaryButton
-                            v-if="categories.length > 0"
-                            class="bg-green-600! hover:bg-green-600/80! focus:ring-green-500!"
-                            @click="
-                                bookService.saveCategories(categories, {
-                                    onChangeStatus: (status) => {
-                                        saveCategoriesStatus = status;
-                                    },
-                                })
-                            "
-                        >
-                            Save Categories
-                        </PrimaryButton>
-                    </div>
+            <div
+                class="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between mb-6"
+            >
+                <div>
+                    <h1 class="text-2xl font-bold mb-1">Books</h1>
+                    <p class="text-base text-gray-600">Source: Gramedia</p>
                 </div>
-
-                <ThreeDotsLoading
-                    v-if="getCategoriesStatus === 'loading'"
-                    class="my-8 text-blue-500"
-                />
-
-                <ul
-                    class="list-none list-inside grid gap-2 md:grid-cols-2 lg:grid-cols-3"
-                >
-                    <li v-for="category in categories" :key="category.slug">
-                        <label
-                            :for="`category_${category.slug}`"
-                            class="text-gray-700 hover:text-gray-900 cursor-pointer flex items-center"
-                        >
-                            <CheckBox
-                                :id="`category_${category.slug}`"
-                                :checked="
-                                    selectedCategories.some(
-                                        (cat) => cat.slug === category.slug
-                                    )
-                                "
-                                :value="category.title"
-                                :label="category.title"
-                                class="mr-2"
-                                @update:checked="
-                                    (isChecked) => {
-                                        if (isChecked) {
-                                            selectedCategories.push(category);
-                                        } else {
-                                            selectedCategories =
-                                                selectedCategories.filter(
-                                                    (cat) =>
-                                                        cat.slug !==
-                                                        category.slug
-                                                );
-                                        }
-                                    }
-                                "
-                            />
-                            <span>{{ category.title }}</span>
-                        </label>
-                    </li>
-                </ul>
-            </DefaultCard>
-
-            <!-- Get Books -->
-            <DefaultCard class="mb-6">
-                <div
-                    class="flex flex-col sm:flex-row gap-2.5 sm:items-start sm:justify-between mb-4"
-                >
-                    <div>
-                        <h3 class="text-lg font-semibold">Books</h3>
-                        <!-- <div class="text-sm text-blue-500 mt-2 font-semibold">
-                            {{ books.length }} Loaded
-                        </div> -->
-                    </div>
-                    <div class="flex gap-2 items-center">
-                        <PrimaryButton @click="loadBooks()">
-                            Load All Books
-                        </PrimaryButton>
-                        <PrimaryButton
-                            v-if="
-                                selectedCategories.reduce(
-                                    (total, category) =>
-                                        total +
-                                        (category.count_loaded_books || 0),
-                                    0
-                                ) > 0
-                            "
-                            class="bg-green-600! hover:bg-green-600/80! focus:ring-green-500!"
-                            @click="saveBooks()"
-                        >
-                            Save All Books
-                        </PrimaryButton>
-                    </div>
-                </div>
-
-                <div
-                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
-                >
-                    <SummaryCard
-                        title="Total Books to Load"
-                        :value="
-                            selectedCategories.reduce(
-                                (total, category) =>
-                                    total + (category.total_data_books || 0),
-                                0
-                            )
+                <div class="flex gap-3 items-center w-full sm:w-auto">
+                    <DropdownSearchInput
+                        id="category"
+                        :useSearchDebounce="true"
+                        :modelValue="
+                            selectedCategory
+                                ? {
+                                      label: selectedCategory.title,
+                                      value: selectedCategory.slug,
+                                  }
+                                : null
+                        "
+                        :options="
+                            categories.map((category) => ({
+                                label: category.title,
+                                value: category.slug,
+                            }))
+                        "
+                        :searchable="true"
+                        placeholder="Category"
+                        class="max-w-48"
+                        @update:modelValue="
+                            (option) => {
+                                filters.category_slug = option.value;
+                                getBooks();
+                            }
+                        "
+                        @clear="
+                            filters.category_slug = null;
+                            getBooks();
                         "
                     />
-                    <SummaryCard
-                        title="Books Loaded"
-                        :value="totalBooksLoaded"
-                    />
-                    <SummaryCard
-                        title="Books Remaining"
-                        :value="
-                            selectedCategories.reduce(
-                                (total, category) =>
-                                    total +
-                                    ((category.total_data_books || 0) -
-                                        (category.count_loaded_books || 0)),
-                                0
-                            )
+                    <SearchInput
+                        id="search-book"
+                        v-model="filters.search"
+                        placeholder="Search..."
+                        class="w-full sm:max-w-48"
+                        :autofocus="true"
+                        @search="
+                            filters.page = 1;
+                            getBooks();
                         "
                     />
+                    <!-- <PrimaryButton @click=""> Add Book </PrimaryButton> -->
+                </div>
+            </div>
+
+            <!-- Current Search -->
+            <div v-if="currentSearch" class="mb-5 flex flex-col gap-2">
+                <p class="text-2xl text-gray-800">
+                    Showing results for
+                    <span class="font-medium">"{{ currentSearch }}"</span>
+                </p>
+                <!-- 1758 results found -->
+                <p class="text-sm text-gray-500">
+                    {{ books.total }} results found
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+                >
+                    <a
+                        v-for="(book, index) in books.data"
+                        :key="book.id"
+                        :href="`https://www.gramedia.com/products/${book.slug}`"
+                        target="_blank"
+                    >
+                        <BookCard :index="index" :book="book" class="h-full" />
+                    </a>
                 </div>
 
-                <div
-                    v-if="loadBooksStatus === 'loading'"
-                    class="my-8 flex flex-col items-center"
-                >
-                    <p class="text-blue-500">
-                        Loading books... (Page {{ loadBookPage }})
+                <div v-if="books?.links" class="mt-6">
+                    <!-- Showing -->
+                    <p class="text-sm text-gray-500 mb-2">
+                        Showing
+                        {{ books.from }}
+                        to
+                        {{ books.to }}
+                        of {{ books.total }} entries
                     </p>
-                    <ThreeDotsLoading class="text-blue-500" />
+                    <DefaultPagination
+                        :links="books?.links"
+                        :isApi="true"
+                        @change="
+                        (newPage: number) => {
+                            filters.page = newPage;
+                            getBooks();
+                        }"
+                    />
                 </div>
-
-                <div v-if="selectedCategories.length > 0" class="mt-4">
-                    <h4 class="mb-2">Loaded Books</h4>
-                    <!-- Selected Categories -->
-                    <div class="flex flex-col gap-2">
-                        <DefaultCard
-                            v-for="category in selectedCategories"
-                            :key="category.slug"
-                            class="p-4"
-                        >
-                            <div class="flex gap-2 items-center">
-                                <div class="w-full">
-                                    <h5 class="font-semibold mb-2">
-                                        {{ category.title }}
-                                    </h5>
-                                    <p class="text-blue-500 font-semibold">
-                                        {{ category.count_loaded_books || 0 }} /
-                                        {{ category.total_data_books || "-" }}
-                                    </p>
-                                </div>
-
-                                <ThreeDotsLoading
-                                    v-if="
-                                        loadBooksStatus === 'loading' &&
-                                        loadBookCurrentCategory &&
-                                        loadBookCurrentCategory.slug ===
-                                            category.slug
-                                    "
-                                    class="text-blue-500"
-                                />
-
-                                <PrimaryButton
-                                    v-else-if="
-                                        !category.count_loaded_books ||
-                                        (category.count_loaded_books || 0) <
-                                            (category.total_data_books || 0)
-                                    "
-                                    @click="
-                                        loadBookCurrentCategory = category;
-                                        books = [];
-                                        loadBookCurrentPage = 0;
-                                        loadBookPage = 1;
-                                        loadBooksByCategory(category);
-                                    "
-                                    class="whitespace-nowrap h-fit"
-                                >
-                                    Load Books
-                                </PrimaryButton>
-
-                                <!-- Save -->
-                                <PrimaryButton
-                                    v-else-if="category.count_loaded_books"
-                                    class="bg-green-600! hover:bg-green-600/80! focus:ring-green-500! whitespace-nowrap h-fit"
-                                    @click="
-                                        bookService.saveBooks(category, {
-                                            onChangeStatus: (status) => {
-                                                saveBooksStatus = status;
-                                            },
-                                        })
-                                    "
-                                >
-                                    Save Books
-                                </PrimaryButton>
-                            </div>
-                        </DefaultCard>
-                    </div>
-                </div>
-            </DefaultCard>
+            </div>
         </div>
     </AdminLayout>
 </template>

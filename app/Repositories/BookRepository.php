@@ -10,10 +10,20 @@ class BookRepository
     static public function getRecommendedBooks(
         $search = null,
         $limit = 10,
-        $page = 1
+        $page = 1,
+        $categorySlug = null
     ) {
         if ($search) {
-            $allBooks = Book::all();
+            $allBooks = Book::query();
+
+            if ($categorySlug) {
+                $allBooks->whereHas('categories', function ($q) use ($categorySlug) {
+                    $q->where('slug', $categorySlug);
+                });
+            }
+
+            $allBooks = $allBooks->get();
+
             $allBooksTokens = [];
             foreach ($allBooks as $book) {
                 // Check and preprocess titles if not already done
@@ -77,9 +87,16 @@ class BookRepository
         $search = null,
         $limit = 10,
         $orderBy = 'created_at',
-        $orderDirection = 'desc'
+        $orderDirection = 'desc',
+        $categorySlug = null
     ) {
         $query = Book::query();
+
+        if ($categorySlug) {
+            $query->whereHas('categories', function ($q) use ($categorySlug) {
+                $q->where('slug', $categorySlug);
+            });
+        }
 
         if ($search) {
             $query->where('title', 'like', '%' . $search . '%')

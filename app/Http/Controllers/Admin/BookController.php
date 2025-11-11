@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\Category;
 use App\Repositories\BookRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -19,11 +20,27 @@ class BookController extends Controller
         $limit = $request->input('limit', 10);
         $orderBy = $request->input('orderBy', 'created_at');
         $orderDirection = $request->input('orderDirection', 'desc');
+        $page = $request->input('page', 1);
+        $categorySlug = $request->input('category_slug');
 
-        $books = BookRepository::getBooks($search, $limit, $orderBy, $orderDirection);
+        // $books = BookRepository::getBooks(
+        //     search: $search,
+        //     limit: $limit,
+        //     orderBy: $orderBy,
+        //     orderDirection: $orderDirection,
+        //     categorySlug: $categorySlug
+        // );
+
+        $books = BookRepository::getRecommendedBooks(
+            search: $search,
+            limit: $limit,
+            page: $page,
+            categorySlug: $categorySlug
+        );
 
         return Inertia::render('Admin/Book/Index', [
             'books' => $books,
+            'categories' => Category::where('parent_id', null)->get(),
         ]);
     }
 
