@@ -79,6 +79,13 @@ class BookRepository
         }
 
         $query = Book::query();
+
+        if ($categorySlug) {
+            $query->whereHas('categories', function ($q) use ($categorySlug) {
+                $q->where('slug', $categorySlug);
+            });
+        }
+
         $query->orderBy('created_at', 'desc');
         return $query->paginate($limit);
     }
