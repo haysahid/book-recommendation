@@ -3,7 +3,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import DefaultCard from "@/Components/DefaultCard.vue";
 import useBookService from "@/services/book-service";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import ThreeDotsLoading from "@/Components/ThreeDotsLoading.vue";
 import SummaryCard from "@/Components/SummaryCard.vue";
 import CheckBox from "@/Components/CheckBox.vue";
@@ -24,9 +24,18 @@ const loadBookCurrentPage = ref(0);
 const loadBookPage = ref(1);
 const loadBookLimit = 28;
 
-const totalBooksLoaded = ref(0);
+const totalBooksLoaded = computed(() => {
+    return selectedCategories.value.reduce(
+        (total, category) => total + (category.count_loaded_books || 0),
+        0
+    );
+});
 
-function loadBooksByCategory(category: CategoryModel) {
+async function loadBooksByCategory(category: CategoryModel) {
+    console.log(
+        `Loading books for ${category.slug} - Page ${loadBookPage.value}`
+    );
+
     if (
         loadBookCurrentCategory.value!.count_loaded_books! >=
         loadBookCurrentCategory.value!.total_data_books!
@@ -37,7 +46,7 @@ function loadBooksByCategory(category: CategoryModel) {
 
     // Load books page by page with delay 3 - 5 seconds
     loadBooksStatus.value = "loading";
-    bookService.loadBooks(
+    await bookService.loadBooks(
         {
             page: loadBookPage.value,
             limit: loadBookLimit,
@@ -52,8 +61,11 @@ function loadBooksByCategory(category: CategoryModel) {
                 loadBookCurrentCategory.value = {
                     ...loadBookCurrentCategory.value,
                     count_loaded_books:
-                        (loadBookCurrentCategory.value?.count_loaded_books ||
-                            0) + response.length,
+                        loadBookCurrentCategory.value.count_loaded_books <
+                        totalData
+                            ? (loadBookCurrentCategory.value
+                                  ?.count_loaded_books || 0) + response.length
+                            : totalData,
                     total_data_books: totalData,
                 };
 
@@ -65,8 +77,6 @@ function loadBooksByCategory(category: CategoryModel) {
                         return cat;
                     }
                 );
-
-                totalBooksLoaded.value += response.length;
 
                 if (
                     loadBookCurrentCategory.value!.count_loaded_books! <
@@ -91,13 +101,13 @@ function loadBooksByCategory(category: CategoryModel) {
                 }
             },
             onChangeStatus: (status) => {
-                // getBooksStatus.value = status;
+                // loadBooksStatus.value = status;
             },
         }
     );
 }
 
-function loadBooks() {
+async function loadBooks() {
     // For each selected category, load books
     if (selectedCategories.value.length === 0) {
         alert("Please select at least one category");
@@ -110,8 +120,13 @@ function loadBooks() {
         books.value = [];
         loadBookCurrentPage.value = 0;
         loadBookPage.value = 1;
-        loadBooksByCategory(category);
+
+        await loadBooksByCategory(category);
+        loadBooksStatus.value = "loading";
+        await new Promise((resolve) => setTimeout(resolve, 200)); // Wait for 200ms
     }
+
+    loadBooksStatus.value = "success";
 }
 
 const saveBooksStatus = ref<string>("");
@@ -196,6 +211,33 @@ function saveBooks() {
                     v-if="getCategoriesStatus === 'loading'"
                     class="my-8 text-blue-500"
                 />
+
+                <!-- Select All -->
+                <label
+                    v-if="categories.length > 0"
+                    for="select_all_categories"
+                    class="flex items-center mb-2 cursor-pointer"
+                >
+                    <CheckBox
+                        id="select_all_categories"
+                        :checked="
+                            selectedCategories.length === categories.length &&
+                            categories.length > 0
+                        "
+                        :label="'Select All'"
+                        class="mr-2"
+                        @update:checked="
+                            (isChecked) => {
+                                if (isChecked) {
+                                    selectedCategories = [...categories];
+                                } else {
+                                    selectedCategories = [];
+                                }
+                            }
+                        "
+                    />
+                    <span class="text-gray-700">Select All</span>
+                </label>
 
                 <ul
                     class="list-none list-inside grid gap-2 md:grid-cols-2 lg:grid-cols-3"
@@ -304,7 +346,8 @@ function saveBooks() {
                     class="my-8 flex flex-col items-center"
                 >
                     <p class="text-blue-500">
-                        Loading books... (Page {{ loadBookPage }})
+                        Loading books of {{ loadBookCurrentCategory.title }}...
+                        (Page {{ loadBookPage }})
                     </p>
                     <ThreeDotsLoading class="text-blue-500" />
                 </div>

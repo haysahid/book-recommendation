@@ -7,6 +7,72 @@ use Illuminate\Support\Facades\Log;
 
 class BookRepository
 {
+    static public function getRecommendedBooks(
+        $search = null,
+        $limit = 10,
+        $page = 1
+    ) {
+        if ($search) {
+            $allBooks = Book::all();
+            $allBooksTokens = [];
+            foreach ($allBooks as $book) {
+                // Check and preprocess titles if not already done
+                if (!$book->cleaned_title) {
+                    $book = self::cleanTitle($book);
+                }
+
+                if (!$book->stemmed_title) {
+                    $book = self::stemTitleWithSastrawi($book);
+                }
+
+                $tokens = TfIdfRepository::tokenize($book->stemmed_title);
+
+                $allBooksTokens[] = $tokens;
+            }
+
+            Log::info('All Books Tokens:', $allBooksTokens);
+
+            list($df, $N) = TfIdfRepository::computeDf($allBooksTokens);
+
+            $searchTokens = TfIdfRepository::preprocess($search);
+
+            $booksWithScores = [];
+            foreach ($allBooks as $book) {
+                $bookTokens = TfIdfRepository::tokenize($book->stemmed_title);
+
+                $bookVectors = TfIdfRepository::buildTfIdfVector($bookTokens, $df, $N);
+                $searchVectors = TfIdfRepository::buildTfIdfVector($searchTokens, $df, $N);
+
+                $score = TfIdfRepository::cosineSimilarity(
+                    $searchVectors,
+                    $bookVectors
+                );
+
+                $book->score = $score;
+
+                $booksWithScores[] = $book;
+            }
+
+            // Sort books by score
+            usort($booksWithScores, fn($a, $b) => $b->score <=> $a->score);
+
+            $offset = ($page - 1) * $limit;
+            $paginatedBooks = array_slice($booksWithScores, $offset, $limit);
+
+            return new \Illuminate\Pagination\LengthAwarePaginator(
+                $paginatedBooks,
+                count($booksWithScores),
+                $limit,
+                $page,
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
+        }
+
+        $query = Book::query();
+        $query->orderBy('created_at', 'desc');
+        return $query->paginate($limit);
+    }
+
     static public function getBooks(
         $search = null,
         $limit = 10,
@@ -32,12 +98,18 @@ class BookRepository
 
     static public function createBook($data)
     {
-        $book = Book::create($data);
+        $existingBook = self::findBookBySlug($data['slug']);
 
-        if (isset($data['category_slug'])) {
+        if (!$existingBook) {
+            $book = Book::create($data);
+        } else {
+            $book = $existingBook;
+        }
+
+        if (!empty($data['category_slug'])) {
             $category = CategoryRepository::findCategoryBySlug($data['category_slug']);
             if ($category) {
-                $book->categories()->attach($category->id);
+                $book->categories()->syncWithoutDetaching([$category->id]);
             }
         }
 

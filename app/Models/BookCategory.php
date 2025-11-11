@@ -7,19 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class BookCategory extends Model
 {
     protected $fillable = [
-        'title',
-        'slug',
-        'image',
-        'parent_id',
+        'book_id',
+        'category_id',
     ];
 
-    public function books()
+    public function book()
     {
-        return $this->hasMany(BookCategory::class, 'category_id');
+        return $this->belongsTo(Book::class);
     }
 
-    public function categories()
+    public function category()
     {
-        return $this->hasMany(BookCategory::class, 'parent_id');
+        return $this->belongsTo(Category::class);
     }
 }

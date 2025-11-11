@@ -31,7 +31,7 @@ class AuthController extends Controller
             ));
 
             $request->session()->regenerate();
-            return redirect()->intended('/admin/book');
+            return redirect()->intended('/admin/scraping');
         }
 
         return back()->withErrors([

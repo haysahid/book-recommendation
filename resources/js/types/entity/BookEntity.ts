@@ -11,4 +11,7 @@ interface BookEntity {
     isbn: string | null;
     created_at: string;
     updated_at: string;
+
+    // Additional attributes
+    score: number | null;
 }

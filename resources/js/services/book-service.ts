@@ -156,7 +156,32 @@ export default function useBookService() {
 
         if (cachedData) {
             const books = JSON.parse(cachedData);
+            if (
+                categoryCache[category.slug] === undefined ||
+                categoryCache[category.slug] === 0
+            ) {
+                // Get total data from API to cache
+                await axios
+                    .get(endpointUrl, {})
+                    .then((response) => {
+                        // Cache category data
+                        categoryCache[category.slug] =
+                            response.data.meta.total_data;
+                        localStorage.setItem(
+                            "category_books_count",
+                            JSON.stringify(categoryCache)
+                        );
+                    })
+                    .catch((error) => {
+                        console.error(
+                            "Error fetching users for category cache:",
+                            error
+                        );
+                    });
+            }
+
             const totalData = categoryCache[category.slug];
+
             onChangeStatus("success");
             onSuccess(books, totalData, true);
             return;

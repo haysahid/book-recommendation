@@ -15,7 +15,7 @@ const props = defineProps({
 });
 
 const logout = () => {
-    router.post('/logout');
+    router.post("/logout");
 };
 </script>
 
@@ -70,7 +70,9 @@ const logout = () => {
 
         <template #content>
             <div class="divide-y divide-gray-200">
-                <DropdownLink :href="'/admin/book'"> Book </DropdownLink>
+                <DropdownLink :href="'/admin/scraping'">
+                    Dashboard
+                </DropdownLink>
 
                 <DropdownLink as="button" @click="logout">
                     Log Out

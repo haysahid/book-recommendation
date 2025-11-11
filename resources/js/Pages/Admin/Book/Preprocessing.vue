@@ -3,50 +3,63 @@ import DefaultCard from "@/Components/DefaultCard.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import DefaultTable from "@/Components/DefaultTable.vue";
-import axios from "axios";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import cookieManager from "@/plugins/cookie-manager";
 import DefaultPagination from "@/Components/DefaultPagination.vue";
 import useBookService from "@/services/book-service";
+import { router } from "@inertiajs/vue3";
+import CustomPageProps from "@/types/model/CustomPageProps";
 
-const books = ref<PaginationModel<BookEntity>>(null);
+const props = defineProps({
+    books: {
+        type: Object as () => PaginationModel<BookEntity>,
+        required: true,
+    },
+});
+
+const books = ref<PaginationModel<BookEntity>>(props.books);
 const selectedBookIds = ref<number[]>([]);
 
 const filters = ref({
-    page: 1,
+    page: null,
     search: null,
-    limit: 10,
+    limit: null,
+});
+
+function getQueryParams() {
+    const urlParams = new URLSearchParams();
+    filters.value.page = parseInt(urlParams.get("page")) || 1;
+    filters.value.search = urlParams.get("search") || null;
+    filters.value.limit = urlParams.get("limit") || null;
+}
+
+const queryParams = computed(() => {
+    return {
+        page: filters.value.page || undefined,
+        search: filters.value.search || undefined,
+        limit: filters.value.limit || undefined,
+    };
 });
 
 function getBooks() {
-    axios
-        .get("/api/admin/book", {
-            params: {
-                page: filters.value.page,
-                search: filters.value.search,
-                limit: filters.value.limit,
-                order_by: "created_at",
-                order_direction: "desc",
-            },
-            headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${cookieManager.getItem(
-                    "access_token"
-                )}`,
-            },
-        })
-        .then((response) => {
-            books.value = response.data.result;
-        })
-        .catch((error) => {
-            console.error("Error fetching books:", error);
-        });
+    router.get("/admin/preprocessing", queryParams.value, {
+        preserveState: true,
+        preserveScroll: true,
+        onSuccess: (page: CustomPageProps) => {
+            books.value = page.props.books;
+            getQueryParams();
+        },
+        headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookieManager.getItem("access_token")}`,
+        },
+    });
 }
 
 const bookService = useBookService();
 
 onMounted(() => {
-    getBooks();
+    getQueryParams();
 });
 </script>
 
@@ -59,9 +72,7 @@ onMounted(() => {
             </p>
 
             <DefaultCard class="mb-6">
-                <div
-                    class="flex flex-col sm:flex-row gap-2.5 sm:items-start sm:justify-between mb-4"
-                >
+                <div class="flex gap-2.5 items-center justify-between mb-4">
                     <div>
                         <h3 class="text-lg font-semibold">Cleaning Titles</h3>
                         <p
@@ -157,9 +168,7 @@ onMounted(() => {
             </DefaultCard>
 
             <DefaultCard>
-                <div
-                    class="flex flex-col sm:flex-row gap-2.5 sm:items-start sm:justify-between mb-4"
-                >
+                <div class="flex gap-2.5 items-center justify-between mb-4">
                     <div>
                         <h3 class="text-lg font-semibold">Stemming Titles</h3>
                         <p

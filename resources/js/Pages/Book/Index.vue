@@ -10,9 +10,10 @@ const props = defineProps({
     },
 });
 
-const searchQuery = ref("");
+const searchQuery = ref(null as string | undefined);
 
-const books = ref<BookEntity[]>(props.books.data);
+const booksPagination = ref<PaginationModel<BookEntity>>(props.books);
+const books = ref<BookEntity[]>(booksPagination.value.data);
 
 const handleSearch = () => {
     router.get(
@@ -22,16 +23,34 @@ const handleSearch = () => {
             preserveState: true,
             onSuccess: (page: CustomPageProps) => {
                 books.value = page.props.books.data;
+                getQueryParam();
             },
         }
     );
 };
 
+const currentSearch = ref(searchQuery.value);
+
+const getQueryParam = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    searchQuery.value = urlParams.get("search") || undefined;
+    if (!searchQuery.value) {
+        removeUrlParam("search");
+    }
+
+    currentSearch.value = searchQuery.value;
+
+    removeUrlParam("page");
+};
+
+const removeUrlParam = (param: string) => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete(param);
+    window.history.replaceState({}, document.title, url.toString());
+};
+
 onMounted(() => {
-    // Get the search query from url params
-    searchQuery.value = new URLSearchParams(window.location.search).get(
-        "search"
-    ) as string;
+    getQueryParam();
 });
 </script>
 
@@ -143,26 +162,32 @@ onMounted(() => {
             <div v-if="books.length > 0">
                 <div class="flex items-center justify-between mb-8">
                     <h2 class="text-3xl font-bold text-foreground">
-                        Trending Books
+                        {{
+                            currentSearch
+                                ? `Search Results for "${currentSearch}"`
+                                : "Popular Books"
+                        }}
                     </h2>
                     <span class="text-muted-foreground">
-                        {{ books.length }} results found
+                        {{ booksPagination.total }} results found
                     </span>
                 </div>
 
                 <div
                     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 >
-                    <div
+                    <a
                         v-for="(book, index) in books"
                         :key="book.id"
+                        :href="`https://www.gramedia.com/products/${book.slug}`"
+                        target="_blank"
                         class="group relative overflow-hidden rounded-xl border-0 bg-gradient-card hover:shadow-lg transition-all duration-300 hover:-translate-y-2 animate-slide-up cursor-pointer p-6"
                         :style="{ animationDelay: `${index * 0.1}s` }"
                     >
                         <!-- Ranking Badge -->
                         <div
-                            v-if="index < 3"
-                            class="absolute top-4 left-4 z-10 inline-flex items-center gap-1 bg-linear-to-r from-primary to-accent text-white border-0 rounded-full shadow-md px-3 py-1 text-sm"
+                            v-if="index < 3 && book.score"
+                            class="absolute top-4 left-4 z-10 inline-flex items-center gap-1 bg-linear-to-br from-primary to-accent text-white border-0 rounded-full shadow-md px-3 py-1 text-sm"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -245,12 +270,77 @@ onMounted(() => {
                             </div>
                         </div>
 
+                        <!-- Recommendation Score Badge -->
+                        <div
+                            v-if="book.score"
+                            class="absolute top-4 right-4 inline-flex items-center gap-1 bg-white/90 text-foreground border border-border rounded-full shadow-md px-3 py-1 text-sm"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-thumbs-up w-4 h-4 text-primary"
+                            >
+                                <path
+                                    d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-7A2 2 0 0 0 19.66 7H14z"
+                                ></path>
+                                <path
+                                    d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
+                                ></path>
+                            </svg>
+                            {{ book.score.toFixed(2) }}
+                        </div>
+
                         <!-- Hover Glow Effect -->
                         <div
                             class="absolute inset-0 bg-linear-to-t from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                         />
-                    </div>
+                    </a>
                 </div>
+            </div>
+
+            <!-- Load more -->
+            <div class="flex justify-center mt-6">
+                <button
+                    v-if="books.length < booksPagination.total"
+                    @click="
+                        router.get(
+                            '/book',
+                            {
+                                page: booksPagination.current_page + 1,
+                                search: searchQuery,
+                            },
+                            {
+                                preserveState: true,
+                                preserveScroll: true,
+                                onSuccess: (page: CustomPageProps) => {
+                                    booksPagination = page.props.books;
+                                    books = [
+                                        ...books,
+                                        ...page.props.books.data,
+                                    ];
+                                    getQueryParam();
+                                },
+                            }
+                        )
+                    "
+                    class="px-6 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 font-medium"
+                >
+                    Load More
+                </button>
+                <button
+                    v-else
+                    disabled
+                    class="px-6 py-2 bg-muted text-muted-foreground rounded-lg font-medium cursor-not-allowed"
+                >
+                    No More Books
+                </button>
             </div>
         </div>
     </div>

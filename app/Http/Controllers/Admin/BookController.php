@@ -107,11 +107,18 @@ class BookController extends Controller
 
     public function scraping()
     {
-        return Inertia::render('Admin/Book/Scraping');
+        $books = BookRepository::getBooks();
+        return Inertia::render('Admin/Book/Scraping', [
+            'books' => $books,
+        ]);
     }
 
     public function preprocessing()
     {
-        return Inertia::render('Admin/Book/Preprocessing');
+        $books = BookRepository::getBooks();
+
+        return Inertia::render('Admin/Book/Preprocessing', [
+            'books' => $books,
+        ]);
     }
 }

@@ -16,10 +16,13 @@ class BookController extends Controller
     {
         $search = $request->input('search');
         $limit = $request->input('limit', 10);
-        $orderBy = $request->input('orderBy', 'created_at');
-        $orderDirection = $request->input('orderDirection', 'desc');
+        $page = $request->input('page', 1);
 
-        $books = BookRepository::getBooks($search, $limit, $orderBy, $orderDirection);
+        $books = BookRepository::getRecommendedBooks(
+            search: $search,
+            limit: $limit,
+            page: $page,
+        );
 
         return Inertia::render('Book/Index', [
             'books' => $books,

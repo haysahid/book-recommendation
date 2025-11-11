@@ -30,7 +30,7 @@ class BookController extends Controller
             'books' => 'required|array',
             'books.*.title' => 'required|string|max:255',
             'books.*.image' => 'nullable|string|max:255',
-            'books.*.slug' => 'required|string|max:255|unique:books,slug',
+            'books.*.slug' => 'required|string|max:255',
             'books.*.author' => 'nullable|string|max:255',
             'books.*.store_name' => 'nullable|string|max:255',
             'books.*.isbn' => 'nullable|string|max:255',
@@ -41,7 +41,7 @@ class BookController extends Controller
             BookRepository::insertBooks($data['books']);
             return ResponseFormatter::success(null, 'Books created successfully.');
         } catch (Exception $e) {
-            return ResponseFormatter::error('Failed to create books.', 500);
+            return ResponseFormatter::error('Failed to create books.' . $e, 500);
         }
     }
 
