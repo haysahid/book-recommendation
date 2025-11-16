@@ -4,6 +4,32 @@ namespace App\Repositories;
 
 class TfIdfRepository
 {
+
+
+    static public function cleanText(string $text): string
+    {
+        // Remove extra spaces and special characters, convert to lowercase
+        $cleanedText = preg_replace('/[^a-zA-Z0-9\s]/', '', $text);
+        $cleanedText = strtolower(trim($cleanedText));
+        return $cleanedText;
+    }
+
+    static public function stopwordRemoval(string $text): string
+    {
+        $stopwordFactory = new \Sastrawi\StopWordRemover\StopWordRemoverFactory();
+        $stopwordRemover = $stopwordFactory->createStopWordRemover();
+        $textWithoutStopwords = $stopwordRemover->remove($text);
+        return $textWithoutStopwords;
+    }
+
+    static public function stemming(string $text): string
+    {
+        $stemmerFactory = new \Sastrawi\Stemmer\StemmerFactory();
+        $stemmer = $stemmerFactory->createStemmer();
+        $stemmedText = $stemmer->stem($text);
+        return $stemmedText;
+    }
+
     static public function tokenize(string $text): array
     {
         // Simple whitespace tokenization
@@ -13,21 +39,9 @@ class TfIdfRepository
 
     static public function preprocess(string $text): array
     {
-        // Remove extra spaces, special characters, and convert to lowercase
-        $cleanedText = preg_replace('/[^a-zA-Z0-9\s]/', '', $text);
-        $cleanedText = strtolower(trim($cleanedText));
-
-        // Remove stopwords
-        $stopwordFactory = new \Sastrawi\StopWordRemover\StopWordRemoverFactory();
-        $stopwordRemover = $stopwordFactory->createStopWordRemover();
-        $textWithoutStopwords = $stopwordRemover->remove($cleanedText);
-
-        // Perform stemming
-        $stemmerFactory = new \Sastrawi\Stemmer\StemmerFactory();
-        $stemmer = $stemmerFactory->createStemmer();
-        $stemmedText = $stemmer->stem($textWithoutStopwords);
-
-        // Tokenization
+        $cleanedText = self::cleanText($text);
+        $textWithoutStopwords = self::stopwordRemoval($cleanedText);
+        $stemmedText = self::stemming($textWithoutStopwords);
         $tokens = self::tokenize($stemmedText);
 
         return $tokens;

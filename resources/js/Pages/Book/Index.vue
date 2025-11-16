@@ -133,7 +133,7 @@ onMounted(() => {
                                     v-model="searchQuery"
                                     @keyup.enter="handleSearch"
                                     autofocus
-                                    placeholder="Search for books, authors, ISBN..."
+                                    placeholder="Search for books..."
                                     class="w-full pl-12 h-12 border-0 bg-transparent text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary rounded-lg outline-none"
                                 />
                             </div>

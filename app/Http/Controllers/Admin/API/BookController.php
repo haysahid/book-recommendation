@@ -53,7 +53,6 @@ class BookController extends Controller
 
         try {
             $books = isset($data['book_ids']) ? Book::whereIn('id', $data['book_ids'])->get() : Book::all();
-            Log::info('Books for cleaning: ' . count($books));
             $cleanedTitles = BookRepository::cleanTitles($books);
             return ResponseFormatter::success($cleanedTitles, 'Titles cleaned successfully.');
         } catch (Exception $e) {

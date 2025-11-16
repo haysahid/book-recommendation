@@ -35,12 +35,16 @@ class BookRepository
                     $book = self::stemTitleWithSastrawi($book);
                 }
 
-                $tokens = TfIdfRepository::tokenize($book->stemmed_title);
+                $titleAndAuthor = $book->stemmed_title . ' ' . TfIdfRepository::cleanText($book->author);
+
+                if ($book->author == 'Stephen Hawking') {
+                    Log::info('Processing Stephen Hawking book:', ['title' => $book->title, 'author' => $book->author, 'titleAndAuthor' => $titleAndAuthor]);
+                }
+
+                $tokens = TfIdfRepository::tokenize($titleAndAuthor);
 
                 $allBooksTokens[] = $tokens;
             }
-
-            Log::info('All Books Tokens:', $allBooksTokens);
 
             list($df, $N) = TfIdfRepository::computeDf($allBooksTokens);
 
@@ -48,7 +52,8 @@ class BookRepository
 
             $booksWithScores = [];
             foreach ($allBooks as $book) {
-                $bookTokens = TfIdfRepository::tokenize($book->stemmed_title);
+                $titleAndAuthor = $book->stemmed_title . ' ' . TfIdfRepository::cleanText($book->author);
+                $bookTokens = TfIdfRepository::tokenize($titleAndAuthor);
 
                 $bookVectors = TfIdfRepository::buildTfIdfVector($bookTokens, $df, $N);
                 $searchVectors = TfIdfRepository::buildTfIdfVector($searchTokens, $df, $N);
