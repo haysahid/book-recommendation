@@ -11,7 +11,8 @@ class BookRepository
         $search = null,
         $limit = 10,
         $page = 1,
-        $categorySlug = null
+        $categorySlug = null,
+        $excludeBookId = null,
     ) {
         if ($search) {
             $allBooks = Book::query();
@@ -20,6 +21,10 @@ class BookRepository
                 $allBooks->whereHas('categories', function ($q) use ($categorySlug) {
                     $q->where('slug', $categorySlug);
                 });
+            }
+
+            if ($excludeBookId) {
+                $allBooks->where('id', '!=', $excludeBookId);
             }
 
             $allBooks = $allBooks->get();
@@ -118,6 +123,22 @@ class BookRepository
         $query->orderBy($orderBy, $orderDirection);
 
         return $query->paginate($limit);
+    }
+
+    static public function getRelatedBooks($book, $limit = 5)
+    {
+        $titleAndAuthor = $book->title . ' ' . TfIdfRepository::cleanText($book->author);
+
+        $relatedBooks = self::getRecommendedBooks(
+            search: $titleAndAuthor,
+            limit: $limit,
+            excludeBookId: $book->id,
+        );
+
+        // Remove paginaton
+        $relatedBooks = $relatedBooks->items();
+
+        return $relatedBooks;
     }
 
     static public function findBookBySlug($slug)

@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { router } from "@inertiajs/vue3";
+import { computed, onMounted, ref } from "vue";
+import { Head, router } from "@inertiajs/vue3";
 import CustomPageProps from "@/types/model/CustomPageProps";
+import LandingHeader from "@/Components/LandingHeader.vue";
+import LandingMainContainer from "@/Components/LandingMainContainer.vue";
+import { scrollToTop } from "@/plugins/helpers";
 
 const props = defineProps({
     books: {
@@ -49,18 +52,45 @@ const removeUrlParam = (param: string) => {
     window.history.replaceState({}, document.title, url.toString());
 };
 
+const scrolled = ref(false);
+const scrollThreshold = 540;
+
+const handleScroll = () => {
+    scrolled.value = window.scrollY > scrollThreshold;
+};
+
+const isScrolled = computed(() => {
+    return scrolled.value;
+});
+
 onMounted(() => {
+    window.addEventListener("scroll", handleScroll);
     getQueryParam();
 });
 </script>
 
 <template>
+    <Head title="Search Books" />
+
     <div class="min-h-screen bg-white">
+        <transition name="accordion">
+            <LandingHeader
+                v-if="isScrolled"
+                :invertColor="true"
+                class="fixed! top-0 left-0 right-0 z-50 border-b-0!"
+            />
+        </transition>
+
         <!-- Hero Section -->
         <div
-            class="relative overflow-hidden bg-gradient-hero py-20 px-6 mb-12 animate-fade-in"
+            class="relative overflow-hidden bg-gradient-hero pt-2 pb-20 mb-12 animate-fade-in"
         >
-            <div class="max-w-4xl mx-auto text-center">
+            <LandingHeader
+                :invertColor="true"
+                class="border-b-0! mb-8 md:mb-6 bg-transparent! bg-none"
+            />
+
+            <div class="max-w-4xl mx-auto text-center px-6">
                 <div
                     class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6 text-white border border-white/30"
                 >
@@ -158,17 +188,17 @@ onMounted(() => {
         </div>
 
         <!-- Results Section -->
-        <div class="max-w-7xl mx-auto px-6 pb-20">
-            <div v-if="books.length > 0">
+        <LandingMainContainer class="mb-20">
+            <div v-if="books.length > 0" class="mb-12">
                 <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-3xl font-bold text-foreground">
+                    <h2 class="text-2xl md:text-3xl font-bold text-foreground">
                         {{
                             currentSearch
                                 ? `Search Results for "${currentSearch}"`
                                 : "Popular Books"
                         }}
                     </h2>
-                    <span class="text-muted-foreground">
+                    <span class="text-muted-foreground text-sm md:text-base">
                         {{ booksPagination.total }} results found
                     </span>
                 </div>
@@ -179,8 +209,7 @@ onMounted(() => {
                     <a
                         v-for="(book, index) in books"
                         :key="book.id"
-                        :href="`https://www.gramedia.com/products/${book.slug}`"
-                        target="_blank"
+                        :href="`/book/${book.slug}`"
                         class="group relative overflow-hidden rounded-xl border-0 bg-gradient-card hover:shadow-lg transition-all duration-300 hover:-translate-y-2 animate-slide-up cursor-pointer p-6"
                         :style="{ animationDelay: `${index * 0.1}s` }"
                     >
@@ -342,6 +371,31 @@ onMounted(() => {
                     No More Books
                 </button>
             </div>
-        </div>
+        </LandingMainContainer>
+
+        <!-- Scroll to Top -->
+        <transition name="accordion">
+            <button
+                v-if="scrolled"
+                type="button"
+                @click="scrollToTop()"
+                class="fixed bottom-6 right-6 p-3 bg-primary text-white rounded-full shadow-lg hover:bg-primary-dark transition-colors duration-300 ease-in-out"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M5 15l7-7 7 7"
+                    />
+                </svg>
+            </button>
+        </transition>
     </div>
 </template>

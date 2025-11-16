@@ -1,6 +1,5 @@
 import { useDialogStore } from "@/stores/dialog-store";
 import axios from "axios";
-import { router } from "@inertiajs/vue3";
 import cookieManager from "@/plugins/cookie-manager";
 
 export default function useBookService() {
@@ -472,6 +471,60 @@ export default function useBookService() {
             });
     }
 
+    async function loadBookDetail(
+        book: BookEntity,
+        {
+            autoShowDialog = false,
+            onSuccess = (data: BookDetailModel | null) => {},
+            onError = (error: any) => {},
+            onChangeStatus = (status: string) => {},
+        } = {}
+    ) {
+        const endpointUrl = `https://api-service.gramedia.com/api/v2/public/product-detail-variants/${book.slug}`;
+        const url = new URL(endpointUrl);
+        url.searchParams.sort();
+        const cacheKey = url.toString();
+
+        const cachedData = localStorage.getItem(cacheKey);
+
+        if (cachedData) {
+            const bookDetail = JSON.parse(cachedData);
+            onChangeStatus("success");
+            onSuccess(bookDetail);
+            return;
+        }
+
+        onChangeStatus("loading");
+
+        await axios
+            .get(endpointUrl)
+            .then((response) => {
+                const bookDetail = response.data.data[0] || null;
+                onChangeStatus("success");
+                onSuccess(bookDetail);
+                if (autoShowDialog) {
+                    dialogStore.openSuccessDialog(
+                        response.data.meta.message ||
+                            "Detail buku berhasil diambil."
+                    );
+                }
+
+                // Cache request data based on url and params
+                localStorage.setItem(cacheKey, JSON.stringify(bookDetail));
+            })
+            .catch((error) => {
+                console.error("Error fetching book detail:", error);
+                onChangeStatus("error");
+                onError(error);
+                if (autoShowDialog) {
+                    dialogStore.openErrorDialog(
+                        error.response?.data?.meta?.message ||
+                            "Terjadi kesalahan saat mengambil detail buku."
+                    );
+                }
+            });
+    }
+
     return {
         loadCategories,
         saveCategories,
@@ -480,5 +533,6 @@ export default function useBookService() {
         cleanBookTitles,
         stemBookTitles,
         exportBooksExcel,
+        loadBookDetail,
     };
 }

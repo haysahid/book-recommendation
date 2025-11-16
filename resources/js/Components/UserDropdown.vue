@@ -39,7 +39,7 @@ const logout = () => {
                     <img
                         class="object-cover rounded-full size-8 shrink-0"
                         :src="
-                            $getStorageUrl(
+                            $getImageUrl(
                                 $page.props.auth.user?.profile_photo_path
                             ) ?? $page.props.auth.user?.profile_photo_url
                         "

@@ -3,7 +3,7 @@ import { createInertiaApp } from '@inertiajs/vue3'
 import { createPinia } from 'pinia';
 
 // My Plugins
-import { getStorageUrl } from './plugins/helpers';
+import { getImageUrl } from './plugins/helpers';
 
 createInertiaApp({
     resolve: name => {
@@ -17,7 +17,7 @@ createInertiaApp({
             .use(pinia)
             .use(plugin);
 
-        app.config.globalProperties.$getStorageUrl = getStorageUrl;
+        app.config.globalProperties.$getImageUrl = getImageUrl;
         app.mount(el);
     },
 })

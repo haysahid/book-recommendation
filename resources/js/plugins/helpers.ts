@@ -1,4 +1,4 @@
-export function getStorageUrl(path: string) {
+export function getImageUrl(path: string) {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) {
         return path;
@@ -42,7 +42,7 @@ export function openWhatsAppChat(phoneNumber: any, message: any) {
     }
 }
 
-export function scrollToTop({ id = null }) {
+export function scrollToTop({ id = null } = {}) {
     if (id) {
         const element = document.getElementById(id);
         if (element) {

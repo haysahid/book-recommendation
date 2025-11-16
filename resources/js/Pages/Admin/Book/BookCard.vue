@@ -70,7 +70,7 @@ const hasDeleteCallback = computed(() => {
             />
             <div
                 v-else
-                class="flex items-center justify-center w-full bg-gray-100 rounded aspect-3/4 shrink-0"
+                class="flex items-center justify-center w-full bg-gray-100 rounded aspect-3/4 shrink-0 group-hover:scale-105 transition-all duration-300 ease-in-out"
             >
                 <div class="flex flex-col items-center justify-center gap-3">
                     <svg

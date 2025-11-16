@@ -28,4 +28,23 @@ class BookController extends Controller
             'books' => $books,
         ]);
     }
+
+    public function show(string $bookSlug)
+    {
+        $book = BookRepository::findBookBySlug($bookSlug);
+
+        if (!$book) {
+            abort(404);
+        }
+
+        $relatedBooks = BookRepository::getRelatedBooks(
+            book: $book,
+            limit: 8,
+        );
+
+        return Inertia::render('Book/Show', [
+            'book' => $book,
+            'relatedBooks' => $relatedBooks,
+        ]);
+    }
 }

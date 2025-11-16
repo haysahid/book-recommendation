@@ -177,8 +177,7 @@ onMounted(() => {
                     <a
                         v-for="(book, index) in books.data"
                         :key="book.id"
-                        :href="`https://www.gramedia.com/products/${book.slug}`"
-                        target="_blank"
+                        :href="`/book/${book.slug}`"
                     >
                         <BookCard :index="index" :book="book" class="h-full" />
                     </a>
