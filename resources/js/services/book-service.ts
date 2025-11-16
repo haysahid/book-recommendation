@@ -423,6 +423,55 @@ export default function useBookService() {
             });
     }
 
+    async function exportBooksExcel(
+        {} = {},
+        {
+            autoShowDialog = false,
+            onSuccess = (response: any) => {},
+            onError = (error: any) => {},
+            onChangeStatus = (status: string) => {},
+        } = {}
+    ) {
+        onChangeStatus("loading");
+        await axios
+            .get("/admin/book-export", {
+                headers: {
+                    Authorization: token,
+                },
+                responseType: "blob",
+            })
+            .then((response) => {
+                onChangeStatus("success");
+                onSuccess(response);
+                if (autoShowDialog) {
+                    dialogStore.openSuccessDialog(
+                        "Data buku berhasil diekspor."
+                    );
+                }
+
+                // Create a link to download the file
+                const url = window.URL.createObjectURL(
+                    new Blob([response.data])
+                );
+                const link = document.createElement("a");
+                link.href = url;
+                link.setAttribute("download", "books.xlsx");
+                document.body.appendChild(link);
+                link.click();
+            })
+            .catch((error) => {
+                console.error("Error exporting books to excel:", error);
+                onChangeStatus("error");
+                onError(error);
+                if (autoShowDialog) {
+                    dialogStore.openErrorDialog(
+                        error.response?.data?.meta?.message ||
+                            "Terjadi kesalahan saat mengekspor data buku."
+                    );
+                }
+            });
+    }
+
     return {
         loadCategories,
         saveCategories,
@@ -430,5 +479,6 @@ export default function useBookService() {
         saveBooks,
         cleanBookTitles,
         stemBookTitles,
+        exportBooksExcel,
     };
 }

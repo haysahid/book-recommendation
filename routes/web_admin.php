@@ -11,5 +11,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('scraping', [BookController::class, 'scraping'])->name('book.scraping');
     Route::get('preprocessing', [BookController::class, 'preprocessing'])->name('book.preprocessing');
     Route::resource('book', BookController::class);
+    Route::get('book-export', [BookController::class, 'export'])->name('book.export');
     Route::resource('category', CategoryController::class);
 });
