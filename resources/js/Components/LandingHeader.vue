@@ -25,15 +25,15 @@ let menus = [
     },
 ];
 
-if (window.location.pathname !== "/login") {
+const page = usePage<CustomPageProps>();
+
+if (window.location.pathname !== "/login" && !page.props.auth.user) {
     menus.push({
         name: "Login",
         href: "/login",
         active: false,
     });
 }
-
-const page = usePage<CustomPageProps>();
 
 const invertColor = computed(() => {
     return props.invertColor;
