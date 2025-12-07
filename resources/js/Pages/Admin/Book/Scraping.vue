@@ -72,6 +72,15 @@ const scrapingStore = useScrapingStore();
                         >
                             Save Categories
                         </PrimaryButton>
+                        <SecondaryButton
+                            v-if="scrapingStore.categories.length > 0"
+                            @click="
+                                // Export to JSON file
+                                scrapingStore.exportCategoriesToJsonFile()
+                            "
+                        >
+                            Export to JSON File
+                        </SecondaryButton>
                     </div>
                 </div>
 
@@ -180,6 +189,22 @@ const scrapingStore = useScrapingStore();
                         >
                             Save All Books
                         </PrimaryButton>
+                        <SecondaryButton
+                            v-if="
+                                scrapingStore.selectedCategories.reduce(
+                                    (total, category) =>
+                                        total +
+                                        (category.count_loaded_books || 0),
+                                    0
+                                ) > 0
+                            "
+                            @click="
+                                // Export to JSON file
+                                scrapingStore.exportBooksToJsonFile()
+                            "
+                        >
+                            Export to JSON File
+                        </SecondaryButton>
                     </div>
                 </div>
 

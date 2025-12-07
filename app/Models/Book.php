@@ -17,8 +17,18 @@ class Book extends Model
         'image',
         'slug',
         'author',
+        'final_price',
+        'slice_price',
+        'discount',
+        'is_oos',
+        'sku',
+        'format',
         'store_name',
         'isbn',
+    ];
+
+    protected $casts = [
+        'is_oos' => 'boolean',
     ];
 
     public function categories()

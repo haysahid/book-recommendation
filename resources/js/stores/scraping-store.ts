@@ -175,6 +175,80 @@ export const useScrapingStore = defineStore("scraping", () => {
         }
     }
 
+    function exportCategoriesToJsonFile() {
+        if (selectedCategories.value.length === 0) {
+            alert("Please select at least one category");
+            return;
+        }
+
+        const dataStr =
+            "data:text/json;charset=utf-8," +
+            encodeURIComponent(
+                JSON.stringify(selectedCategories.value, null, 2)
+            );
+        const downloadAnchorNode = document.createElement("a");
+        downloadAnchorNode.setAttribute("href", dataStr);
+        const fileName = `scraped_categories_${new Date()
+            .toISOString()
+            .slice(0, 10)}.json`;
+        downloadAnchorNode.setAttribute("download", fileName);
+        document.body.appendChild(downloadAnchorNode); // required for firefox
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    }
+
+    function exportBooksToJsonFile() {
+        let books: BookEntity[] = [];
+
+        // Get cached books
+        // Get all localStorage keys that contain category slug
+        for (const category of selectedCategories.value) {
+            for (const key of Object.keys(localStorage)) {
+                if (
+                    key.startsWith(
+                        "https://api-service.gramedia.com/api/v2/public/products"
+                    ) === false
+                ) {
+                    continue;
+                }
+
+                const url = new URL(key);
+                // get all slug params from url
+                const slugs = url.searchParams.getAll("slug");
+                if (
+                    slugs.every((slug) =>
+                        category.slug.split("/").includes(slug)
+                    )
+                ) {
+                    books = [
+                        ...books,
+                        ...(
+                            JSON.parse(
+                                localStorage.getItem(key) || "[]"
+                            ) as BookEntity[]
+                        ).map((book) => ({
+                            ...book,
+                            category_slug: category.slug,
+                        })),
+                    ];
+                }
+            }
+        }
+
+        const dataStr =
+            "data:text/json;charset=utf-8," +
+            encodeURIComponent(JSON.stringify(books, null, 2));
+        const downloadAnchorNode = document.createElement("a");
+        downloadAnchorNode.setAttribute("href", dataStr);
+        const fileName = `scraped_books_${new Date()
+            .toISOString()
+            .slice(0, 10)}.json`;
+        downloadAnchorNode.setAttribute("download", fileName);
+        document.body.appendChild(downloadAnchorNode); // required for firefox
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    }
+
     watch(categories, (newValue) => {
         localStorage.setItem("scraping_categories", JSON.stringify(newValue));
     });
@@ -258,5 +332,7 @@ export const useScrapingStore = defineStore("scraping", () => {
         saveBooksStatus,
         bookService,
         clearStore,
+        exportCategoriesToJsonFile,
+        exportBooksToJsonFile,
     };
 });

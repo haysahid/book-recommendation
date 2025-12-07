@@ -1,0 +1,2629 @@
+[
+  {
+    "title": "Agama",
+    "slug": "buku/agama",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Buddha",
+        "slug": "buku/agama/buddha",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Hindu",
+        "slug": "buku/agama/hindu",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Islam",
+        "slug": "buku/agama/islam",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Alquran & Tulisan Suci",
+            "slug": "buku/agama/islam/aturan-hukum-agama",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Ritual & Praktik",
+            "slug": "buku/agama/islam/ritual--praktik",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Konfusianisme",
+        "slug": "buku/agama/aturan-hukum-agama-5",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kristen & Katolik",
+        "slug": "buku/agama/kristen",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Spiritualitas",
+        "slug": "buku/agama/spiritualitas",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 87,
+    "total_data_books": 87
+  },
+  {
+    "title": "Alam",
+    "slug": "buku/nature",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Hewan",
+        "slug": "buku/nature/ternak",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 3,
+    "total_data_books": 3
+  },
+  {
+    "title": "Aliran & Gaya Bahasa",
+    "slug": "buku/sastra-1",
+    "image": "",
+    "subcategory": [],
+    "count_loaded_books": 119,
+    "total_data_books": 119
+  },
+  {
+    "title": "Arsitektur",
+    "slug": "buku/arsitektur",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Desain Interior",
+        "slug": "buku/arsitektur/desain-interior-eksterior",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Perencanaan Perkotaan & Penggunaan Tanah",
+        "slug": "buku/arsitektur/tata-kota",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Referensi",
+        "slug": "buku/arsitektur/referensi-5",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sejarah",
+        "slug": "buku/arsitektur/sejarah-8",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 78,
+    "total_data_books": 78
+  },
+  {
+    "title": "Barang Antik & Koleksi",
+    "slug": "buku/benda-antik-koleksi",
+    "image": "",
+    "subcategory": [],
+    "count_loaded_books": 0,
+    "total_data_books": 0
+  },
+  {
+    "title": "Berkebun",
+    "slug": "buku/perkebunan",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Tata Ruang dan Pertamanan",
+        "slug": "buku/perkebunan/lanskap",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 10,
+    "total_data_books": 10
+  },
+  {
+    "title": "Biografi & Autobiografi",
+    "slug": "buku/biografi",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Memoar Pribadi",
+        "slug": "buku/biografi/memoar",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sejarah",
+        "slug": "buku/biografi/sosok",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 200,
+    "total_data_books": 200
+  },
+  {
+    "title": "Bisnis & Ekonomi",
+    "slug": "buku/bisnis-ekonomi",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Akuntansi",
+        "slug": "buku/bisnis-ekonomi/akuntansi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Asuransi",
+        "slug": "buku/bisnis-ekonomi/asuransi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Bank & Perbankan",
+        "slug": "buku/bisnis-ekonomi/perbankan",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "E-Commerce",
+        "slug": "buku/bisnis-ekonomi/ecommerce",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Digital Marketing",
+            "slug": "buku/bisnis-ekonomi/ecommerce/pemasaran-digital",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Online Trading",
+            "slug": "buku/bisnis-ekonomi/ecommerce/online-trading",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Ekonomi",
+        "slug": "buku/bisnis-ekonomi/ekonomi",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Ekonomi Makro",
+            "slug": "buku/bisnis-ekonomi/ekonomi/makroekonomi",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Ekonomi Mikro",
+            "slug": "buku/bisnis-ekonomi/ekonomi/mikroekonomi",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Etika Bisnis",
+        "slug": "buku/bisnis-ekonomi/etika-bisnis",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Freelance & Wirausaha",
+        "slug": "buku/bisnis-ekonomi/wiraswasta",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Green Business",
+        "slug": "buku/bisnis-ekonomi/bisnis-ramah-lingkungan",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Hubungan Pelanggan",
+        "slug": "buku/bisnis-ekonomi/customer-service",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Industri",
+        "slug": "buku/bisnis-ekonomi/industri",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Agribisnis",
+            "slug": "buku/bisnis-ekonomi/industri/pertanian-1",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Energi",
+            "slug": "buku/bisnis-ekonomi/industri/energi-pertambangan",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Farmasi & Bioteknologi",
+            "slug": "buku/bisnis-ekonomi/industri/farmasi-bioteknologi",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Hiburan",
+            "slug": "buku/bisnis-ekonomi/industri/olahraga-hiburan",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Industri Makanan",
+            "slug": "buku/bisnis-ekonomi/industri/restoran-kuliner",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Industri Otomotif",
+            "slug": "buku/bisnis-ekonomi/industri/otomotif-1",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Industri Tekstil",
+            "slug": "buku/bisnis-ekonomi/industri/fashion-tekstil",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Jasa Keuangan",
+            "slug": "buku/bisnis-ekonomi/industri/jasa-keuangan",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Komputer & Teknologi Informasi",
+            "slug": "buku/bisnis-ekonomi/industri/komputer-teknologi-1",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Layanan",
+            "slug": "buku/bisnis-ekonomi/industri/jasa",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Manufaktur",
+            "slug": "buku/bisnis-ekonomi/industri/manufaktur",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Media & Komunikasi",
+            "slug": "buku/bisnis-ekonomi/industri/media-komunikasi",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Perhotelan, Perjalanan & Pariwisata",
+            "slug": "buku/bisnis-ekonomi/industri/perhotelan-pariwisata",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Transportasi",
+            "slug": "buku/bisnis-ekonomi/industri/transportasi",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Internasional",
+        "slug": "buku/bisnis-ekonomi/internasional",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Perpajakan",
+            "slug": "buku/bisnis-ekonomi/internasional/pajak-internasional",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Investasi & Saham",
+        "slug": "buku/bisnis-ekonomi/investasi",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Analisa & Strategi",
+            "slug": "buku/bisnis-ekonomi/investasi/analisa-strategi",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Derivatif",
+            "slug": "buku/bisnis-ekonomi/investasi/derivatif",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Future",
+            "slug": "buku/bisnis-ekonomi/investasi/future",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Komoditas",
+            "slug": "buku/bisnis-ekonomi/investasi/komoditas",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Manajemen Portofolio",
+            "slug": "buku/bisnis-ekonomi/investasi/manajemen-portofolio",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Obligasi",
+            "slug": "buku/bisnis-ekonomi/investasi/obligasi",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Options",
+            "slug": "buku/bisnis-ekonomi/investasi/options",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Perumahan & Real Estate",
+            "slug": "buku/bisnis-ekonomi/investasi/properti",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Reksadana",
+            "slug": "buku/bisnis-ekonomi/investasi/reksadana",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Saham",
+            "slug": "buku/bisnis-ekonomi/investasi/saham",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Valuta Asing",
+            "slug": "buku/bisnis-ekonomi/investasi/valuta-asing",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Karier",
+        "slug": "buku/bisnis-ekonomi/pekerjaan-karier",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Interview",
+            "slug": "buku/bisnis-ekonomi/pekerjaan-karier/wawancara-kerja",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Lowongan Kerja",
+            "slug": "buku/bisnis-ekonomi/pekerjaan-karier/mencari-kerja",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Kepemimpinan",
+        "slug": "buku/bisnis-ekonomi/kepemimpinan-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Keterampilan",
+        "slug": "buku/bisnis-ekonomi/keterampilan-profesional",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Personal Branding",
+            "slug": "buku/bisnis-ekonomi/keterampilan-profesional/personal-branding",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Keuangan",
+        "slug": "buku/bisnis-ekonomi/finansial",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Crowdfunding",
+            "slug": "buku/bisnis-ekonomi/finansial/crowdfunding",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Manajemen Risiko Keuangan",
+            "slug": "buku/bisnis-ekonomi/finansial/manajemen-risiko-keuangan",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Keuangan Perusahaan",
+        "slug": "buku/bisnis-ekonomi/keuangan-perusahaan",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kewirausahaan",
+        "slug": "buku/bisnis-ekonomi/ukm-wirausaha",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Komunikasi Bisnis",
+        "slug": "buku/bisnis-ekonomi/komunikasi-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Lain-Lain",
+        "slug": "buku/bisnis-ekonomi/lain-lain",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Manajemen",
+        "slug": "buku/bisnis-ekonomi/manajemen",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Harga",
+            "slug": "buku/bisnis-ekonomi/manajemen/harga",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Hubungan Karyawan",
+            "slug": "buku/bisnis-ekonomi/manajemen/hubungan-karyawan",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Konsolidasi & Merger",
+            "slug": "buku/bisnis-ekonomi/manajemen/konsolidasi-merger",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Kontrol Kualitas",
+            "slug": "buku/bisnis-ekonomi/manajemen/kontrol-kualitas",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Manajemen Informasi",
+            "slug": "buku/bisnis-ekonomi/manajemen/manajemen-informasi",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Produksi & Operasional",
+            "slug": "buku/bisnis-ekonomi/manajemen/produksi-operasional",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Strategi & Kompetisi",
+            "slug": "buku/bisnis-ekonomi/manajemen/strategi-kompetisi",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Tata Kelola Perusahaan",
+            "slug": "buku/bisnis-ekonomi/manajemen/tata-kelola-perusahaan",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Manajemen Industri",
+        "slug": "buku/bisnis-ekonomi/manajemen-industri",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Manajemen Proyek",
+        "slug": "buku/bisnis-ekonomi/manajemen-proyek",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Motivasi",
+        "slug": "buku/bisnis-ekonomi/motivasi-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Negosiasi",
+        "slug": "buku/bisnis-ekonomi/negosiasi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Pelatihan",
+        "slug": "buku/bisnis-ekonomi/pelatihan-pengembangan-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Pemasaran",
+        "slug": "buku/bisnis-ekonomi/pemasaran",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Iklan",
+            "slug": "buku/bisnis-ekonomi/pemasaran/iklan",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Pemasaran",
+            "slug": "buku/bisnis-ekonomi/pemasaran/media-sosial",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Pencitraan",
+            "slug": "buku/bisnis-ekonomi/pemasaran/pencitraan",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Search Engine Optimization",
+            "slug": "buku/bisnis-ekonomi/pemasaran/search-engine-optimization",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Pemerintah & Bisnis",
+        "slug": "buku/bisnis-ekonomi/bisnis-pemerintah",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Perbankan Islam & Keuangan",
+        "slug": "buku/bisnis-ekonomi/perbankan-ekonomi-islam",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Perilaku Konsumen",
+        "slug": "buku/bisnis-ekonomi/perilaku-konsumen",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Perpajakan",
+        "slug": "buku/bisnis-ekonomi/pajak",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Pajak Perusahaan",
+            "slug": "buku/bisnis-ekonomi/pajak/pajak-perusahaan",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Perumahan & Real Estate",
+        "slug": "buku/bisnis-ekonomi/investasi-1",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Komersial",
+            "slug": "buku/bisnis-ekonomi/investasi-1/penjualan-1",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Public Relations",
+        "slug": "buku/bisnis-ekonomi/hubungan-masyarakat",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sales & Marketing",
+        "slug": "buku/bisnis-ekonomi/penjualan",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sejarah Ekonomi",
+        "slug": "buku/bisnis-ekonomi/biografi-sejarah",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sumber Daya Manusia & Manajemen Personalia",
+        "slug": "buku/bisnis-ekonomi/sumber-daya-manusia",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 142,
+    "total_data_books": 142
+  },
+  {
+    "title": "Desain",
+    "slug": "buku/desain",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Furnitur",
+        "slug": "buku/desain/desain-interior",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Industri",
+        "slug": "buku/desain/desain-industri",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sejarah & Kritik",
+        "slug": "buku/desain/sejarah-7",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Seni Grafis",
+        "slug": "buku/desain/desain",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 4,
+    "total_data_books": 4
+  },
+  {
+    "title": "Fiksi",
+    "slug": "buku/fiksi-sastra",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Agama",
+        "slug": "buku/fiksi-sastra/agama-5",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Antologi",
+        "slug": "buku/fiksi-sastra/kumpulan-cerpen-4",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Fantasi",
+        "slug": "buku/fiksi-sastra/fantasi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Fiksi Ilmiah",
+        "slug": "buku/fiksi-sastra/fiksi-ilmiah-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Horor",
+        "slug": "buku/fiksi-sastra/horor",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kehidupan Kota",
+        "slug": "buku/fiksi-sastra/metropop",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Klasik",
+        "slug": "buku/fiksi-sastra/klasik",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Misteri & Detektif",
+        "slug": "buku/fiksi-sastra/misteri-detektif",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Muslim",
+        "slug": "buku/fiksi-sastra/novel-15",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Novel",
+        "slug": "buku/fiksi-sastra/novel",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Perang & Militer",
+        "slug": "buku/fiksi-sastra/perang-militer-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Romantis",
+        "slug": "buku/fiksi-sastra/romance-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sastra",
+        "slug": "buku/fiksi-sastra/fiksi-populer",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sastra Dunia Asia (Umum)",
+        "slug": "buku/fiksi-sastra/sastra-indonesia",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sejarah",
+        "slug": "buku/fiksi-sastra/fiksi-sejarah-1",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Romantis",
+            "slug": "buku/fiksi-sastra/fiksi-sejarah-1/historical-romance",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Thriller",
+        "slug": "buku/fiksi-sastra/thriller",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 200,
+    "total_data_books": 200
+  },
+  {
+    "title": "Fiksi Anak & Remaja",
+    "slug": "buku/buku-anak",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Agama",
+        "slug": "buku/buku-anak/agama",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Kristen",
+            "slug": "buku/buku-anak/agama/kristen-1",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Muslim",
+            "slug": "buku/buku-anak/agama/islam-1",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Buku Aktivitas",
+        "slug": "buku/buku-anak/permainan-aktivitas",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Komik & Novel Grafis",
+        "slug": "buku/buku-anak/novel-pemula",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Dongeng, Cerita Rakyat, Legenda & Mitologi",
+            "slug": "buku/buku-anak/novel-pemula/dongeng",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Legenda, Mitos, Dongeng",
+        "slug": "buku/buku-anak/fabel",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 200,
+    "total_data_books": 200
+  },
+  {
+    "title": "Fiksi Dewasa",
+    "slug": "buku/novel-8",
+    "image": "",
+    "subcategory": [],
+    "count_loaded_books": 48,
+    "total_data_books": 48
+  },
+  {
+    "title": "Fiksi Teenlit",
+    "slug": "buku/fiksi-teenlit",
+    "image": "",
+    "subcategory": [],
+    "count_loaded_books": 11,
+    "total_data_books": 11
+  },
+  {
+    "title": "Filsafat",
+    "slug": "buku/filsafat",
+    "image": "",
+    "subcategory": [],
+    "count_loaded_books": 183,
+    "total_data_books": 183
+  },
+  {
+    "title": "Fotografi",
+    "slug": "buku/fotografi",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Referensi",
+        "slug": "buku/fotografi/referensi-3",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Subjek & Tema",
+        "slug": "buku/fotografi/subjek-tema",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Subjek & Tema",
+            "slug": "buku/fotografi/subjek-tema/sejarah-6",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Teknik",
+        "slug": "buku/fotografi/teknik-1",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 3,
+    "total_data_books": 3
+  },
+  {
+    "title": "Game & Aktivitas",
+    "slug": "buku/game-aktivitas",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Buku Mewarnai",
+        "slug": "buku/game-aktivitas/buku-mewarnai",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kuis",
+        "slug": "buku/game-aktivitas/kuis",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 27,
+    "total_data_books": 27
+  },
+  {
+    "title": "Hewan Peliharaan",
+    "slug": "buku/perawatan-hewan-peliharaan",
+    "image": "",
+    "subcategory": [],
+    "count_loaded_books": 4,
+    "total_data_books": 4
+  },
+  {
+    "title": "Hukum",
+    "slug": "buku/hukum",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Adat",
+        "slug": "buku/hukum/hukum-adat",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Bisnis & Keuangan",
+        "slug": "buku/hukum/hukum-bisnis-finansial-dan-komersil",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Etika & Tanggung Jawab Profesional",
+        "slug": "buku/hukum/etika-profesi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Hak Sipil",
+        "slug": "buku/hukum/hak-hukum-sipil",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Hukum Keluarga",
+        "slug": "buku/hukum/hukum-keluarga",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Hukum Perdata",
+        "slug": "buku/hukum/hukum-administrasi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Hukum Pidana",
+        "slug": "buku/hukum/hukum-pidana",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Internasional",
+        "slug": "buku/hukum/hukum-internasional",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kekayaan Intelektual",
+        "slug": "buku/hukum/properti-intelektual",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kesehatan",
+        "slug": "buku/hukum/hukum-kesehatan-medis",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Konstitusi",
+        "slug": "buku/hukum/hukum-konstitusi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Layanan Hukum",
+        "slug": "buku/hukum/bantuan-hukum",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Lingkungan",
+        "slug": "buku/hukum/hukum-lingkungan-sumber-daya-alam",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Panduan Praktis",
+        "slug": "buku/hukum/aturan-prosedur-hukum",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Pemerintah",
+        "slug": "buku/hukum/hukum-pemerintah",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Pendidikan Hukum",
+        "slug": "buku/hukum/pendidikan-hukum",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Perpajakan",
+        "slug": "buku/hukum/hukum-pajak",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Properti",
+        "slug": "buku/hukum/hukum-properti",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Referensi",
+        "slug": "buku/hukum/kamus-istilah",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sejarah Hukum",
+        "slug": "buku/hukum/sejarah-hukum",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 132,
+    "total_data_books": 132
+  },
+  {
+    "title": "Humor",
+    "slug": "buku/humor",
+    "image": "",
+    "subcategory": [],
+    "count_loaded_books": 9,
+    "total_data_books": 9
+  },
+  {
+    "title": "Ilmu Politik",
+    "slug": "buku/politik-pemerintah",
+    "image": "",
+    "subcategory": [],
+    "count_loaded_books": 187,
+    "total_data_books": 187
+  },
+  {
+    "title": "Ilmu Sosial",
+    "slug": "buku/sosial",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Antropologi",
+        "slug": "buku/sosial/antropologi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Budaya & Sosial",
+        "slug": "buku/sosial/budaya",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kriminologi",
+        "slug": "buku/sosial/kriminologi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Penyandang Disabilitas",
+        "slug": "buku/sosial/penyandang-disabilitas",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sosiologi",
+        "slug": "buku/sosial/sosiologi",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 164,
+    "total_data_books": 164
+  },
+  {
+    "title": "Keluarga & Hubungan",
+    "slug": "buku/keluarga",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Lansia",
+        "slug": "buku/keluarga/lansia",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Parenting",
+        "slug": "buku/keluarga/pengasuhan-anak",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Pengasuhan, Penitipan & Perawatan Anak",
+        "slug": "buku/keluarga/bayi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Tahapan Hidup",
+        "slug": "buku/keluarga/tahapan-hidup",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Bayi & Balita",
+            "slug": "buku/keluarga/tahapan-hidup/balita",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Pra-Remaja",
+            "slug": "buku/keluarga/tahapan-hidup/remaja-2",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Remaja",
+            "slug": "buku/keluarga/tahapan-hidup/pra-remaja-2",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Usia Sekolah",
+            "slug": "buku/keluarga/tahapan-hidup/anak-anak-2",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      }
+    ],
+    "count_loaded_books": 58,
+    "total_data_books": 58
+  },
+  {
+    "title": "Kerajinan & Hobi",
+    "slug": "buku/kerajinan-hobi",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Fashion",
+        "slug": "buku/kerajinan-hobi/fashion-kecantikan",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 34,
+    "total_data_books": 34
+  },
+  {
+    "title": "Kesehatan & Kebugaran",
+    "slug": "buku/lain-lain-2",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Diet & Nutrisi",
+        "slug": "buku/lain-lain-2/diet-kesehatan",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Obat Herbal",
+        "slug": "buku/lain-lain-2/pengobatan-herbal",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Yoga",
+        "slug": "buku/lain-lain-2/yoga",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 37,
+    "total_data_books": 37
+  },
+  {
+    "title": "Komik & Novel Grafis",
+    "slug": "buku/komik",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Fantasi",
+        "slug": "buku/komik/fantasi-fiksi-ilmiah",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Fiksi Sejarah",
+        "slug": "buku/komik/sejarah-2",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Horor",
+        "slug": "buku/komik/horor-supernatural",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Humor",
+        "slug": "buku/komik/komedi-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kejahatan & Misteri",
+        "slug": "buku/komik/misteri-kriminal",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Manga",
+        "slug": "buku/komik/manga",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Aksi & Petualangan",
+            "slug": "buku/komik/manga/petualangan",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Bela Diri",
+            "slug": "buku/komik/manga/bela-diri",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Fantasi",
+            "slug": "buku/komik/manga/fantasi-1",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Fiksi Ilmiah",
+            "slug": "buku/komik/manga/fiksi-ilmiah-2",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Fiksi Ilmiah",
+            "slug": "buku/komik/manga/novel-6",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Fiksi Sejarah",
+            "slug": "buku/komik/manga/sejarah-1",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Horor",
+            "slug": "buku/komik/manga/horor-1",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Humor",
+            "slug": "buku/komik/manga/komedi",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Kejahatan & Misteri",
+            "slug": "buku/komik/manga/misteri",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Nonfiksi",
+            "slug": "buku/komik/manga/psikologi-1",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Olahraga",
+            "slug": "buku/komik/manga/olahraga-1",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Romantis",
+            "slug": "buku/komik/manga/romance-2",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Seinen",
+            "slug": "buku/komik/manga/seinen",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Slice of Life",
+            "slug": "buku/komik/manga/slice-of-life",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Romantis",
+        "slug": "buku/komik/romansa",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 200,
+    "total_data_books": 200
+  },
+  {
+    "title": "Komputer",
+    "slug": "buku/komputer-teknologi",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Aplikasi Bisnis & Produktivitas",
+        "slug": "buku/komputer-teknologi/aplikasi-bisnis-produktivitas",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Akuntansi & Keuangan",
+            "slug": "buku/komputer-teknologi/aplikasi-bisnis-produktivitas/sistem-akuntansi",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Aplikasi Perkantoran",
+            "slug": "buku/komputer-teknologi/aplikasi-bisnis-produktivitas/kantor",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Aplikasi Matematika & Statistik",
+        "slug": "buku/komputer-teknologi/statistik-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Database Administrasi & Manajemen",
+        "slug": "buku/komputer-teknologi/manajemen-database",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Desain, Grafik & Media",
+        "slug": "buku/komputer-teknologi/desain-2",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Hacking",
+        "slug": "buku/komputer-teknologi/hacking",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Ilmu Komputer",
+        "slug": "buku/komputer-teknologi/ilmu-komputer",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Internet",
+        "slug": "buku/komputer-teknologi/internet",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Media Sosial",
+            "slug": "buku/komputer-teknologi/internet/media-sosial-1",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Jaringan",
+        "slug": "buku/komputer-teknologi/jaringan-komputer",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Pemrograman",
+        "slug": "buku/komputer-teknologi/pemrograman",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Pengembangan & Rekayasa Perangkat Lunak",
+        "slug": "buku/komputer-teknologi/piranti-lunak",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Perangkat Keras",
+        "slug": "buku/komputer-teknologi/perangkat-keras",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sistem Aplikasi",
+        "slug": "buku/komputer-teknologi/aplikasi",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 15,
+    "total_data_books": 15
+  },
+  {
+    "title": "Matematika",
+    "slug": "buku/matematika",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Aljabar",
+        "slug": "buku/matematika/aljabar",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Probabilitas & Statistik",
+        "slug": "buku/matematika/probabilitas-statistik",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Terapan",
+        "slug": "buku/matematika/matematika-terapan",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Teori Permainan",
+            "slug": "buku/matematika/matematika-terapan/teori-permainan",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      }
+    ],
+    "count_loaded_books": 7,
+    "total_data_books": 7
+  },
+  {
+    "title": "Medis",
+    "slug": "buku/medis",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Administrasi",
+        "slug": "buku/medis/administrasi-ekonomi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Akupuntur",
+        "slug": "buku/medis/akupunktur",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Bedah",
+        "slug": "buku/medis/bedah",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Chiropractic",
+        "slug": "buku/medis/pengobatan-chiropractic",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Dermatologi",
+        "slug": "buku/medis/dermatologi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Ginekologi & Kebidanan",
+        "slug": "buku/medis/ginekologi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kardiologi",
+        "slug": "buku/medis/kardiologi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kedokteran Gigi",
+        "slug": "buku/medis/kedokteran-gigi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Keperawatan",
+        "slug": "buku/medis/perawatan-kebidanan",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Farmakologi",
+            "slug": "buku/medis/perawatan-kebidanan/farmakologi",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Kesehatan Mental",
+        "slug": "buku/medis/kesehatan-jiwa",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Layanan Kesehatan",
+        "slug": "buku/medis/profesi-kesehatan",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Terapi Fisik",
+            "slug": "buku/medis/profesi-kesehatan/terapi-fisik",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Neurologi",
+        "slug": "buku/medis/neurologi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Ortopedi",
+        "slug": "buku/medis/ortopedi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Pediatri",
+        "slug": "buku/medis/pediatri",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Pengobatan Alternatif",
+        "slug": "buku/medis/pengobatan-alternatif",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Pengobatan Hewan",
+        "slug": "buku/medis/kesehatan-hewan",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Penyakit",
+        "slug": "buku/medis/penyakit-penyembuhan",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Referensi & Pedoman",
+        "slug": "buku/medis/referensi-2",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Terapi Diet",
+        "slug": "buku/medis/dietetics",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 32,
+    "total_data_books": 32
+  },
+  {
+    "title": "Musik",
+    "slug": "buku/musik-1",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Alat Musik",
+        "slug": "buku/musik-1/instrumen",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Dance",
+        "slug": "buku/musik-1/dance",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Instruksi & Studi",
+        "slug": "buku/musik-1/teknik-bermusik",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Musik Klasik",
+        "slug": "buku/musik-1/klasik-1",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 80,
+    "total_data_books": 80
+  },
+  {
+    "title": "Nonfiksi Anak & Remaja",
+    "slug": "buku/nonfiksi-anak-remaja",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Agama",
+        "slug": "buku/nonfiksi-anak-remaja/agama-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Biografi & Memoar",
+        "slug": "buku/nonfiksi-anak-remaja/biografi-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Buku Aktivitas",
+        "slug": "buku/nonfiksi-anak-remaja/pendidikan-2",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kehidupan Kota",
+        "slug": "buku/nonfiksi-anak-remaja/gaya-hidup",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sains & Alam",
+        "slug": "buku/nonfiksi-anak-remaja/sains-2",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sekolah & Pendidikan",
+        "slug": "buku/nonfiksi-anak-remaja/pendidikan-3",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Topik Sosial",
+        "slug": "buku/nonfiksi-anak-remaja/budaya-1",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 64,
+    "total_data_books": 64
+  },
+  {
+    "title": "Nonfiksi Dewasa",
+    "slug": "buku/non-fiksi",
+    "image": "",
+    "subcategory": [],
+    "count_loaded_books": 6,
+    "total_data_books": 6
+  },
+  {
+    "title": "Olahraga & Rekreasi",
+    "slug": "buku/olahraga-2",
+    "image": "",
+    "subcategory": [],
+    "count_loaded_books": 14,
+    "total_data_books": 14
+  },
+  {
+    "title": "Pendidikan",
+    "slug": "buku/pendidikan",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Administrasi",
+        "slug": "buku/pendidikan/administrasi",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Pengawas & Kepala Sekolah",
+            "slug": "buku/pendidikan/administrasi/teori-pendidikan",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Guru & Pendampingan Siswa",
+        "slug": "buku/pendidikan/untuk-guru-sekolah",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Pelajar & Kemahasiswaan",
+        "slug": "buku/pendidikan/untuk-pelajar",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Pengajaran",
+        "slug": "buku/pendidikan/sd-2",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "SD",
+        "slug": "buku/pendidikan/sd",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "SMA",
+        "slug": "buku/pendidikan/sma",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "SMP",
+        "slug": "buku/pendidikan/smp",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 185,
+    "total_data_books": 185
+  },
+  {
+    "title": "Pengembangan Diri",
+    "slug": "buku/pengembangan-diri-1",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Analisis Tulisan Tangan",
+        "slug": "buku/pengembangan-diri-1/analisa-tulisan-tangan",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Emosi",
+        "slug": "buku/pengembangan-diri-1/emosi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Journaling",
+        "slug": "buku/pengembangan-diri-1/jurnal-diari",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Komunikasi & Keterampilan Sosial",
+        "slug": "buku/pengembangan-diri-1/komunikasi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Motivasi & Inspiratif",
+        "slug": "buku/pengembangan-diri-1/motivasi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Personal Growth",
+        "slug": "buku/pengembangan-diri-1/kepercayaan-diri",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sukses",
+        "slug": "buku/pengembangan-diri-1/kesuksesan",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 200,
+    "total_data_books": 200
+  },
+  {
+    "title": "Persiapan Ujian",
+    "slug": "buku/buku-pendukung-belajar",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Kemahiran Bahasa Inggris",
+        "slug": "buku/buku-pendukung-belajar/toefl",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Tes Studi (Lainnya)",
+        "slug": "buku/buku-pendukung-belajar/persiapan-ujian",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "CFA",
+            "slug": "buku/buku-pendukung-belajar/persiapan-ujian/cfa",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "CPA",
+            "slug": "buku/buku-pendukung-belajar/persiapan-ujian/cpa",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "GCE",
+            "slug": "buku/buku-pendukung-belajar/persiapan-ujian/gce",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "GRE",
+            "slug": "buku/buku-pendukung-belajar/persiapan-ujian/gre",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "HSK",
+            "slug": "buku/buku-pendukung-belajar/persiapan-ujian/hsk",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      }
+    ],
+    "count_loaded_books": 34,
+    "total_data_books": 34
+  },
+  {
+    "title": "Pertunjukan Seni",
+    "slug": "buku/seni-pertunjukan",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Film",
+        "slug": "buku/seni-pertunjukan/film-1",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Panduan & Ulasan",
+            "slug": "buku/seni-pertunjukan/film-1/pengetahuan-umum-1",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Referensi",
+            "slug": "buku/seni-pertunjukan/film-1/referensi-6",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Referensi",
+        "slug": "buku/seni-pertunjukan/referensi-9",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Teater",
+        "slug": "buku/seni-pertunjukan/teater",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Sejarah & Kritik",
+            "slug": "buku/seni-pertunjukan/teater/sejarah-12",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      }
+    ],
+    "count_loaded_books": 2,
+    "total_data_books": 2
+  },
+  {
+    "title": "Psikologi",
+    "slug": "buku/pengembangan-diri",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Gerakan",
+        "slug": "buku/pengembangan-diri/gerakan",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Perilaku",
+            "slug": "buku/pengembangan-diri/gerakan/psikologi-perilaku",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Kepribadian",
+        "slug": "buku/pengembangan-diri/kepribadian",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kesehatan Mental",
+        "slug": "buku/pengembangan-diri/kesehatan-jiwa-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kreativitas",
+        "slug": "buku/pengembangan-diri/kreativitas",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "New Age",
+        "slug": "buku/pengembangan-diri/new-age",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Pendidikan & Pelatihan",
+        "slug": "buku/pengembangan-diri/psikologi-pendidikan",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Perkembangan",
+        "slug": "buku/pengembangan-diri/perkembangan",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Anak",
+            "slug": "buku/pengembangan-diri/perkembangan/psikologi-anak",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Pra-Remaja",
+            "slug": "buku/pengembangan-diri/perkembangan/psikologi-remaja",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Psikologi Klinis",
+        "slug": "buku/pengembangan-diri/psikologi-klinis",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Psikologi Sosial",
+        "slug": "buku/pengembangan-diri/psikologi-sosial",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 172,
+    "total_data_books": 172
+  },
+  {
+    "title": "Puisi",
+    "slug": "buku/puisi-1",
+    "image": "",
+    "subcategory": [],
+    "count_loaded_books": 97,
+    "total_data_books": 97
+  },
+  {
+    "title": "Referensi",
+    "slug": "buku/refrensi",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Almanak",
+        "slug": "buku/refrensi/almanak",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Ensiklopedia",
+        "slug": "buku/refrensi/ensiklopedia",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kamus",
+        "slug": "buku/refrensi/bahasa-indonesia",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Pernikahan",
+        "slug": "buku/refrensi/pernikahan",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 4,
+    "total_data_books": 4
+  },
+  {
+    "title": "Resep & Masakan",
+    "slug": "buku/buku-masakan",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Etnis & Regional Asia",
+        "slug": "buku/buku-masakan/indonesia-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kesehatan & Penyembuhan",
+        "slug": "buku/buku-masakan/diet-hidangan-sehat",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kursus & Hidangan",
+        "slug": "buku/buku-masakan/kursus-hidangan",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Kue",
+            "slug": "buku/buku-masakan/kursus-hidangan/roti-kue",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Makanan Penutup",
+            "slug": "buku/buku-masakan/kursus-hidangan/makanan-penutup",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Makanan Bayi",
+        "slug": "buku/buku-masakan/makanan-bayi-balita",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Metode",
+        "slug": "buku/buku-masakan/metode-memasak",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Minuman",
+        "slug": "buku/buku-masakan/minuman-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Referensi",
+        "slug": "buku/buku-masakan/referensi-memasak",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 41,
+    "total_data_books": 41
+  },
+  {
+    "title": "Rumah",
+    "slug": "buku/home-living",
+    "image": "",
+    "subcategory": [],
+    "count_loaded_books": 5,
+    "total_data_books": 5
+  },
+  {
+    "title": "Sains",
+    "slug": "buku/sains",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Botani",
+        "slug": "buku/sains/pertanian",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Fisika",
+        "slug": "buku/sains/fisika",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Ilmu Bumi",
+        "slug": "buku/sains/ilmu-bumi-1",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Geografi",
+            "slug": "buku/sains/ilmu-bumi-1/ilmu-bumi",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Geologi",
+            "slug": "buku/sains/ilmu-bumi-1/ilmu-tanah",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Meteorologi & Klimatologi",
+            "slug": "buku/sains/ilmu-bumi-1/iklim-meteorologi",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Kimia",
+        "slug": "buku/sains/kimia",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Pemodelan Komputasi & Molekuler",
+            "slug": "buku/sains/kimia/pemodelan-komputer",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Life Sciences",
+        "slug": "buku/sains/life-sciences",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Biologi",
+            "slug": "buku/sains/life-sciences/bilogi",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Ekologi",
+            "slug": "buku/sains/life-sciences/alam-ekologi",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Hortikultura",
+            "slug": "buku/sains/life-sciences/hortikultura",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Zoologi",
+            "slug": "buku/sains/life-sciences/peternakan",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Referensi",
+        "slug": "buku/sains/referensi-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sains Luar Angkasa",
+        "slug": "buku/sains/sains-luar-angkasa",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Astronomi",
+            "slug": "buku/sains/sains-luar-angkasa/astronomi",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      }
+    ],
+    "count_loaded_books": 13,
+    "total_data_books": 13
+  },
+  {
+    "title": "Sejarah",
+    "slug": "buku/humaniora",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Geografi Sejarah",
+        "slug": "buku/humaniora/peristiwa-bersejarah",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 117,
+    "total_data_books": 117
+  },
+  {
+    "title": "Seni",
+    "slug": "buku/seni-rupa",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Referensi",
+        "slug": "buku/seni-rupa/referensi-8",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sejarah",
+        "slug": "buku/seni-rupa/sejarah-11",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 17,
+    "total_data_books": 17
+  },
+  {
+    "title": "Studi Bahasa Asing",
+    "slug": "buku/kamus",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Arab",
+        "slug": "buku/kamus/bahasa-arab",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Bahasa Inggris sebagai Bahasa Kedua",
+        "slug": "buku/kamus/bahasa-inggris",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Belanda",
+        "slug": "buku/kamus/bahasa-belanda",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Jepang",
+        "slug": "buku/kamus/bahasa-jepang",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Jerman",
+        "slug": "buku/kamus/bahasa-jerman",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Korea",
+        "slug": "buku/kamus/bahasa-korea",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Mandarin",
+        "slug": "buku/kamus/bahasa-mandarin",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Prancis",
+        "slug": "buku/kamus/bahasa-perancis",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 37,
+    "total_data_books": 37
+  },
+  {
+    "title": "Teknologi & Teknik",
+    "slug": "buku/teknik",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Ilmu Militer",
+        "slug": "buku/teknik/teknologi-militer",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Ilmu Pangan",
+        "slug": "buku/teknik/teknologi-pangan",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kelautan & Angkatan Laut",
+        "slug": "buku/teknik/teknik-kelautan",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Kimia & Biokimia",
+        "slug": "buku/teknik/kimia-1",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Konstruksi",
+        "slug": "buku/teknik/konstruksi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Lingkungan",
+        "slug": "buku/teknik/teknik-lingkungan",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Listrik",
+        "slug": "buku/teknik/listrik-elektronik",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Manufaktur",
+        "slug": "buku/teknik/industri-manufaktur-sistem-operasional",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Mekanik",
+        "slug": "buku/teknik/mekanis",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Perikanan & Akuakultur",
+        "slug": "buku/teknik/perikanan",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Pertanian",
+        "slug": "buku/teknik/pertanian",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Agronomi",
+            "slug": "buku/teknik/pertanian/agronomi",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Pertanian Berkelanjutan",
+            "slug": "buku/teknik/pertanian/pertanian-berkelanjutan",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Referensi",
+        "slug": "buku/teknik/referensi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Robotika",
+        "slug": "buku/teknik/robotika",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Sipil",
+        "slug": "buku/teknik/teknik-sipil",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Telekomunikasi",
+        "slug": "buku/teknik/telekomunikasi-sensor",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 11,
+    "total_data_books": 11
+  },
+  {
+    "title": "Transportasi",
+    "slug": "buku/transportasi-1",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Otomotif",
+        "slug": "buku/transportasi-1/otomotif",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 2,
+    "total_data_books": 2
+  },
+  {
+    "title": "Travel",
+    "slug": "buku/travel",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Afrika",
+        "slug": "buku/travel/afrika",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Amerika Selatan",
+        "slug": "buku/travel/amerika-selatan",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Amerika Utara",
+        "slug": "buku/travel/amerika-utara",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Asia",
+        "slug": "buku/travel/asia",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "India & Asia Selatan",
+            "slug": "buku/travel/asia/panduan-wisata-13",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Jepang",
+            "slug": "buku/travel/asia/jepang",
+            "image": "",
+            "subcategory": []
+          },
+          {
+            "title": "Korea",
+            "slug": "buku/travel/asia/korea",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Australia",
+        "slug": "buku/travel/australia",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Australia & Oceania",
+        "slug": "buku/travel/panduan-wisata-8",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Eropa",
+        "slug": "buku/travel/eropa",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Indonesia",
+        "slug": "buku/travel/indonesia",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Minat Khusus",
+        "slug": "buku/travel/minat-khusus",
+        "image": "",
+        "subcategory": [
+          {
+            "title": "Religius",
+            "slug": "buku/travel/minat-khusus/haji-umroh",
+            "image": "",
+            "subcategory": []
+          }
+        ]
+      },
+      {
+        "title": "Peta",
+        "slug": "buku/travel/atlas-peta",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Timur Tengah",
+        "slug": "buku/travel/timur-tengah",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 15,
+    "total_data_books": 15
+  },
+  {
+    "title": "Tubuh, Pikiran & Jiwa",
+    "slug": "buku/tubuh-pikiran-jiwa",
+    "image": "",
+    "subcategory": [
+      {
+        "title": "Mindfulness & Meditasi",
+        "slug": "buku/tubuh-pikiran-jiwa/meditasi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Parapsikologi",
+        "slug": "buku/tubuh-pikiran-jiwa/parapsikologi",
+        "image": "",
+        "subcategory": []
+      },
+      {
+        "title": "Spiritualisme",
+        "slug": "buku/tubuh-pikiran-jiwa/pengobatan-spiritual",
+        "image": "",
+        "subcategory": []
+      }
+    ],
+    "count_loaded_books": 4,
+    "total_data_books": 4
+  }
+]
