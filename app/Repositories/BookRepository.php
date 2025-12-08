@@ -42,10 +42,6 @@ class BookRepository
 
                 $titleAndAuthor = $book->stemmed_title . ' ' . TfIdfRepository::cleanText($book->author);
 
-                if ($book->author == 'Stephen Hawking') {
-                    Log::info('Processing Stephen Hawking book:', ['title' => $book->title, 'author' => $book->author, 'titleAndAuthor' => $titleAndAuthor]);
-                }
-
                 $tokens = TfIdfRepository::tokenize($titleAndAuthor);
 
                 $allBooksTokens[] = $tokens;

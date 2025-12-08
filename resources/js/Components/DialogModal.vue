@@ -50,7 +50,10 @@ const hasFooterSlot = !!slots.footer;
         :closeable="closeable"
         @close="close"
     >
-        <div class="relative max-h-[80vh] overflow-y-auto" :class="dialogClass">
+        <div
+            class="relative max-h-[80vh] overflow-y-auto bg-white"
+            :class="dialogClass"
+        >
             <button
                 v-if="showCloseButton"
                 type="button"
@@ -82,7 +85,7 @@ const hasFooterSlot = !!slots.footer;
 
                 <div
                     v-if="hasTitleSlot"
-                    class="sticky top-0 z-10 w-full mb-2 text-lg font-medium text-center text-gray-900"
+                    class="sticky top-0 z-10 w-full mb-1 text-lg font-medium text-center text-gray-900"
                 >
                     <slot name="title" />
                 </div>

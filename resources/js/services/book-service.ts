@@ -40,7 +40,7 @@ export default function useBookService() {
                 if (autoShowDialog) {
                     dialogStore.openSuccessDialog(
                         response.data.meta.message ||
-                            "Data kategori berhasil diambil."
+                            "Category data successfully retrieved."
                     );
                 }
 
@@ -57,7 +57,7 @@ export default function useBookService() {
                 if (autoShowDialog) {
                     dialogStore.openErrorDialog(
                         error.response?.data?.meta?.message ||
-                            "Terjadi kesalahan saat mengambil data kategori."
+                            "An error occurred while fetching category data."
                     );
                 }
             });
@@ -99,7 +99,7 @@ export default function useBookService() {
                     if (autoShowDialog) {
                         dialogStore.openSuccessDialog(
                             response.data.meta.message ||
-                                "Data kategori berhasil disimpan."
+                                "Category data successfully saved."
                         );
                     }
                 })
@@ -110,7 +110,7 @@ export default function useBookService() {
                     if (autoShowDialog) {
                         dialogStore.openErrorDialog(
                             error.response?.data?.meta?.message ||
-                                "Terjadi kesalahan saat menyimpan data kategori."
+                                "An error occurred while saving category data."
                         );
                     }
                 });
@@ -195,7 +195,7 @@ export default function useBookService() {
                 if (autoShowDialog) {
                     dialogStore.openSuccessDialog(
                         response.data.meta.message ||
-                            "Data pengguna berhasil diambil."
+                            "User data successfully retrieved."
                     );
                 }
 
@@ -219,7 +219,7 @@ export default function useBookService() {
                 if (autoShowDialog) {
                     dialogStore.openErrorDialog(
                         error.response?.data?.meta?.message ||
-                            "Terjadi kesalahan saat mengambil data pengguna."
+                            "An error occurred while fetching user data."
                     );
                 }
             });
@@ -297,7 +297,7 @@ export default function useBookService() {
                     if (autoShowDialog) {
                         dialogStore.openSuccessDialog(
                             response.data.meta.message ||
-                                "Data buku berhasil disimpan."
+                                "Book data successfully saved."
                         );
                     }
                 })
@@ -309,7 +309,7 @@ export default function useBookService() {
                     if (autoShowDialog) {
                         dialogStore.openErrorDialog(
                             error.response?.data?.meta?.message ||
-                                "Terjadi kesalahan saat menyimpan data buku."
+                                "An error occurred while saving book data."
                         );
                     }
                 });
@@ -322,7 +322,7 @@ export default function useBookService() {
             onChangeStatus("success");
             if (autoShowDialog) {
                 dialogStore.openSuccessDialog(
-                    "Data buku berhasil disimpan dengan catatan beberapa data sudah ada di database."
+                    "Book data successfully saved with some records already existing in the database."
                 );
             }
         }
@@ -358,7 +358,7 @@ export default function useBookService() {
                 if (autoShowDialog) {
                     dialogStore.openSuccessDialog(
                         response.data.meta.message ||
-                            "Data judul buku berhasil dibersihkan."
+                            "Book titles successfully cleaned."
                     );
                 }
             })
@@ -369,7 +369,7 @@ export default function useBookService() {
                 if (autoShowDialog) {
                     dialogStore.openErrorDialog(
                         error.response?.data?.meta?.message ||
-                            "Terjadi kesalahan saat membersihkan judul buku."
+                            "An error occurred while cleaning book titles."
                     );
                 }
             });
@@ -405,7 +405,7 @@ export default function useBookService() {
                 if (autoShowDialog) {
                     dialogStore.openSuccessDialog(
                         response.data.meta.message ||
-                            "Data judul buku berhasil distem."
+                            "Book titles successfully stemmed."
                     );
                 }
             })
@@ -416,7 +416,7 @@ export default function useBookService() {
                 if (autoShowDialog) {
                     dialogStore.openErrorDialog(
                         error.response?.data?.meta?.message ||
-                            "Terjadi kesalahan saat stemming judul buku."
+                            "An error occurred while stemming book titles."
                     );
                 }
             });
@@ -444,7 +444,7 @@ export default function useBookService() {
                 onSuccess(response);
                 if (autoShowDialog) {
                     dialogStore.openSuccessDialog(
-                        "Data buku berhasil diekspor."
+                        "Book data successfully exported."
                     );
                 }
 
@@ -465,7 +465,7 @@ export default function useBookService() {
                 if (autoShowDialog) {
                     dialogStore.openErrorDialog(
                         error.response?.data?.meta?.message ||
-                            "Terjadi kesalahan saat mengekspor data buku."
+                            "An error occurred while exporting book data."
                     );
                 }
             });
@@ -505,7 +505,7 @@ export default function useBookService() {
                 if (autoShowDialog) {
                     dialogStore.openSuccessDialog(
                         response.data.meta.message ||
-                            "Detail buku berhasil diambil."
+                            "Book detail successfully retrieved."
                     );
                 }
 
@@ -519,7 +519,7 @@ export default function useBookService() {
                 if (autoShowDialog) {
                     dialogStore.openErrorDialog(
                         error.response?.data?.meta?.message ||
-                            "Terjadi kesalahan saat mengambil detail buku."
+                            "An error occurred while fetching book detail."
                     );
                 }
             });

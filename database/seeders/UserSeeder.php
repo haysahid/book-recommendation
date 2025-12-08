@@ -60,6 +60,9 @@ class UserSeeder extends Seeder
                 // Ensure the user has only one primary role
                 $user->syncRoles([$role]);
             }
+
+            // Delay 0.5 seconds between creations
+            usleep(500000);
         }
     }
 }

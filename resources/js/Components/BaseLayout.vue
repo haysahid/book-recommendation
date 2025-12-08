@@ -57,7 +57,7 @@ onMounted(() => {
                     <div
                         class="mb-1 text-lg font-semibold text-center text-gray-900"
                     >
-                        Terjadi Kesalahan
+                        An Error Occurred
                     </div>
                     <p class="text-sm text-center text-gray-700">
                         {{ dialogStore.errorMessage }}

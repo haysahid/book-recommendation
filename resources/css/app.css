@@ -10,6 +10,12 @@ button {
     @apply cursor-pointer;
 }
 
+/* Placeholder default color */
+input::placeholder,
+textarea::placeholder {
+    @apply text-gray-400;
+}
+
 /* Transition styles for max-height */
 .accordion-enter-active,
 .accordion-leave-active {
@@ -27,6 +33,11 @@ button {
 .accordion-leave-from {
     max-height: 900px;
     opacity: 1;
+}
+
+/* Disable dark mode */
+@custom-variant dark {
+    @apply;
 }
 
 @theme {

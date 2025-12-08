@@ -73,7 +73,12 @@ const scrapingStore = useScrapingStore();
                             Save Categories
                         </PrimaryButton>
                         <SecondaryButton
-                            v-if="scrapingStore.categories.length > 0"
+                            v-if="
+                                scrapingStore.categories.length > 0 &&
+                                $page.props.auth.user.roles
+                                    .map((role) => role.name)
+                                    .includes('Super Admin')
+                            "
                             @click="
                                 // Export to JSON file
                                 scrapingStore.exportCategoriesToJsonFile()

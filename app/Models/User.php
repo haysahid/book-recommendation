@@ -24,6 +24,9 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'phone',
+        'address',
+        'profile_photo_path',
     ];
 
     protected $appends = ['profile_photo_url'];

@@ -13,4 +13,7 @@ interface UserEntity {
 
     // Additional attributes
     profile_photo_url: string | null;
+
+    // Relationships
+    roles: RoleEntity[] | null;
 }
