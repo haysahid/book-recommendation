@@ -46,7 +46,7 @@ const logout = () => {
                         :alt="$page.props.auth.user?.name"
                     />
 
-                    <div class="w-full md:w-auto md:hidden lg:inline">
+                    <div class="w-full sm:w-auto sm:hidden md:inline">
                         <span>{{ $page.props.auth.user?.name }}</span>
                     </div>
 
@@ -56,7 +56,7 @@ const logout = () => {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="size-4 md:hidden lg:inline shrink-0"
+                        class="size-4 sm:hidden md:inline shrink-0"
                     >
                         <path
                             stroke-linecap="round"

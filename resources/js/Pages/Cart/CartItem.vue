@@ -30,12 +30,12 @@ const hasActions = computed(() => {
 
 <template>
     <div
-        class="flex flex-col items-center justify-between w-full gap-4 py-4 border-b border-gray-300"
+        class="flex flex-col items-center justify-between w-full gap-4 py-5 border-b border-gray-300"
         :class="{
             'border-none': !props.showDivider,
         }"
     >
-        <div class="flex items-start w-full gap-x-4">
+        <div class="flex items-center w-full gap-x-4">
             <div class="flex items-center justify-center shrink-0 gap-4">
                 <!-- Checkbox -->
                 <Checkbox
@@ -49,42 +49,44 @@ const hasActions = computed(() => {
                 />
 
                 <!-- Image -->
-                <img
-                    v-if="props.item.image"
-                    :src="getImageUrl(props.item.image)"
-                    alt="Product Image"
-                    class="object-cover size-[60px] sm:size-20 lg:size-[120px] rounded-lg outline-1 outline-gray-300"
-                />
-                <div
-                    v-else
-                    class="flex items-center justify-center size-[60px] sm:size-20 lg:size-[120px] bg-gray-100 rounded-lg aspect-square"
-                >
+                <a :href="`/book/${props.item.book?.slug}`">
+                    <img
+                        v-if="props.item.image"
+                        :src="getImageUrl(props.item.image)"
+                        alt="Product Image"
+                        class="object-contain w-[60px] sm:w-20 lg:w-[120px] rounded-lg aspect-3/4 shadow-sm hover:scale-105 transition-transform duration-200 ease-in-out"
+                    />
                     <div
-                        class="flex flex-col items-center justify-center gap-2"
+                        v-else
+                        class="flex items-center justify-center w-[60px] sm:w-20 lg:w-[120px] bg-gray-100 rounded-lg aspect-3/4 shadow-sm hover:scale-105 transition-transform duration-200 ease-in-out"
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="lucide lucide-book-open size-6 lg:size-8 text-muted-foreground/50"
+                        <div
+                            class="flex flex-col items-center justify-center gap-2"
                         >
-                            <path d="M12 7v14"></path>
-                            <path
-                                d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
-                            ></path>
-                        </svg>
-                        <span
-                            class="hidden lg:block text-sm text-muted-foreground"
-                            >No Cover</span
-                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-book-open size-6 lg:size-8 text-muted-foreground/50"
+                            >
+                                <path d="M12 7v14"></path>
+                                <path
+                                    d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+                                ></path>
+                            </svg>
+                            <span
+                                class="hidden lg:block text-sm text-muted-foreground"
+                                >No Cover</span
+                            >
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
 
             <div

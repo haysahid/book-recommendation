@@ -57,13 +57,7 @@ const currentPath = window.location.pathname;
             <div class="flex items-center justify-between">
                 <p class="text-gray-700">Sub Total</p>
                 <p class="font-semibold text-primary">
-                    {{
-                        cartStore.subTotal.toLocaleString("id-ID", {
-                            style: "currency",
-                            currency: "IDR",
-                            minimumFractionDigits: 0,
-                        })
-                    }}
+                    {{ $formatCurrency(cartStore.subTotal) }}
                 </p>
             </div>
 

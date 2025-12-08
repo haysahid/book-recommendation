@@ -8,7 +8,9 @@ import HeaderResponsiveMenu from "./HeaderResponsiveMenu.vue";
 import HeaderMenu from "./HeaderMenu.vue";
 import CartButton from "./CartButton.vue";
 import FavoriteButton from "./FavoriteButton.vue";
+import Tooltip from "./Tooltip.vue";
 import { useCartStore } from "@/stores/cart-store";
+import { useFavoriteStore } from "@/stores/favorite-store";
 
 const props = defineProps({
     invertColor: {
@@ -51,6 +53,7 @@ const invertColor = computed(() => {
 });
 
 const cartStore = useCartStore();
+const favoriteStore = useFavoriteStore();
 </script>
 
 <template>
@@ -115,16 +118,6 @@ const cartStore = useCartStore();
                                 :menu="menu"
                                 :invertColor="invertColor"
                             />
-
-                            <div class="flex gap-2">
-                                <Link href="/cart">
-                                    <CartButton
-                                        :length="cartStore.items.length"
-                                        :invertColor="invertColor"
-                                    />
-                                </Link>
-                                <FavoriteButton :invertColor="invertColor" />
-                            </div>
                         </div>
 
                         <!-- Divider -->
@@ -133,7 +126,31 @@ const cartStore = useCartStore();
                         ></span> -->
 
                         <div class="flex items-center gap-2">
-                            <!-- Trailing Menus -->
+                            <div class="hidden sm:flex gap-2">
+                                <Tooltip id="cart-button">
+                                    <template #content> Cart </template>
+
+                                    <Link href="/cart">
+                                        <CartButton
+                                            :length="cartStore.items.length"
+                                            :invertColor="invertColor"
+                                        />
+                                    </Link>
+                                </Tooltip>
+                                <Tooltip
+                                    id="favorite-button"
+                                    backgroundColor="bg-pink-500"
+                                >
+                                    <template #content> Favorite </template>
+                                    <Link href="/favorite">
+                                        <FavoriteButton
+                                            :length="favoriteStore.books.length"
+                                            :invertColor="invertColor"
+                                        />
+                                    </Link>
+                                </Tooltip>
+                            </div>
+
                             <div class="hidden gap-x-8 sm:flex sm:items-center">
                                 <!-- Settings Dropdown -->
                                 <div
@@ -178,10 +195,21 @@ const cartStore = useCartStore();
                 </li>
 
                 <li>
-                    <CartButton
-                        :length="cartStore.items.length"
-                        :invertColor="invertColor"
-                    />
+                    <Link href="/cart">
+                        <CartButton
+                            :length="cartStore.items.length"
+                            :invertColor="invertColor"
+                        />
+                    </Link>
+                </li>
+
+                <li>
+                    <Link href="/favorite">
+                        <FavoriteButton
+                            :length="favoriteStore.books.length"
+                            :invertColor="invertColor"
+                        />
+                    </Link>
                 </li>
             </ul>
 

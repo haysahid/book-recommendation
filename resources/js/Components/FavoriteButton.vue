@@ -54,10 +54,10 @@ const emit = defineEmits(["click"]);
         </svg>
         <div
             v-if="length > 0"
-            class="px-1 py-0.5 ms-2 text-xs font-semibold text-white bg-primary rounded-full min-w-5 text-center absolute top-0 right-0"
+            class="px-1 py-0.5 ms-2 text-xs font-semibold text-white bg-pink-500 rounded-full min-w-5 text-center absolute top-0 right-0"
             :class="{
-                'bg-primary/80': !showBackground,
-                'bg-primary': showBackground && invertColor,
+                'bg-pink-500/80': !showBackground,
+                'bg-pink-500': showBackground && invertColor,
             }"
         >
             {{ length }}

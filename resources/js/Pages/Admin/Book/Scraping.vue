@@ -201,7 +201,10 @@ const scrapingStore = useScrapingStore();
                                         total +
                                         (category.count_loaded_books || 0),
                                     0
-                                ) > 0
+                                ) > 0 &&
+                                $page.props.auth.user.roles
+                                    .map((role) => role.name)
+                                    .includes('Super Admin')
                             "
                             @click="
                                 // Export to JSON file

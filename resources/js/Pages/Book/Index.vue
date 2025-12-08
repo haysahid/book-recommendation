@@ -90,7 +90,7 @@ onMounted(() => {
                 class="border-b-0! mb-8 md:mb-6 bg-transparent! bg-none"
             />
 
-            <div class="max-w-4xl mx-auto text-center px-6">
+            <div class="max-w-4xl mx-auto text-center px-6 sm:px-12">
                 <div
                     class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6 text-white border border-white/30"
                 >

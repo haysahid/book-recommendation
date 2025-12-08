@@ -11,6 +11,14 @@ const props = defineProps({
         type: String,
         default: "top",
     },
+    backgroundColor: {
+        type: String,
+        default: "bg-primary",
+    },
+    textColor: {
+        type: String,
+        default: "text-white/90",
+    },
 });
 
 onMounted(() => {
@@ -28,7 +36,8 @@ onMounted(() => {
         <div
             :id="props.id"
             role="tooltip"
-            class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium rounded-lg shadow-xs opacity-0 text-white/90 bg-primary tooltip w-max"
+            class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium rounded-lg shadow-xs opacity-0 tooltip w-max"
+            :class="[props.backgroundColor, props.textColor]"
         >
             <slot name="content"></slot>
             <div class="tooltip-arrow" data-popper-arrow></div>

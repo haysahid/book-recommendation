@@ -57,7 +57,7 @@ function formatPrice(price = 0) {
         </div>
 
         <!-- Items -->
-        <template v-if="props.cartGroup.items?.length > 0">
+        <div v-if="props.cartGroup.items?.length > 0">
             <div
                 v-for="(item, index) in props.cartGroup.items"
                 :key="index"
@@ -144,6 +144,6 @@ function formatPrice(price = 0) {
                     @close="item.showDeleteConfirmation = false"
                 />
             </div>
-        </template>
+        </div>
     </div>
 </template>

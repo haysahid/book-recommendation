@@ -9,6 +9,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import Tooltip from "@/Components/Tooltip.vue";
 import { useCartStore } from "@/stores/cart-store";
+import { useFavoriteStore } from "@/stores/favorite-store";
 
 const props = defineProps({
     book: {
@@ -26,6 +27,11 @@ const bookDetail = ref<BookDetailModel | null>(null);
 const loadBookDetailStatus = ref(null);
 
 const cartStore = useCartStore();
+const favoriteStore = useFavoriteStore();
+
+const isFavorite = computed(() => {
+    return favoriteStore.isBookInFavorite(props.book.id);
+});
 
 onMounted(async () => {
     useBookService().loadBookDetail(props.book, {
@@ -239,18 +245,44 @@ onMounted(async () => {
                             <SecondaryButton> Buy on Gramedia </SecondaryButton>
                         </a> -->
 
-                        <Tooltip id="favorite-button" placement="bottom">
+                        <Tooltip
+                            id="book-favorite-button"
+                            placement="bottom"
+                            :backgroundColor="
+                                isFavorite ? 'bg-gray-500' : 'bg-pink-500'
+                            "
+                            :textColor="
+                                isFavorite ? 'text-white' : 'text-white'
+                            "
+                        >
                             <template #content>
                                 {{
-                                    true
+                                    isFavorite
                                         ? "Remove from Favorites"
                                         : "Add to Favorites"
                                 }}
                             </template>
 
-                            <SecondaryButton @click="" class="size-[43px] p-0!">
+                            <SecondaryButton
+                                @click="
+                                    if (isFavorite) {
+                                        favoriteStore.removeBookFromFavorite(
+                                            props.book.id
+                                        );
+                                    } else {
+                                        favoriteStore.addBookToFavorite(
+                                            props.book
+                                        );
+                                    }
+                                "
+                                class="size-[43px] p-0!"
+                                :class="{
+                                    'border-pink-500 focus:border-pink-500 hover:bg-pink-500/10 focus:ring-pink-500/30':
+                                        isFavorite,
+                                }"
+                            >
                                 <svg
-                                    v-if="true"
+                                    v-if="isFavorite"
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"
                                     height="24"

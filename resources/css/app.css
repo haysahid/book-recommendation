@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Include Flowbite's plugin styles */
+@plugin "flowbite/plugin";
+
+/* Specify the source for Flowbite's components */
+@source "../node_modules/flowbite";
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';

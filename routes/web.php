@@ -10,6 +10,7 @@ Route::get('/', [BookController::class, 'index'])->name('book.index');
 Route::get('/book', [BookController::class, 'index'])->name('book.index');
 Route::get('/book/{bookSlug}', [BookController::class, 'show'])->name('book.show');
 Route::get('/cart', [OrderController::class, 'cart'])->name('cart.index');
+Route::get('/favorite', [BookController::class, 'favorite'])->name('favorite.index');
 
 Route::get('/login', function () {
     return Inertia::render('Auth/Login');

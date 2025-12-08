@@ -47,4 +47,9 @@ class BookController extends Controller
             'relatedBooks' => $relatedBooks,
         ]);
     }
+
+    public function favorite()
+    {
+        return Inertia::render('Favorite/Index');
+    }
 }

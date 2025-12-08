@@ -81,7 +81,7 @@ function formatPrice(price = 0) {
                     </PrimaryButton>
                 </Link>
             </div>
-            <p class="text-sm text-gray-700 text-start sm:text-center" v-else>
+            <p v-else class="text-sm text-gray-700 text-start sm:text-center">
                 Double-check before placing your order.
             </p>
         </div>
