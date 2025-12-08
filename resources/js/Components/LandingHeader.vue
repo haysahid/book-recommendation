@@ -35,6 +35,14 @@ if (window.location.pathname !== "/login" && !page.props.auth.user) {
     });
 }
 
+if (window.location.pathname === "/login" && !page.props.auth.user) {
+    menus.push({
+        name: "Register",
+        href: "/register",
+        active: false,
+    });
+}
+
 const invertColor = computed(() => {
     return props.invertColor;
 });

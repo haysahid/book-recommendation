@@ -23,7 +23,7 @@ const props = defineProps({
             props.invertColor
                 ? {
                       'text-secondary-light!': props.menu.active,
-                      'text-white/80! hover:text-white/70!': !props.menu.active,
+                      'text-white/90! hover:text-white!': !props.menu.active,
                   }
                 : {
                       'text-secondary!': props.menu.active,
