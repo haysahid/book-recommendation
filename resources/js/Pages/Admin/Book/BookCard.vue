@@ -93,7 +93,7 @@ const hasDeleteCallback = computed(() => {
                     <span class="text-sm text-muted-foreground">No Cover</span>
                 </div>
             </div>
-            <div class="flex flex-col items-start justify-start w-full gap-4">
+            <div class="flex flex-col items-start justify-start w-full gap-2">
                 <div class="flex items-center gap-2 pe-12">
                     <p
                         class="text-base font-bold text-gray-900 md:text-lg group-hover:text-primary transition-colors duration-300 ease-in-out"
@@ -110,6 +110,29 @@ const hasDeleteCallback = computed(() => {
                     >
                         By {{ props.book.author }}
                     </div>
+
+                    <!-- Price -->
+                    <div class="flex flex-col gap-2">
+                        <div class="text-lg font-semibold text-gray-900">
+                            {{ $formatCurrency(props.book.final_price) }}
+                        </div>
+                        <div
+                            v-if="props.book.discount"
+                            class="flex gap-2 items-center"
+                        >
+                            <div
+                                class="text-xs font-medium text-red-600 bg-red-100 px-2 py-1 rounded-md"
+                            >
+                                {{ props.book.discount }}%
+                            </div>
+                            <span
+                                class="text-sm font-semibold text-gray-400 line-through"
+                            >
+                                {{ $formatCurrency(props.book.slice_price) }}
+                            </span>
+                        </div>
+                    </div>
+
                     <!-- Divider -->
                     <div
                         v-if="props.book.store_name || props.book.isbn"

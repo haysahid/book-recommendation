@@ -7,6 +7,12 @@ interface BookEntity {
     image: string | null;
     slug: string;
     author: string | null;
+    final_price: number | null;
+    slice_price: number | null;
+    discount: number | null;
+    is_oos: boolean;
+    sku: string | null;
+    format: string | null;
     store_name: string | null;
     isbn: string | null;
     created_at: string;

@@ -1,0 +1,117 @@
+<script setup lang="ts">
+import LandingSection from "@/Components/LandingSection.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import LandingLayout from "@/Layouts/LandingLayout.vue";
+import { Link } from "@inertiajs/vue3";
+import { useCartStore } from "@/stores/cart-store";
+import axios from "axios";
+import CartGroup from "./CartGroup.vue";
+import CartForm from "./CartForm.vue";
+
+const cartStore = useCartStore();
+
+function syncCart() {
+    if (cartStore.groups.length > 0) {
+        let cartGroups = cartStore.groups;
+
+        for (const group of cartGroups) {
+            delete group.store;
+
+            for (const item of group.items) {
+                // Remove the 'store' property from each item
+                if (item.store) {
+                    delete item.store;
+                }
+
+                // Remove the 'variant' property from each item
+                if (item.book) {
+                    delete item.book;
+                }
+            }
+        }
+
+        const syncCart = JSON.parse(JSON.stringify(cartGroups));
+
+        axios
+            .post("/api/sync-cart", {
+                cart_groups: syncCart,
+            })
+            .then((response) => {
+                cartStore.updateAllGroups(response.data.result);
+            });
+    }
+}
+syncCart();
+
+function formatPrice(price = 0) {
+    return price.toLocaleString("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+    });
+}
+</script>
+
+<template>
+    <LandingLayout :title="`Cart (${cartStore.groups.length})`">
+        <div
+            class="p-6 sm:p-12 md:px-[100px] md:py-[60px] flex flex-col gap-2 sm:gap-3"
+            :class="{
+                'min-h-[60vh] items-center justify-center gap-4':
+                    cartStore.groups.length == 0,
+            }"
+        >
+            <h1 class="text-xl font-bold text-start sm:text-center">
+                {{
+                    cartStore.groups.length > 0
+                        ? `Cart (${cartStore.groups.length} item)`
+                        : "Cart is Empty"
+                }}
+            </h1>
+            <div
+                v-if="cartStore.groups.length == 0"
+                class="flex flex-col items-center gap-y-6"
+            >
+                <p class="text-sm text-center text-gray-700 sm:text-base">
+                    You haven't added any products to the cart.
+                </p>
+                <Link href="/book">
+                    <PrimaryButton class="py-2.5 px-5 mx-auto">
+                        Search Books
+                    </PrimaryButton>
+                </Link>
+            </div>
+            <p class="text-sm text-gray-700 text-start sm:text-center" v-else>
+                Double-check before placing your order.
+            </p>
+        </div>
+
+        <div
+            data-aos="fade-up"
+            data-aos-duration="600"
+            class="p-6 pt-0! sm:p-12 md:p-[100px] flex flex-col gap-4 sm:gap-12"
+        >
+            <LandingSection
+                v-if="cartStore.groups.length > 0"
+                class="items-start! justify-start!"
+            >
+                <div
+                    class="flex flex-col items-center justify-center w-full gap-5 mx-auto lg:flex-row lg:items-start sm:gap-8 max-w-7xl"
+                >
+                    <!-- Cart Items -->
+                    <div class="flex flex-col w-full gap-4">
+                        <CartGroup
+                            v-for="(cartGroup, index) in cartStore.groups"
+                            :key="index"
+                            :cartGroup="cartGroup"
+                            :showStoreInfo="false"
+                        />
+                    </div>
+
+                    <!-- Detail Order -->
+                    <CartForm />
+                </div>
+            </LandingSection>
+        </div>
+    </LandingLayout>
+</template>

@@ -43,6 +43,33 @@ class UserRepository
         }
     }
 
+    public static function createGuestUser(array $data)
+    {
+        try {
+            $existingGuest = User::where('email', $data['email'])
+                ->whereHas('roles', function ($q) {
+                    $q->where('name', 'Guest');
+                })
+                ->first();
+
+            if ($existingGuest) {
+                // Update existing guest user data
+                $existingGuest->update($data);
+                return $existingGuest;
+            }
+
+            $user = User::create($data);
+
+            $guestRole = Role::firstOrCreate(['name' => 'Guest']);
+            $user->assignRole($guestRole);
+
+            return $user;
+        } catch (Exception $e) {
+            Log::error('Failed to create guest user: ' . $e);
+            throw $e;
+        }
+    }
+
     public static function updateUser(User $user, array $data)
     {
         try {

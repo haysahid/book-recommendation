@@ -16,8 +16,7 @@ class RoleRepository
 
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('slug', 'like', '%' . $search . '%');
+                $q->where('name', 'like', '%' . $search . '%');
             });
         }
 
@@ -31,7 +30,7 @@ class RoleRepository
         $query = Role::query();
 
         if (!empty($hideRoles)) {
-            $query->whereNotIn('slug', $hideRoles);
+            $query->whereNotIn('name', $hideRoles);
         }
 
         return $query->orderBy('id', 'asc')->get();

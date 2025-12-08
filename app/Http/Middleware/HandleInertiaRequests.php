@@ -35,6 +35,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $store = \App\Models\Store::first();
         $user = \App\Models\User::with(['roles'])->find($request->user()?->id);
 
         return [
@@ -45,6 +46,7 @@ class HandleInertiaRequests extends Middleware
                 'warning' => session('warning'),
                 'info' => session('info'),
             ],
+            'store' => $store,
             'auth' => [
                 'user' => $user,
                 'hasTermsAndPrivacyPolicyFeature' => true,

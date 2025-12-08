@@ -6,6 +6,9 @@ import HamburgerButton from "./HamburgerButton.vue";
 import CustomPageProps from "@/types/model/CustomPageProps";
 import HeaderResponsiveMenu from "./HeaderResponsiveMenu.vue";
 import HeaderMenu from "./HeaderMenu.vue";
+import CartButton from "./CartButton.vue";
+import FavoriteButton from "./FavoriteButton.vue";
+import { useCartStore } from "@/stores/cart-store";
 
 const props = defineProps({
     invertColor: {
@@ -46,6 +49,8 @@ if (window.location.pathname === "/login" && !page.props.auth.user) {
 const invertColor = computed(() => {
     return props.invertColor;
 });
+
+const cartStore = useCartStore();
 </script>
 
 <template>
@@ -110,6 +115,16 @@ const invertColor = computed(() => {
                                 :menu="menu"
                                 :invertColor="invertColor"
                             />
+
+                            <div class="flex gap-2">
+                                <Link href="/cart">
+                                    <CartButton
+                                        :length="cartStore.items.length"
+                                        :invertColor="invertColor"
+                                    />
+                                </Link>
+                                <FavoriteButton :invertColor="invertColor" />
+                            </div>
                         </div>
 
                         <!-- Divider -->
@@ -158,6 +173,13 @@ const invertColor = computed(() => {
                 <li v-for="menu in menus" :key="menu.name">
                     <HeaderResponsiveMenu
                         :menu="menu"
+                        :invertColor="invertColor"
+                    />
+                </li>
+
+                <li>
+                    <CartButton
+                        :length="cartStore.items.length"
                         :invertColor="invertColor"
                     />
                 </li>

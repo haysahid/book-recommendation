@@ -57,6 +57,7 @@ class RoleAndPermissionSeeder extends Seeder
             'Super Admin',
             'Admin',
             'User',
+            'Guest',
         ];
 
         // Create roles

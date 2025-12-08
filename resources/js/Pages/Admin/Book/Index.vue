@@ -164,9 +164,8 @@ onMounted(() => {
                     Showing results for
                     <span class="font-medium">"{{ currentSearch }}"</span>
                 </p>
-                <!-- 1758 results found -->
                 <p class="text-sm text-gray-500">
-                    {{ books.total }} results found
+                    {{ $formatNumber(books.total) }} results found
                 </p>
             </div>
 

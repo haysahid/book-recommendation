@@ -199,7 +199,7 @@ onMounted(() => {
                         }}
                     </h2>
                     <span class="text-muted-foreground text-sm md:text-base">
-                        {{ booksPagination.total }} results found
+                        {{ $formatNumber(booksPagination.total) }} results found
                     </span>
                 </div>
 
@@ -285,6 +285,31 @@ onMounted(() => {
                             <p class="text-sm text-muted-foreground">
                                 by {{ book.author }}
                             </p>
+
+                            <!-- Price -->
+                            <div class="flex flex-col gap-2">
+                                <div
+                                    class="text-xl font-semibold text-gray-900"
+                                >
+                                    {{ $formatCurrency(book.final_price) }}
+                                </div>
+                                <div
+                                    v-if="book.discount"
+                                    class="flex gap-2 items-center"
+                                >
+                                    <div
+                                        class="text-sm font-medium text-red-600 bg-red-100 px-2 py-1 rounded-md"
+                                    >
+                                        {{ book.discount }}%
+                                    </div>
+                                    <span
+                                        class="text-base font-semibold text-gray-400 line-through"
+                                    >
+                                        {{ $formatCurrency(book.slice_price) }}
+                                    </span>
+                                </div>
+                            </div>
+
                             <div
                                 class="flex items-center justify-between pt-2 border-t border-border/50"
                             >
