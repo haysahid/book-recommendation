@@ -296,8 +296,7 @@ class OrderController extends Controller
             'cart_groups.*.store_id' => 'required|integer|exists:stores,id',
             'cart_groups.*.voucher_code' => 'nullable|string|exists:vouchers,code',
             'cart_groups.*.items' => 'required|array',
-            'cart_groups.*.items.*.product_id' => 'required|integer|exists:products,id',
-            'cart_groups.*.items.*.variant_id' => 'required|integer|exists:product_variants,id',
+            'cart_groups.*.items.*.book_id' => 'required|integer|exists:books,id',
             'cart_groups.*.items.*.quantity' => 'required|integer|min:1',
             'payment_method_id' => 'required|integer|exists:payment_methods,id',
             'shipping_method_id' => 'required|integer|exists:shipping_methods,id',
@@ -318,11 +317,9 @@ class OrderController extends Controller
             'cart_groups.*.voucher_code.string' => 'Kode voucher harus berupa string',
             'cart_groups.*.voucher_code.exists' => 'Kode voucher tidak ditemukan',
             'cart_groups.*.items.required' => 'Item keranjang harus diisi',
-            'cart_groups.*.items.*.product_id.required' => 'ID produk harus diisi',
-            'cart_groups.*.items.*.product_id.exists' => 'Produk tidak ditemukan',
-            'cart_groups.*.items.*.variant_id.required' => 'ID varian produk harus diisi',
-            'cart_groups.*.items.*.variant_id.exists' => 'Varian produk tidak ditemukan',
-            'cart_groups.*.items.*.quantity.min' => 'Jumlah produk minimal 1',
+            'cart_groups.*.items.*.book_id.required' => 'ID buku harus diisi',
+            'cart_groups.*.items.*.book_id.exists' => 'Buku tidak ditemukan',
+            'cart_groups.*.items.*.quantity.min' => 'Jumlah buku minimal 1',
             'payment_method_id.required' => 'Metode pembayaran harus diisi',
             'payment_method_id.exists' => 'Metode pembayaran tidak ditemukan',
             'shipping_method_id.required' => 'Metode pengiriman harus diisi',
@@ -356,8 +353,7 @@ class OrderController extends Controller
             'cart_groups.*.store_id' => 'required|integer|exists:stores,id',
             'cart_groups.*.voucher_code' => 'nullable|string|exists:vouchers,code',
             'cart_groups.*.items' => 'required|array',
-            'cart_groups.*.items.*.product_id' => 'required|integer|exists:products,id',
-            'cart_groups.*.items.*.variant_id' => 'required|integer|exists:product_variants,id',
+            'cart_groups.*.items.*.book_id' => 'required|integer|exists:books,id',
             'cart_groups.*.items.*.quantity' => 'required|integer|min:1',
             'payment_method_id' => 'required|integer|exists:payment_methods,id',
             'shipping_method_id' => 'required|integer|exists:shipping_methods,id',
@@ -381,11 +377,9 @@ class OrderController extends Controller
             'cart_groups.*.voucher_code.string' => 'Kode voucher harus berupa string',
             'cart_groups.*.voucher_code.exists' => 'Kode voucher tidak ditemukan',
             'cart_groups.*.items.required' => 'Item keranjang harus diisi',
-            'cart_groups.*.items.*.product_id.required' => 'ID produk harus diisi',
-            'cart_groups.*.items.*.product_id.exists' => 'Produk tidak ditemukan',
-            'cart_groups.*.items.*.variant_id.required' => 'ID varian produk harus diisi',
-            'cart_groups.*.items.*.variant_id.exists' => 'Varian produk tidak ditemukan',
-            'cart_groups.*.items.*.quantity.min' => 'Jumlah produk minimal 1',
+            'cart_groups.*.items.*.book_id.required' => 'ID buku harus diisi',
+            'cart_groups.*.items.*.book_id.exists' => 'Buku tidak ditemukan',
+            'cart_groups.*.items.*.quantity.min' => 'Jumlah buku minimal 1',
             'payment_method_id.required' => 'Metode pembayaran harus diisi',
             'payment_method_id.exists' => 'Metode pembayaran tidak ditemukan',
             'shipping_method_id.required' => 'Metode pengiriman harus diisi',
@@ -428,8 +422,7 @@ class OrderController extends Controller
             'cart_groups.*.store_id' => 'required|integer|exists:stores,id',
             'cart_groups.*.voucher_code' => 'nullable|string|exists:vouchers,code',
             'cart_groups.*.items' => 'required|array',
-            'cart_groups.*.items.*.product_id' => 'required|integer|exists:products,id',
-            'cart_groups.*.items.*.variant_id' => 'required|integer|exists:product_variants,id',
+            'cart_groups.*.items.*.book_id' => 'required|integer|exists:products,id',
             'cart_groups.*.items.*.quantity' => 'required|integer|min:1',
             'payment_method_id' => 'required|integer|exists:payment_methods,id',
             'shipping_method_id' => 'required|integer|exists:shipping_methods,id',
@@ -454,11 +447,9 @@ class OrderController extends Controller
             'cart_groups.*.voucher_code.string' => 'Kode voucher harus berupa string',
             'cart_groups.*.voucher_code.exists' => 'Kode voucher tidak ditemukan',
             'cart_groups.*.items.required' => 'Item keranjang harus diisi',
-            'cart_groups.*.items.*.product_id.required' => 'ID produk harus diisi',
-            'cart_groups.*.items.*.product_id.exists' => 'Produk tidak ditemukan',
-            'cart_groups.*.items.*.variant_id.required' => 'ID varian produk harus diisi',
-            'cart_groups.*.items.*.variant_id.exists' => 'Varian produk tidak ditemukan',
-            'cart_groups.*.items.*.quantity.min' => 'Jumlah produk minimal 1',
+            'cart_groups.*.items.*.book_id.required' => 'ID buku harus diisi',
+            'cart_groups.*.items.*.book_id.exists' => 'Buku tidak ditemukan',
+            'cart_groups.*.items.*.quantity.min' => 'Jumlah buku minimal 1',
             'payment_method_id.required' => 'Metode pembayaran harus diisi',
             'payment_method_id.exists' => 'Metode pembayaran tidak ditemukan',
             'shipping_method_id.required' => 'Metode pengiriman harus diisi',
@@ -576,9 +567,6 @@ class OrderController extends Controller
 
             $itemDetails = TransactionItem::with(
                 [
-                    'variant.product' => function ($query) {
-                        $query->with('brand', 'categories');
-                    },
                     'store' => function ($query) {
                         $query->select('id', 'name');
                     },
@@ -587,13 +575,13 @@ class OrderController extends Controller
                 $query->where('code', $transaction->code);
             })->get()->map(function ($item) {
                 return [
-                    'id' => $item->variant_id,
+                    'id' => $item->book_id,
                     'price' => $item->unit_final_price,
                     'quantity' => $item->quantity,
-                    'name' => $item->variant->sku,
-                    'brand' => $item->variant->product->brand->name ?? null,
+                    'name' => $item->book->name,
+                    'brand' => null,
                     'merchant_name' => $item->store->name,
-                    'url' => $item->variant->product->url,
+                    'url' => $item->book->url,
                 ];
             })->toArray();
 

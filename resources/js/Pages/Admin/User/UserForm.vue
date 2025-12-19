@@ -214,12 +214,12 @@ const submit = () => {
             <div class="flex flex-col w-full gap-y-4 gap-x-6 sm:flex-row">
                 <div class="flex flex-col w-full max-w-3xl gap-4">
                     <!-- Name -->
-                    <InputGroup id="name" label="Name" required>
+                    <InputGroup id="name" label="Full Name" required>
                         <TextInput
                             id="name"
                             v-model="form.name"
                             type="text"
-                            placeholder="Enter Name"
+                            placeholder="Enter full name"
                             required
                             :autofocus="true"
                             :error="form.errors.name"
@@ -233,7 +233,7 @@ const submit = () => {
                             id="username"
                             v-model="form.username"
                             type="text"
-                            placeholder="Enter Username"
+                            placeholder="Enter username"
                             required
                             :error="form.errors.username"
                             @update:modelValue="form.errors.username = null"
@@ -246,7 +246,7 @@ const submit = () => {
                             id="email"
                             v-model="form.email"
                             type="email"
-                            placeholder="Enter Email"
+                            placeholder="Enter email"
                             required
                             :error="form.errors.email"
                             @update:modelValue="form.errors.email = null"
@@ -259,7 +259,7 @@ const submit = () => {
                             id="phone"
                             v-model="form.phone"
                             type="tel"
-                            placeholder="Enter Phone Number"
+                            placeholder="Enter phone number"
                             required
                             :error="form.errors.phone"
                             @update:modelValue="form.errors.phone = null"
@@ -272,7 +272,7 @@ const submit = () => {
                             id="address"
                             v-model="form.address"
                             type="text"
-                            placeholder="Enter Address"
+                            placeholder="Enter address"
                             autocomplete="address"
                             :rows="1"
                             :error="form.errors.address"
@@ -287,7 +287,7 @@ const submit = () => {
                             v-model="form.profile_photo_path"
                             type="file"
                             accept="image/*"
-                            placeholder="Upload Profile Photo"
+                            placeholder="Upload profile photo"
                             width="max-w-[120px]"
                             height="h-[120px]"
                             :error="form.errors.profile_photo_path"
@@ -318,7 +318,7 @@ const submit = () => {
                             "
                             :searchable="true"
                             required
-                            placeholder="Select Role"
+                            placeholder="Select role"
                             :error="form.errors.role"
                             @update:modelValue="
                                 (value) => {
@@ -340,7 +340,7 @@ const submit = () => {
                             id="password"
                             v-model="form.password"
                             type="password"
-                            placeholder="Enter Password"
+                            placeholder="Enter password"
                             :error="form.errors.password"
                             @update:modelValue="form.errors.password = null"
                         />
@@ -355,7 +355,7 @@ const submit = () => {
                             id="password_confirmation"
                             v-model="form.password_confirmation"
                             type="password"
-                            placeholder="Enter Password Confirmation"
+                            placeholder="Enter password confirmation"
                             :error="form.errors.password_confirmation"
                             @update:modelValue="
                                 form.errors.password_confirmation = null

@@ -59,7 +59,7 @@ function getStoreVouchers(storeId = null) {
 function checkVoucherCode(voucherCode: string, storeId = null) {
     axios
         .post(
-            route("api.check-voucher"),
+            "/api/check-voucher",
             {
                 code: voucherCode,
                 store_id: storeId,

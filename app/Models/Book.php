@@ -31,6 +31,12 @@ class Book extends Model
         'is_oos' => 'boolean',
     ];
 
+    // Additional attributes
+    public function getUrlAttribute()
+    {
+        return url('/book/' . $this->slug);
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'book_category', 'book_id', 'category_id');

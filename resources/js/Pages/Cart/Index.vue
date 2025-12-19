@@ -2,11 +2,17 @@
 import LandingSection from "@/Components/LandingSection.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import LandingLayout from "@/Layouts/LandingLayout.vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 import { useCartStore } from "@/stores/cart-store";
 import axios from "axios";
 import CartGroup from "./CartGroup.vue";
 import CartForm from "./CartForm.vue";
+import OrderForm from "./OrderForm.vue";
+import { useOrderStore } from "@/stores/order-store";
+import CustomPageProps from "@/types/model/CustomPageProps";
+import { computed, ref } from "vue";
+import GuestForm from "./GuestForm.vue";
+import DetailRow from "@/Components/DetailRow.vue";
 
 const cartStore = useCartStore();
 
@@ -43,33 +49,45 @@ function syncCart() {
 }
 syncCart();
 
-function formatPrice(price = 0) {
-    return price.toLocaleString("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        minimumFractionDigits: 0,
-    });
-}
+const page = usePage<CustomPageProps>();
+const orderStore = useOrderStore();
+
+const customer = computed(() => {
+    return page.props.auth.user
+        ? {
+              name: page.props.auth.user.name,
+              username: page.props.auth.user.username,
+              email: page.props.auth.user.email,
+              phone: page.props.auth.user.phone,
+          }
+        : {
+              name: orderStore.form.guest_name,
+              email: orderStore.form.guest_email,
+              phone: orderStore.form.guest_phone,
+          };
+});
+
+const showGuestForm = ref(false);
 </script>
 
 <template>
-    <LandingLayout :title="`Cart (${cartStore.groups.length})`">
+    <LandingLayout :title="`Cart (${cartStore.items.length})`">
         <div
             class="p-6 sm:p-12 md:px-[100px] md:py-[60px] flex flex-col gap-2 sm:gap-3"
             :class="{
                 'min-h-[60vh] items-center justify-center gap-4':
-                    cartStore.groups.length == 0,
+                    cartStore.items.length == 0,
             }"
         >
             <h1 class="text-xl font-bold text-start sm:text-center">
                 {{
-                    cartStore.groups.length > 0
-                        ? `Cart (${cartStore.groups.length} item)`
+                    cartStore.items.length > 0
+                        ? `Cart (${cartStore.items.length} item)`
                         : "Cart is Empty"
                 }}
             </h1>
             <div
-                v-if="cartStore.groups.length == 0"
+                v-if="cartStore.items.length == 0"
                 class="flex flex-col items-center gap-y-6"
             >
                 <p class="text-sm text-center text-gray-700 sm:text-base">
@@ -109,7 +127,49 @@ function formatPrice(price = 0) {
                     </div>
 
                     <!-- Detail Order -->
-                    <CartForm />
+                    <div class="flex flex-col w-full gap-6 lg:max-w-sm">
+                        <div
+                            class="flex flex-col w-full p-4 outline -outline-offset-1 outline-gray-300 rounded-2xl gap-y-4"
+                        >
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-800">
+                                    Customer
+                                </h3>
+                                <!-- <button
+                                    v-if="!page.props.auth.user"
+                                    class="text-sm text-blue-500 hover:underline"
+                                    @click="showGuestForm = true"
+                                >
+                                    Ubah
+                                </button> -->
+                            </div>
+                            <template v-if="page.props.auth.user">
+                                <DetailRow name="Nama" :value="customer.name" />
+                                <DetailRow
+                                    name="Username"
+                                    :value="customer.username"
+                                />
+                                <DetailRow
+                                    name="Email"
+                                    :value="customer.email"
+                                />
+                                <DetailRow
+                                    name="No. HP"
+                                    :value="customer.phone"
+                                />
+                            </template>
+
+                            <GuestForm
+                                v-else
+                                :title="null"
+                                :show-submit-button="false"
+                                @close="showGuestForm = false"
+                                class="mb-1"
+                            />
+                        </div>
+
+                        <OrderForm />
+                    </div>
                 </div>
             </LandingSection>
         </div>

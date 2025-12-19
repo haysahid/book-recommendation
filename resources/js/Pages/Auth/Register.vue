@@ -154,12 +154,12 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name" value="Full Name" />
                 <TextInput
                     id="name"
                     v-model="form.name"
                     type="text"
-                    placeholder="Enter Fullname"
+                    placeholder="Enter full name"
                     class="mt-1 block w-full"
                     required
                     autofocus
@@ -174,7 +174,7 @@ const submit = () => {
                     id="username"
                     v-model="form.username"
                     type="text"
-                    placeholder="Enter Username"
+                    placeholder="Enter username"
                     class="mt-1 block w-full"
                     required
                     autocomplete="username"
@@ -188,7 +188,7 @@ const submit = () => {
                     id="password"
                     v-model="form.password"
                     type="password"
-                    placeholder="Enter Password"
+                    placeholder="Enter password"
                     class="mt-1 block w-full"
                     required
                     autocomplete="new-password"
@@ -205,7 +205,7 @@ const submit = () => {
                     id="password_confirmation"
                     v-model="form.password_confirmation"
                     type="password"
-                    placeholder="Enter Password Confirmation"
+                    placeholder="Enter password confirmation"
                     class="mt-1 block w-full"
                     required
                     autocomplete="new-password"

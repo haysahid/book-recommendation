@@ -57,7 +57,7 @@ function formatPrice(price = 0) {
         </div>
 
         <!-- Items -->
-        <div v-if="props.cartGroup.items?.length > 0">
+        <div v-if="props.cartGroup.items?.length > 0" class="w-full">
             <div
                 v-for="(item, index) in props.cartGroup.items"
                 :key="index"

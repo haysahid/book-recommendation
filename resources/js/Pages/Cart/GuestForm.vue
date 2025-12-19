@@ -9,11 +9,15 @@ import { nextTick, onMounted } from "vue";
 const props = defineProps({
     title: {
         type: String || null,
-        default: "Data Pemesan",
+        default: "Customer",
     },
     isEdit: {
         type: Boolean,
         default: false,
+    },
+    showSubmitButton: {
+        type: Boolean,
+        default: true,
     },
 });
 
@@ -51,15 +55,15 @@ onMounted(() => {
                 {{ title }}
             </h3>
 
-            <div class="flex flex-col gap-y-3">
-                <InputGroup label="Nama Lengkap" id="guest-name">
+            <div class="flex flex-col gap-y-4">
+                <InputGroup label="Full Name" id="guest-name">
                     <TextInput
                         id="guest-name"
                         v-model="form.guest_name"
                         type="text"
-                        placeholder="Masukkan nama"
+                        placeholder="Enter full name"
                         required
-                        :autofocus="true"
+                        :autofocus="false"
                         autocomplete="name"
                     />
                 </InputGroup>
@@ -69,26 +73,30 @@ onMounted(() => {
                         id="email"
                         v-model="form.guest_email"
                         type="email"
-                        placeholder="Masukkan alamat email"
+                        placeholder="Enter email address"
                         required
                         autocomplete="email"
                     />
                 </InputGroup>
 
-                <InputGroup label="No. Telepon (WA)" id="phone">
+                <InputGroup label="Phone Number (WA)" id="phone">
                     <TextInput
                         id="phone"
                         v-model="form.guest_phone"
                         type="text"
-                        placeholder="Masukkan no. telepon (WA)"
+                        placeholder="Enter phone number (WA)"
                         required
                         autocomplete="phone"
                     />
                 </InputGroup>
             </div>
 
-            <PrimaryButton type="submit" class="mt-3">
-                {{ isEdit ? "Simpan" : "Lanjutkan" }}
+            <PrimaryButton
+                v-if="props.showSubmitButton"
+                type="submit"
+                class="mt-3"
+            >
+                {{ isEdit ? "Save" : "Continue" }}
             </PrimaryButton>
         </div>
     </form>

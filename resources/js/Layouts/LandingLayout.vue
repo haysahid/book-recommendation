@@ -1,6 +1,5 @@
 <script setup>
 import { Head } from "@inertiajs/vue3";
-import LandingFooter from "@/Components/LandingFooter.vue";
 import LandingHeader from "@/Components/LandingHeader.vue";
 import { ref, computed, onMounted } from "vue";
 import { scrollToTop } from "@/plugins/helpers";
