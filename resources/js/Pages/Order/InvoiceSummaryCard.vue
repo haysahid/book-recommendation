@@ -33,13 +33,13 @@ const isCopied = ref(false);
 
 <template>
     <div
-        class="flex flex-col w-full gap-4 p-4 xl:max-w-sm outline outline-1 -outline-offset-1 outline-gray-300 rounded-2xl gap-y-3"
+        class="flex flex-col w-full gap-4 p-4 xl:max-w-sm outline -outline-offset-1 outline-gray-300 rounded-2xl gap-y-3"
     >
-        <h3 class="font-semibold text-gray-700">Ringkasan Pemesanan</h3>
+        <h3 class="font-semibold text-gray-700">Order Summary</h3>
         <div>
             <div class="flex flex-col gap-2">
                 <OrderContentRow
-                    label="No. Invoice"
+                    label="Invoice Code"
                     :value="props.invoice.code"
                 >
                     <template #value>
@@ -51,10 +51,8 @@ const isCopied = ref(false);
                             </p>
                             <Tooltip id="copy-code-tooltip" placement="bottom">
                                 <template #content>
-                                    <p class="text-center min-w-[80px]">
-                                        {{
-                                            isCopied ? "Disalin!" : "Salin Kode"
-                                        }}
+                                    <p class="text-center min-w-20">
+                                        {{ isCopied ? "Copied!" : "Copy Code" }}
                                     </p>
                                 </template>
 
@@ -86,7 +84,7 @@ const isCopied = ref(false);
                 </OrderContentRow>
 
                 <OrderContentRow
-                    label="Tgl. Pemesanan"
+                    label="Order Date"
                     :value="$formatDate(props.invoice.created_at)"
                 />
                 <OrderContentRow label="Status" :value="props.invoice.status">
@@ -99,11 +97,11 @@ const isCopied = ref(false);
                     </template>
                 </OrderContentRow>
                 <OrderContentRow
-                    label="Metode Pembayaran"
+                    label="Payment Method"
                     :value="props.invoice.transaction.payment_method.name"
                 />
                 <OrderContentRow
-                    label="Metode Pengiriman"
+                    label="Shipping Method"
                     :value="props.invoice.transaction.shipping_method.name"
                 />
 
@@ -120,18 +118,18 @@ const isCopied = ref(false);
                     :value="$formatCurrency(subTotal)"
                 />
                 <OrderContentRow
-                    label="Voucher Diskon"
+                    label="Voucher Discount"
                     :value="`- ${$formatCurrency(discount)}`"
                 />
                 <OrderContentRow
-                    label="Biaya Pengiriman"
+                    label="Shipping Cost"
                     :value="$formatCurrency(props.invoice.shipping_cost)"
                 />
                 <div class="flex items-center justify-between">
                     <p class="font-bold text-gray-700">
                         {{
                             props.invoice.status !== "paid"
-                                ? "Total Tagihan"
+                                ? "Total Bill"
                                 : "Total"
                         }}
                     </p>

@@ -29,7 +29,7 @@ const emit = defineEmits(["click"]);
             'bg-transparent! p-0! hover:bg-transparent!': !showBackground,
             'hover:bg-white/20 focus:bg-white/10':
                 showBackground && invertColor,
-            'bg-primary/10 hover:bg-primary/10! focus:bg-primary/20':
+            'bg-secondary/10 hover:bg-secondary/10! focus:bg-secondary/20':
                 showBackground && active,
         }"
         @click="emit('click')"
@@ -45,7 +45,7 @@ const emit = defineEmits(["click"]);
                 'group-hover:fill-gray-500/80': !showBackground,
                 'fill-white/80 group-hover:fill-white/80':
                     showBackground && invertColor,
-                'fill-primary group-hover:fill-primary': active,
+                'fill-secondary group-hover:fill-secondary': active,
             }"
         >
             <path

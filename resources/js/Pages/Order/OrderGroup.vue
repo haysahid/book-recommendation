@@ -129,7 +129,7 @@ const detailLink =
                     <div
                         class="flex sm:flex-col gap-x-0.5 items-center sm:items-start justify-between sm:justify-start w-full"
                     >
-                        <p class="text-sm text-gray-700">No. Invoice</p>
+                        <p class="text-sm text-gray-700">Invoice Code</p>
                         <div class="flex items-center gap-0.5">
                             <p class="text-sm font-semibold text-gray-700">
                                 {{ props.orderGroup.invoice?.code }}
@@ -139,10 +139,8 @@ const detailLink =
                                 placement="bottom"
                             >
                                 <template #content>
-                                    <p class="text-center min-w-[80px]">
-                                        {{
-                                            isCopied ? "Disalin!" : "Salin Kode"
-                                        }}
+                                    <p class="text-center min-w-20">
+                                        {{ isCopied ? "Copied!" : "Copy Code" }}
                                     </p>
                                 </template>
 
@@ -181,7 +179,7 @@ const detailLink =
                 <table class="text-sm">
                     <tbody class="text-gray-800 [&>tr>td]:py-0.5">
                         <tr class="sm:hidden">
-                            <td class="sm:text-end">No. Invoice</td>
+                            <td class="sm:text-end">Invoice Code</td>
                             <td class="text-end">
                                 <div
                                     class="flex items-center justify-end gap-0.5"
@@ -196,11 +194,11 @@ const detailLink =
                                         placement="bottom"
                                     >
                                         <template #content>
-                                            <p class="text-center min-w-[80px]">
+                                            <p class="text-center min-w-20">
                                                 {{
                                                     isCopied
-                                                        ? "Disalin!"
-                                                        : "Salin Kode"
+                                                        ? "Copied!"
+                                                        : "Copy Code"
                                                 }}
                                             </p>
                                         </template>
@@ -237,7 +235,7 @@ const detailLink =
                             </td>
                         </tr>
                         <tr>
-                            <td class="sm:text-end">Jumlah</td>
+                            <td class="sm:text-end">Subtotal</td>
                             <td class="text-end">
                                 {{
                                     $formatCurrency(
@@ -248,7 +246,7 @@ const detailLink =
                             </td>
                         </tr>
                         <tr>
-                            <td class="sm:text-end">Voucher Diskon</td>
+                            <td class="sm:text-end">Voucher Discount</td>
                             <td class="text-end">
                                 -
                                 {{
@@ -260,7 +258,7 @@ const detailLink =
                             </td>
                         </tr>
                         <tr>
-                            <td class="sm:text-end">Biaya Pengiriman</td>
+                            <td class="sm:text-end">Shipping Cost</td>
                             <td class="text-end">
                                 {{
                                     $formatCurrency(
@@ -272,7 +270,7 @@ const detailLink =
                         </tr>
                         <tr>
                             <td class="font-semibold sm:text-end">
-                                Total Harga
+                                Total Price
                             </td>
                             <td class="font-semibold text-end ps-8">
                                 {{

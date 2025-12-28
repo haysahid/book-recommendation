@@ -51,16 +51,16 @@ const currentPath = window.location.pathname;
     <div
         class="flex flex-col w-full gap-4 p-4 xl:max-w-sm outline -outline-offset-1 outline-gray-300 rounded-2xl gap-y-3"
     >
-        <h3 class="font-semibold text-gray-700">Ringkasan Transaksi</h3>
+        <h3 class="font-semibold text-gray-700">Transaction Summary</h3>
         <div>
             <div class="flex flex-col gap-2">
                 <OrderContentRow
                     v-if="currentPath === '/my-store/transaction/edit'"
-                    label="Jenis Transaksi"
+                    label="Transaction Type"
                     :value="props.transaction.type?.name"
                 />
 
-                <OrderContentRow label="Kode Transaksi">
+                <OrderContentRow label="Transaction Code">
                     <template #value>
                         <div class="flex items-center gap-0.5">
                             <p
@@ -71,9 +71,7 @@ const currentPath = window.location.pathname;
                             <Tooltip id="copy-code-tooltip" placement="bottom">
                                 <template #content>
                                     <p class="text-center min-w-20">
-                                        {{
-                                            isCopied ? "Disalin!" : "Salin Kode"
-                                        }}
+                                        {{ isCopied ? "Copied!" : "Copy Code" }}
                                     </p>
                                 </template>
 
@@ -107,7 +105,7 @@ const currentPath = window.location.pathname;
                 </OrderContentRow>
 
                 <OrderContentRow
-                    label="Tgl. Transaksi"
+                    label="Transaction Date"
                     :value="$formatDate(props.transaction.created_at)"
                 />
                 <OrderContentRow
@@ -124,11 +122,11 @@ const currentPath = window.location.pathname;
                     </template>
                 </OrderContentRow>
                 <OrderContentRow
-                    label="Metode Pembayaran"
+                    label="Payment Method"
                     :value="props.transaction.payment_method.name"
                 />
                 <OrderContentRow
-                    label="Metode Pengiriman"
+                    label="Shipping Method"
                     :value="props.transaction.shipping_method.name"
                 />
 
@@ -145,18 +143,18 @@ const currentPath = window.location.pathname;
                     :value="$formatCurrency(subTotal)"
                 />
                 <OrderContentRow
-                    label="Voucher Diskon"
+                    label="Voucher Discount"
                     :value="`- ${$formatCurrency(discount)}`"
                 />
                 <OrderContentRow
-                    label="Biaya Pengiriman"
+                    label="Shipping Cost"
                     :value="$formatCurrency(props.transaction.shipping_cost)"
                 />
                 <div class="flex items-center justify-between">
                     <p class="font-bold text-gray-700">
                         {{
                             props.transaction.status !== "paid"
-                                ? "Total Tagihan"
+                                ? "Total Bill"
                                 : "Total"
                         }}
                     </p>

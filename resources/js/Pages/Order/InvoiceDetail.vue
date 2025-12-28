@@ -53,22 +53,22 @@ const emit = defineEmits(["continuePayment"]);
                         $page.props.selected_store != null
                     "
                 >
-                    Pelanggan belum melakukan pembayaran.
+                    The customer has not made the payment yet.
                 </p>
                 <p v-else>
-                    Segera
+                    Please
                     <span
                         class="font-semibold cursor-pointer hover:underline"
                         @click="emit('continuePayment')"
-                        >lanjutkan pembayaran</span
+                        >continue the payment</span
                     >
-                    agar pesanan tidak dibatalkan.
+                    to avoid order cancellation.
                 </p>
             </template>
         </InfoHint>
 
         <!-- Details -->
-        <LandingSection class="!flex-col !justify-start !min-h-[56vh]">
+        <LandingSection class="flex-col! justify-start! min-h-[56vh]!">
             <div
                 class="flex flex-col-reverse items-center justify-center w-full gap-5 mx-auto xl:flex-row xl:items-start max-w-7xl"
                 :class="{
@@ -89,15 +89,15 @@ const emit = defineEmits(["continuePayment"]);
                 <div class="flex flex-col w-full gap-5 xl:max-w-sm">
                     <!-- Summary -->
                     <div
-                        class="flex flex-col w-full p-4 outline outline-1 -outline-offset-1 outline-gray-300 rounded-2xl gap-y-3"
+                        class="flex flex-col w-full p-4 outline -outline-offset-1 outline-gray-300 rounded-2xl gap-y-3"
                     >
                         <div class="flex items-center justify-between">
                             <h3 class="font-semibold text-gray-800">
-                                Data Pemesan
+                                Customer Data
                             </h3>
                         </div>
                         <DetailRow
-                            name="Nama"
+                            name="Name"
                             :value="props.invoice.transaction.user.name"
                         />
                         <DetailRow
@@ -105,7 +105,7 @@ const emit = defineEmits(["continuePayment"]);
                             :value="props.invoice.transaction.user.email"
                         />
                         <DetailRow
-                            name="No. HP"
+                            name="Phone Number"
                             :value="props.invoice.transaction.user.phone"
                         />
                     </div>

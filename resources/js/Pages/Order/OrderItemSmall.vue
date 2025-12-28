@@ -31,18 +31,18 @@ function formatPrice(price = 0) {
     >
         <div class="flex items-start w-full gap-x-4">
             <div
-                class="flex items-center justify-center flex-shrink-0 gap-4 max-sm:mt-1"
+                class="flex items-center justify-center shrink-0 gap-4 max-sm:mt-1"
             >
                 <!-- Image -->
                 <img
                     v-if="props.item.image"
                     :src="getImageUrl(props.item.image)"
-                    alt="Product Image"
-                    class="object-cover size-[60px] sm:size-[80px] rounded-lg outline outline-1 outline-gray-300"
+                    alt="Product"
+                    class="object-cover size-[60px] sm:size-20 rounded-lg outline outline-gray-300"
                 />
                 <div
                     v-else
-                    class="flex items-center justify-center size-[60px] sm:size-[80px] bg-gray-100 rounded-lg aspect-square"
+                    class="flex items-center justify-center size-[60px] sm:size-20 bg-gray-100 rounded-lg aspect-square"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -61,33 +61,30 @@ function formatPrice(price = 0) {
             <div class="flex flex-col w-full">
                 <!-- Detail -->
                 <p class="text-sm font-medium text-gray-800 sm:text-base">
-                    {{ props.item.variant.name }}
+                    {{ props.item.book.title }}
                 </p>
 
                 <div class="flex items-center gap-x-2">
                     <p class="text-xs text-gray-800 sm:text-sm">
-                        {{
-                            formatPrice(props.item.variant.final_selling_price)
-                        }}
+                        {{ formatPrice(props.item.book.final_price) }}
                     </p>
                     <p
-                        v-if="props.item.variant.discount > 0"
+                        v-if="props.item.book.discount > 0"
                         class="text-xs text-gray-500 line-through"
                     >
-                        {{ formatPrice(props.item.variant.base_selling_price) }}
+                        {{ formatPrice(props.item.book.slice_price) }}
                     </p>
                     <DiscountTag
-                        v-if="props.item.variant.discount > 0"
-                        :discount-type="props.item.variant.discount_type"
-                        :discount="props.item.variant.discount"
-                        class="!text-xs"
+                        v-if="props.item.book.discount > 0"
+                        discount-type="percentage"
+                        :discount="props.item.book.discount"
+                        class="text-xs!"
                     />
                 </div>
 
                 <div class="flex items-center justify-between w-full gap-x-4">
                     <p class="text-sm font-semibold text-gray-800 text-end">
-                        x {{ props.item.quantity }}
-                        {{ props.item.variant.unit }}
+                        x {{ props.item.quantity }} pcs
                     </p>
                     <p class="text-sm font-semibold text-gray-800 text-end">
                         {{ $formatCurrency(props.item.subtotal) }}

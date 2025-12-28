@@ -6,8 +6,9 @@ import HamburgerButton from "./HamburgerButton.vue";
 import CustomPageProps from "@/types/model/CustomPageProps";
 import HeaderResponsiveMenu from "./HeaderResponsiveMenu.vue";
 import HeaderMenu from "./HeaderMenu.vue";
-import CartButton from "./CartButton.vue";
 import FavoriteButton from "./FavoriteButton.vue";
+import CartButton from "./CartButton.vue";
+import MyOrderButton from "./MyOrderButton.vue";
 import Tooltip from "./Tooltip.vue";
 import { useCartStore } from "@/stores/cart-store";
 import { useFavoriteStore } from "@/stores/favorite-store";
@@ -54,6 +55,8 @@ const invertColor = computed(() => {
 
 const cartStore = useCartStore();
 const favoriteStore = useFavoriteStore();
+
+const currentPath = window.location.pathname;
 </script>
 
 <template>
@@ -127,16 +130,6 @@ const favoriteStore = useFavoriteStore();
 
                         <div class="flex items-center gap-2">
                             <div class="hidden sm:flex gap-2">
-                                <Tooltip id="cart-button">
-                                    <template #content> Cart </template>
-
-                                    <Link href="/cart">
-                                        <CartButton
-                                            :length="cartStore.items.length"
-                                            :invertColor="invertColor"
-                                        />
-                                    </Link>
-                                </Tooltip>
                                 <Tooltip
                                     id="favorite-button"
                                     backgroundColor="bg-pink-500"
@@ -146,6 +139,38 @@ const favoriteStore = useFavoriteStore();
                                         <FavoriteButton
                                             :length="favoriteStore.books.length"
                                             :invertColor="invertColor"
+                                            :active="
+                                                currentPath.includes(
+                                                    '/favorite'
+                                                )
+                                            "
+                                        />
+                                    </Link>
+                                </Tooltip>
+                                <Tooltip id="cart-button">
+                                    <template #content> Cart </template>
+
+                                    <Link href="/cart">
+                                        <CartButton
+                                            :length="cartStore.items.length"
+                                            :invertColor="invertColor"
+                                            :active="
+                                                currentPath.includes('/cart')
+                                            "
+                                        />
+                                    </Link>
+                                </Tooltip>
+                                <Tooltip id="tooltip-my-order">
+                                    <template #content> Orders </template>
+                                    <Link href="/my-order">
+                                        <MyOrderButton
+                                            v-if="$page.props.auth.user"
+                                            :invertColor="invertColor"
+                                            :active="
+                                                currentPath.includes(
+                                                    '/my-order'
+                                                )
+                                            "
                                         />
                                     </Link>
                                 </Tooltip>
@@ -195,19 +220,31 @@ const favoriteStore = useFavoriteStore();
                 </li>
 
                 <li>
-                    <Link href="/cart">
-                        <CartButton
-                            :length="cartStore.items.length"
+                    <Link href="/favorite">
+                        <FavoriteButton
+                            :length="favoriteStore.books.length"
                             :invertColor="invertColor"
+                            :active="currentPath.includes('/favorite')"
                         />
                     </Link>
                 </li>
 
                 <li>
-                    <Link href="/favorite">
-                        <FavoriteButton
-                            :length="favoriteStore.books.length"
+                    <Link href="/cart">
+                        <CartButton
+                            :length="cartStore.items.length"
                             :invertColor="invertColor"
+                            :active="currentPath.includes('/cart')"
+                        />
+                    </Link>
+                </li>
+
+                <li>
+                    <Link href="/my-order">
+                        <MyOrderButton
+                            :length="cartStore.items.length"
+                            :invertColor="invertColor"
+                            :active="currentPath.includes('/my-order')"
                         />
                     </Link>
                 </li>

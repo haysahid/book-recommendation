@@ -117,12 +117,7 @@ async function showSnap() {
                     )
                     .then((response) => {
                         resumePaymentStatus.value = "success";
-                        router.visit(
-                            route("my-order.detail", {
-                                transaction_code:
-                                    props.invoice.transaction.code,
-                            })
-                        );
+                        router.visit(`/my-order/${props.invoice.code}`);
                     })
                     .catch((error) => {
                         resumePaymentStatus.value = "error";
@@ -170,16 +165,13 @@ async function changePaymentType() {
 }
 
 onMounted(() => {
-    if (route().params?.transaction_status == "settlement") {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("transaction_status") === "settlement") {
         // Reload the page
-        router.visit(
-            route("my-order.detail", {
-                transaction_code: props.invoice.transaction.code,
-            })
-        );
+        router.visit(`/my-order/${props.invoice.code}`);
     } else if (
-        route().params?.show_snap == "1" &&
-        props.invoice.status == "pending"
+        urlParams.get("show_snap") === "1" &&
+        props.invoice.status === "pending"
     ) {
         showSnap();
     }
@@ -192,12 +184,11 @@ onMounted(() => {
             class="p-6 sm:p-12 md:px-[100px] md:py-[60px] flex flex-col gap-2 sm:gap-3 sm:items-center bg-secondary-box"
         >
             <h1 class="text-xl font-bold text-start sm:text-center">
-                Detail Pesanan Anda
+                Your Order Details
             </h1>
 
             <p class="max-w-lg text-sm text-gray-700 text-start sm:text-center">
-                Terima kasih telah melakukan pemesanan. Silakan cek detail
-                pesanan Anda di bawah ini.
+                Thank you for your order. Please check your order details below.
             </p>
         </div>
 
@@ -213,14 +204,14 @@ onMounted(() => {
                     props.invoice.transaction.payment_method.slug === 'cod')
             "
             :isShowingFromMyStore="false"
-            class="p-6 !pt-0 sm:p-12 md:p-[100px] flex flex-col gap-4 mt-6"
+            class="p-6 pt-0! sm:p-12 md:p-[100px] flex flex-col gap-4 mt-6"
         >
             <template #additionalInfo>
                 <!-- Payment -->
                 <template v-if="showPaymentActions">
                     <div class="my-2 border-b border-gray-300"></div>
                     <OrderContentRow
-                        label="Status Pembayaran"
+                        label="Payment Status"
                         :value="payment?.status"
                     >
                         <template #value>
@@ -232,7 +223,7 @@ onMounted(() => {
                     </OrderContentRow>
                     <OrderContentRow
                         v-if="payment?.midtrans_response"
-                        label="Tipe Pembayaran"
+                        label="Payment Type"
                         :value="
                             payment?.midtrans_response?.payment_type
                                 ?.split('_')
@@ -246,14 +237,14 @@ onMounted(() => {
                     />
                     <OrderContentRow
                         v-if="payment?.midtrans_response?.va_numbers"
-                        label="Tujuan Pembayaran"
+                        label="Payment Destination"
                         :value="
                             payment?.midtrans_response?.va_numbers[0]?.bank?.toUpperCase()
                         "
                     />
                     <OrderContentRow
                         v-if="payment?.midtrans_response"
-                        label="Batas Akhir Pembayaran"
+                        label="Payment Deadline"
                         :value="payment?.midtrans_response?.expiry_time"
                     />
                 </template>
@@ -267,15 +258,15 @@ onMounted(() => {
                 >
                     <div class="my-2 border-b border-gray-300"></div>
                     <OrderContentRow
-                        label="Provinsi"
+                        label="Province"
                         :value="props.invoice.transaction.province_name"
                     />
                     <OrderContentRow
-                        label="Kota"
+                        label="City"
                         :value="props.invoice.transaction.city_name"
                     />
                     <OrderContentRow
-                        label="Alamat"
+                        label="Address"
                         :value="props.invoice.transaction.address"
                     />
                 </template>
@@ -289,7 +280,7 @@ onMounted(() => {
                         :disabled="resumePaymentStatus === 'loading'"
                         @click="showSnap()"
                     >
-                        Lanjutkan Pembayaran
+                        Continue Payment
                     </PrimaryButton>
                     <SecondaryButton
                         v-if="payment?.midtrans_response"
@@ -297,7 +288,7 @@ onMounted(() => {
                         :disabled="resumePaymentStatus === 'loading'"
                         @click="changePaymentType()"
                     >
-                        Ubah Tipe Pembayaran
+                        Change Payment Type
                     </SecondaryButton>
                 </div>
             </template>

@@ -133,7 +133,7 @@ const showGuestForm = ref(false);
                         >
                             <div class="flex items-center justify-between">
                                 <h3 class="font-semibold text-gray-800">
-                                    Customer
+                                    Customer Data
                                 </h3>
                                 <!-- <button
                                     v-if="!page.props.auth.user"
@@ -154,7 +154,7 @@ const showGuestForm = ref(false);
                                     :value="customer.email"
                                 />
                                 <DetailRow
-                                    name="No. HP"
+                                    name="Phone Number"
                                     :value="customer.phone"
                                 />
                             </template>

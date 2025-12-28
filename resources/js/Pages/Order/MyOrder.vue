@@ -28,7 +28,6 @@ const invoices = props.invoices.data;
 </script>
 
 <template>
-    Test
     <LandingLayout title="Pesanan Saya">
         <div
             class="p-6 sm:p-12 md:px-[100px] md:py-[60px] flex flex-col gap-2 sm:gap-3 sm:items-center"
@@ -97,9 +96,9 @@ const invoices = props.invoices.data;
                             class="flex flex-col gap-4 mt-4"
                         >
                             <p class="text-xs text-gray-500 sm:text-sm">
-                                Menampilkan {{ props.invoices.from }} -
-                                {{ props.invoices.to }} dari
-                                {{ props.invoices.total }} item
+                                Showing {{ props.invoices.from }} -
+                                {{ props.invoices.to }} of
+                                {{ props.invoices.total }} items
                             </p>
                             <DefaultPagination :links="props.invoices.links" />
                         </div>

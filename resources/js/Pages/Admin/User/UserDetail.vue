@@ -159,9 +159,9 @@ const getVouchersStatus = ref(null);
                         class="flex flex-col gap-2 mt-4"
                     >
                         <p class="text-xs text-gray-500 sm:text-sm">
-                            Menampilkan {{ pointTransactions.from }} -
-                            {{ pointTransactions.to }} dari
-                            {{ pointTransactions.total }} item
+                            Showing {{ pointTransactions.from }} -
+                            {{ pointTransactions.to }} of
+                            {{ pointTransactions.total }} items
                         </p>
                         <DefaultPagination
                             :links="pointTransactions.links"
