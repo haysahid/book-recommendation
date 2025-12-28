@@ -415,75 +415,6 @@ class OrderController extends Controller
         );
     }
 
-    public function checkoutStore(Request $request)
-    {
-        $validated = $request->validate([
-            'cart_groups' => 'required|array',
-            'cart_groups.*.store_id' => 'required|integer|exists:stores,id',
-            'cart_groups.*.voucher_code' => 'nullable|string|exists:vouchers,code',
-            'cart_groups.*.items' => 'required|array',
-            'cart_groups.*.items.*.book_id' => 'required|integer|exists:products,id',
-            'cart_groups.*.items.*.quantity' => 'required|integer|min:1',
-            'payment_method_id' => 'required|integer|exists:payment_methods,id',
-            'shipping_method_id' => 'required|integer|exists:shipping_methods,id',
-            'destination_id' => 'nullable|integer',
-            'destination_label' => 'nullable|string',
-            'province_name' => 'nullable|string',
-            'city_name' => 'nullable|string',
-            'district_name' => 'nullable|string',
-            'subdistrict_name' => 'nullable|string',
-            'zip_code' => 'nullable|string',
-            'address' => 'nullable|string',
-            'note' => 'nullable|string',
-            'voucher_code' => 'nullable|string|exists:vouchers,code',
-            'customer_id' => 'nullable|integer|exists:users,id',
-            'guest_name' => 'nullable|string|max:255',
-            'guest_email' => 'nullable|email|max:255',
-            'guest_phone' => 'nullable|string|max:20',
-        ], [
-            'cart_groups.required' => 'Keranjang harus diisi',
-            'cart_groups.*.store_id.required' => 'ID toko harus diisi',
-            'cart_groups.*.store_id.exists' => 'Toko tidak ditemukan',
-            'cart_groups.*.voucher_code.string' => 'Kode voucher harus berupa string',
-            'cart_groups.*.voucher_code.exists' => 'Kode voucher tidak ditemukan',
-            'cart_groups.*.items.required' => 'Item keranjang harus diisi',
-            'cart_groups.*.items.*.book_id.required' => 'ID buku harus diisi',
-            'cart_groups.*.items.*.book_id.exists' => 'Buku tidak ditemukan',
-            'cart_groups.*.items.*.quantity.min' => 'Jumlah buku minimal 1',
-            'payment_method_id.required' => 'Metode pembayaran harus diisi',
-            'payment_method_id.exists' => 'Metode pembayaran tidak ditemukan',
-            'shipping_method_id.required' => 'Metode pengiriman harus diisi',
-            'shipping_method_id.exists' => 'Metode pengiriman tidak ditemukan',
-            'destination_id.integer' => 'ID tujuan harus berupa angka',
-            'destination_label.string' => 'Label tujuan harus berupa string',
-            'province_name.string' => 'Nama provinsi harus berupa string',
-            'city_name.string' => 'Nama kota harus berupa string',
-            'district_name.string' => 'Nama kecamatan harus berupa string',
-            'subdistrict_name.string' => 'Nama kelurahan harus berupa string',
-            'zip_code.string' => 'Kode pos harus berupa string',
-            'address.string' => 'Alamat harus berupa string',
-            'note.string' => 'Catatan harus berupa string',
-            'voucher_code.string' => 'Kode voucher harus berupa string',
-            'voucher_code.exists' => 'Kode voucher tidak ditemukan',
-            'customer_id.integer' => 'ID pelanggan harus berupa angka',
-            'customer_id.exists' => 'Pelanggan tidak ditemukan',
-            'guest_name.string' => 'Nama harus berupa string',
-            'guest_name.max' => 'Nama maksimal 255 karakter',
-            'guest_email.email' => 'Email tidak valid',
-            'guest_email.max' => 'Email maksimal 255 karakter',
-            'guest_phone.string' => 'Nomor telepon harus berupa string',
-            'guest_phone.max' => 'Nomor telepon maksimal 20 karakter',
-        ]);
-
-        return $this->checkoutUseCase->execute(
-            data: $validated,
-            isStoreCheckout: true,
-        )->fold(
-            onSuccess: fn($data, $code) => ResponseFormatter::success($data, 'Pesanan berhasil dibuat', $code),
-            onError: fn($error, $code) => ResponseFormatter::error($error, $code)
-        );
-    }
-
     public function cancelOrder(Request $request)
     {
         $validated = $request->validate([
@@ -678,42 +609,6 @@ class OrderController extends Controller
 
             return ResponseFormatter::error(
                 'Gagal mengonfirmasi pembayaran: ' . $e->getMessage(),
-                500
-            );
-        }
-    }
-
-    public function changeStatus(Request $request)
-    {
-        $validated = $request->validate([
-            'invoice_id' => 'required|integer|exists:invoices,id',
-            'status' => 'required|string|in:pending,paid,processing,completed,cancelled',
-        ]);
-
-        try {
-            DB::beginTransaction();
-
-            $invoice = Invoice::findOrFail($validated['invoice_id']);
-            $invoice->status = $validated['status'];
-            $invoice->save();
-
-            DB::commit();
-
-            return ResponseFormatter::success(
-                $invoice,
-                'Status transaksi berhasil diubah',
-                200
-            );
-        } catch (Exception $e) {
-            DB::rollBack();
-
-            Log::error('Change status failed: ' . $e->getMessage(), [
-                'user_id' => Auth::id(),
-                'transaction_id' => $validated['transaction_id'],
-            ]);
-
-            return ResponseFormatter::error(
-                'Gagal mengubah status transaksi: ' . $e->getMessage(),
                 500
             );
         }

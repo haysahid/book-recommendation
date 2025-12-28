@@ -36,8 +36,8 @@ const showDetailButton = ["/order-success", "/order-success-guest"].includes(
 );
 
 const detailLink =
-    currentPath === "/my-store/transaction/edit"
-        ? `/my-store/order/edit/${props.orderGroup.invoice?.id}`
+    currentPath === "/admin/transaction/edit"
+        ? `/admin/order/edit/${props.orderGroup.invoice?.id}`
         : `/${page.props.auth.user ? "my-order" : "my-order-guest"}/${
               props.orderGroup.invoice?.code
           }`;
@@ -75,7 +75,7 @@ const detailLink =
                 v-if="showDetailButton"
                 :href="detailLink"
                 :target="
-                    currentPath === '/my-store/transaction/edit'
+                    currentPath === '/admin/transaction/edit'
                         ? undefined
                         : '_blank'
                 "

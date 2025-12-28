@@ -55,7 +55,7 @@ const currentPath = window.location.pathname;
         <div>
             <div class="flex flex-col gap-2">
                 <OrderContentRow
-                    v-if="currentPath === '/my-store/transaction/edit'"
+                    v-if="currentPath === '/admin/transaction/edit'"
                     label="Transaction Type"
                     :value="props.transaction.type?.name"
                 />

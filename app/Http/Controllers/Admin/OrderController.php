@@ -79,7 +79,7 @@ class OrderController extends Controller
             invoiceId: $invoice->id,
         );
 
-        return Inertia::render('MyStore/Order/EditInvoice', $invoiceDetail);
+        return Inertia::render('Admin/Order/EditInvoice', $invoiceDetail);
     }
 
     /**
