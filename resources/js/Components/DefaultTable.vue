@@ -21,9 +21,7 @@ const props = defineProps({
         <!-- Empty State -->
         <div v-if="isEmpty" class="flex items-center justify-center py-10">
             <div class="flex flex-col items-center justify-center gap-2">
-                <p class="text-sm text-center text-gray-500">
-                    Data tidak ditemukan.
-                </p>
+                <p class="text-sm text-center text-gray-500">No data found.</p>
                 <slot name="emptyAction" />
             </div>
         </div>

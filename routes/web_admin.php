@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,4 +26,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
         Route::post('/{user}', [UserController::class, 'update'])->name('update');
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
     });
+
+    // Order
+    Route::get('/order', [OrderController::class, 'index'])->name('order');
+    Route::get('/order/create', [OrderController::class, 'create'])->name('order.create');
+    Route::get('/order/{invoice}', [OrderController::class, 'edit'])->name('order.edit');
 });

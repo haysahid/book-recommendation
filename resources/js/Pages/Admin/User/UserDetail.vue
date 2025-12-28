@@ -150,7 +150,7 @@ const getVouchersStatus = ref(null);
                                 v-if="getPointTransactionsStatus === 'loading'"
                             />
                             <p v-else class="text-sm text-center text-gray-500">
-                                Data tidak ditemukan.
+                                No data found.
                             </p>
                         </div>
                     </div>
@@ -269,7 +269,7 @@ const getVouchersStatus = ref(null);
                                 v-if="getVouchersStatus === 'loading'"
                             />
                             <p v-else class="text-sm text-center text-gray-500">
-                                Data tidak ditemukan.
+                                No data found.
                             </p>
                         </div>
                     </div>

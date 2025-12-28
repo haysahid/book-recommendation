@@ -6,7 +6,7 @@ class TfIdfRepository
 {
 
 
-    static public function cleanText(string $text): string
+    public static function cleanText(string $text): string
     {
         // Remove extra spaces and special characters, convert to lowercase
         $cleanedText = preg_replace('/[^a-zA-Z0-9\s]/', '', $text);
@@ -14,7 +14,7 @@ class TfIdfRepository
         return $cleanedText;
     }
 
-    static public function stopwordRemoval(string $text): string
+    public static function stopwordRemoval(string $text): string
     {
         $stopwordFactory = new \Sastrawi\StopWordRemover\StopWordRemoverFactory();
         $stopwordRemover = $stopwordFactory->createStopWordRemover();
@@ -22,7 +22,7 @@ class TfIdfRepository
         return $textWithoutStopwords;
     }
 
-    static public function stemming(string $text): string
+    public static function stemming(string $text): string
     {
         $stemmerFactory = new \Sastrawi\Stemmer\StemmerFactory();
         $stemmer = $stemmerFactory->createStemmer();
@@ -30,14 +30,14 @@ class TfIdfRepository
         return $stemmedText;
     }
 
-    static public function tokenize(string $text): array
+    public static function tokenize(string $text): array
     {
         // Simple whitespace tokenization
         $tokens = preg_split('/\s+/', $text);
         return $tokens;
     }
 
-    static public function preprocess(string $text): array
+    public static function preprocess(string $text): array
     {
         $cleanedText = self::cleanText($text);
         $textWithoutStopwords = self::stopwordRemoval($cleanedText);
@@ -47,7 +47,7 @@ class TfIdfRepository
         return $tokens;
     }
 
-    static public function computeDf(array $docsTokens)
+    public static function computeDf(array $docsTokens)
     {
         $N = count($docsTokens);
 
@@ -66,7 +66,7 @@ class TfIdfRepository
         return [$df, $N];
     }
 
-    static public function buildTfIdfVector(array $tokens, array $df, int $N): array
+    public static function buildTfIdfVector(array $tokens, array $df, int $N): array
     {
         // TF
         $tf = [];
@@ -89,7 +89,7 @@ class TfIdfRepository
         return $vector;
     }
 
-    static public function cosineSimilarity(array $vecA, array $vecB): float
+    public static function cosineSimilarity(array $vecA, array $vecB): float
     {
         $dotProduct = 0.0;
         $magnitudeA = 0.0;

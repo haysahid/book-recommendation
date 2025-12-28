@@ -17,6 +17,7 @@ class InvoiceRepository
         $search = null,
         $orderBy = 'created_at',
         $orderDirection = 'desc',
+        $categoryId = null,
     ) {
         $invoices = Invoice::query();
 
@@ -33,6 +34,14 @@ class InvoiceRepository
             $invoices->where('store_id', $storeId);
         }
 
+        if ($categoryId) {
+            $invoices->whereHas('transaction.items.book', function ($query) use ($categoryId) {
+                $query->whereHas('categories', function ($q) use ($categoryId) {
+                    $q->where('categories.id', $categoryId);
+                });
+            });
+        }
+
         if ($userId) {
             $invoices->whereHas('transaction', function ($query) use ($userId) {
                 $query->where('user_id', $userId);
@@ -46,6 +55,9 @@ class InvoiceRepository
                         $q->whereHas('user', function ($qq) use ($search) {
                             $qq->where('name', 'like', '%' . $search . '%');
                         });
+                    })
+                    ->orWhereHas('transaction.items.book', function ($q) use ($search) {
+                        $q->where('title', 'like', '%' . $search . '%');
                     });
             });
         }

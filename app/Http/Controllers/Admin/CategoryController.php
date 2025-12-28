@@ -44,7 +44,7 @@ class CategoryController extends Controller
             'title' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:categories,slug',
             'image' => 'nullable|string|max:255',
-            'subcategories' => 'nullable|array',
+            'sub_categories' => 'nullable|array',
         ]);
 
         CategoryRepository::createCategory($data);
@@ -81,7 +81,7 @@ class CategoryController extends Controller
             'title' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:categories,slug,' . $category->id,
             'image' => 'nullable|string|max:255',
-            'subcategories' => 'nullable|array',
+            'sub_categories' => 'nullable|array',
         ]);
 
         CategoryRepository::updateCategory($category, $data);

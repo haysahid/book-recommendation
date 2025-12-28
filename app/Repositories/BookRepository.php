@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 class BookRepository
 {
-    static public function getRecommendedBooks(
+    public static function getRecommendedBooks(
         $search = null,
         $limit = 10,
         $page = 1,
@@ -96,7 +96,7 @@ class BookRepository
         return $query->paginate($limit);
     }
 
-    static public function getBooks(
+    public static function getBooks(
         $search = null,
         $limit = 10,
         $orderBy = 'created_at',
@@ -121,7 +121,7 @@ class BookRepository
         return $query->paginate($limit);
     }
 
-    static public function getRelatedBooks($book, $limit = 5)
+    public static function getRelatedBooks($book, $limit = 5)
     {
         $titleAndAuthor = $book->title . ' ' . TfIdfRepository::cleanText($book->author);
 
@@ -137,12 +137,12 @@ class BookRepository
         return $relatedBooks;
     }
 
-    static public function findBookBySlug($slug)
+    public static function findBookBySlug($slug)
     {
         return Book::where('slug', $slug)->first();
     }
 
-    static public function createBook($data)
+    public static function createBook($data)
     {
         $existingBook = self::findBookBySlug($data['slug']);
 
@@ -162,25 +162,25 @@ class BookRepository
         return $book;
     }
 
-    static public function insertBooks($books)
+    public static function insertBooks($books)
     {
         foreach ($books as $bookData) {
             self::createBook($bookData);
         }
     }
 
-    static public function updateBook($book, $data)
+    public static function updateBook($book, $data)
     {
         $book->update($data);
         return $book;
     }
 
-    static public function deleteBook($book)
+    public static function deleteBook($book)
     {
         return $book->delete();
     }
 
-    static public function cleanTitle($book)
+    public static function cleanTitle($book)
     {
         if ($book->cleaned_title) {
             return $book;
@@ -200,7 +200,7 @@ class BookRepository
         return $book;
     }
 
-    static public function cleanTitles($books)
+    public static function cleanTitles($books)
     {
         $cleanedBooks = [];
         foreach ($books as $book) {
@@ -209,7 +209,7 @@ class BookRepository
         return $cleanedBooks;
     }
 
-    static public function stemTitleWithSastrawi($book)
+    public static function stemTitleWithSastrawi($book)
     {
         if ($book->stemmed_title) {
             return $book;
@@ -226,7 +226,7 @@ class BookRepository
         return $book;
     }
 
-    static public function stemTitlesWithSastrawi($books)
+    public static function stemTitlesWithSastrawi($books)
     {
         $stemmedBooks = [];
         foreach ($books as $book) {

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Book;
-use App\Models\Category;
 use App\Repositories\CategoryRepository;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -28,6 +27,7 @@ class BookSeeder extends Seeder
 
         foreach ($books as $book) {
             $existingBook = Book::where('slug', $book['slug'])->first();
+            $categorySlug = !empty($book['category_slug']) ? $book['category_slug'] : null;
 
             if (!$existingBook) {
                 $book = Book::create([
@@ -49,8 +49,8 @@ class BookSeeder extends Seeder
                 $book = $existingBook;
             }
 
-            if (!empty($data['category_slug'])) {
-                $category = CategoryRepository::findCategoryBySlug($data['category_slug']);
+            if ($categorySlug) {
+                $category = CategoryRepository::findCategoryBySlug($categorySlug);
                 if ($category) {
                     $book->categories()->syncWithoutDetaching([$category->id]);
                 }

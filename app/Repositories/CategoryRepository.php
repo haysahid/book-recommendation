@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryRepository
 {
-    static public function getCategories(
+    public static function getCategories(
         $search = null,
         $limit = 10,
         $orderBy = 'created_at',
@@ -25,12 +25,17 @@ class CategoryRepository
         return $query->paginate($limit);
     }
 
-    static public function findCategoryBySlug($slug)
+    public static function getCategoryDropdown()
+    {
+        return Category::orderBy('title', 'asc')->whereNull('parent_id')->get(['id', 'title']);
+    }
+
+    public static function findCategoryBySlug($slug)
     {
         return Category::where('slug', $slug)->first();
     }
 
-    static public function createCategory($data, $parentId = null)
+    public static function createCategory($data, $parentId = null)
     {
         try {
             DB::beginTransaction();
@@ -61,20 +66,20 @@ class CategoryRepository
         }
     }
 
-    static public function insertCategories($categories)
+    public static function insertCategories($categories)
     {
         foreach ($categories as $categoryData) {
             self::createCategory($categoryData);
         }
     }
 
-    static public function updateCategory($category, $data)
+    public static function updateCategory($category, $data)
     {
         $category->update($data);
         return $category;
     }
 
-    static public function deleteCategory($category)
+    public static function deleteCategory($category)
     {
         return $category->delete();
     }
