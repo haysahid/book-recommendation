@@ -70,7 +70,17 @@ const logout = () => {
 
         <template #content>
             <div class="divide-y divide-gray-200">
-                <DropdownLink :href="'/admin/scraping'">
+                <DropdownLink
+                    v-if="
+                        $page.props.auth.user.roles
+                            .map((role) => role.name)
+                            .includes('Super Admin') ||
+                        $page.props.auth.user.roles
+                            .map((role) => role.name)
+                            .includes('Admin')
+                    "
+                    :href="'/admin/scraping'"
+                >
                     Dashboard
                 </DropdownLink>
 

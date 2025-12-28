@@ -92,7 +92,9 @@ class BookRepository
             });
         }
 
-        $query->orderBy('created_at', 'desc');
+        // Order by popularity based on transaction items
+        $query->withCount('transaction_items')->orderBy('transaction_items_count', 'desc');
+
         return $query->paginate($limit);
     }
 

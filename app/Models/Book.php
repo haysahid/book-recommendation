@@ -41,4 +41,9 @@ class Book extends Model
     {
         return $this->belongsToMany(Category::class, 'book_category', 'book_id', 'category_id');
     }
+
+    public function transaction_items()
+    {
+        return $this->hasMany(TransactionItem::class, 'book_id', 'id');
+    }
 }

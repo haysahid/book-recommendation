@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, onMounted } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { Link, usePage } from "@inertiajs/vue3";
 import UserDropdown from "./UserDropdown.vue";
 import HamburgerButton from "./HamburgerButton.vue";
@@ -23,31 +23,42 @@ const props = defineProps({
 
 const showingNavigationDropdown = ref(false);
 
-let menus = [
+const menus = ref([
     {
         name: "Search",
         href: "/book",
         active: false,
     },
-];
+]);
 
 const page = usePage<CustomPageProps>();
 
-if (window.location.pathname !== "/login" && !page.props.auth.user) {
-    menus.push({
-        name: "Login",
-        href: "/login",
-        active: false,
-    });
-}
+function checkAuth() {
+    menus.value = [
+        {
+            name: "Search",
+            href: "/book",
+            active: false,
+        },
+    ];
 
-if (window.location.pathname === "/login" && !page.props.auth.user) {
-    menus.push({
-        name: "Register",
-        href: "/register",
-        active: false,
-    });
+    if (window.location.pathname !== "/login" && !page.props.auth.user) {
+        menus.value.push({
+            name: "Login",
+            href: "/login",
+            active: false,
+        });
+    }
+
+    if (window.location.pathname === "/login" && !page.props.auth.user) {
+        menus.value.push({
+            name: "Register",
+            href: "/register",
+            active: false,
+        });
+    }
 }
+checkAuth();
 
 const invertColor = computed(() => {
     return props.invertColor;
@@ -57,6 +68,13 @@ const cartStore = useCartStore();
 const favoriteStore = useFavoriteStore();
 
 const currentPath = window.location.pathname;
+
+watch(
+    () => page.props.auth.user,
+    () => {
+        checkAuth();
+    }
+);
 </script>
 
 <template>
@@ -122,11 +140,6 @@ const currentPath = window.location.pathname;
                                 :invertColor="invertColor"
                             />
                         </div>
-
-                        <!-- Divider -->
-                        <!-- <span
-                            class="hidden w-px h-6 bg-gray-300 sm:inline-block"
-                        ></span> -->
 
                         <div class="flex items-center gap-2">
                             <div class="hidden sm:flex gap-2">

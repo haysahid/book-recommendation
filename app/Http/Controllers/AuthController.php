@@ -32,7 +32,12 @@ class AuthController extends Controller
             ));
 
             $request->session()->regenerate();
-            return redirect()->intended('/admin/scraping');
+
+            if ($user->hasAnyRole(['Super Admin', 'Admin'])) {
+                return redirect()->intended('/admin/scraping');
+            }
+
+            return redirect()->intended('/');
         }
 
         return back()->withErrors([
