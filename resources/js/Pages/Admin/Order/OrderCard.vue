@@ -15,7 +15,7 @@ const emit = defineEmits(["edit"]);
 
 <template>
     <Link
-        :href="`/admin/order/${invoice.id}/edit`"
+        :href="`/admin/order/${invoice.id}`"
         class="flex flex-col items-center justify-between gap-2 p-2.5 sm:gap-3 sm:p-4 transition-all duration-300 ease-in-out border border-gray-200 rounded-lg hover:border-primary-light hover:ring-1 hover:ring-primary-light relative group"
     >
         <div class="flex w-full gap-2">

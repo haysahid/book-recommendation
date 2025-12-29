@@ -290,9 +290,7 @@ onMounted(() => {
                         <td>
                             <AdminItemAction
                                 @edit="
-                                    $inertia.visit(
-                                        `/admin/order/${invoice.id}/edit`
-                                    )
+                                    $inertia.visit(`/admin/order/${invoice.id}`)
                                 "
                             />
                         </td>
@@ -309,11 +307,7 @@ onMounted(() => {
                     >
                         <OrderCard
                             :invoice="invoice"
-                            @edit="
-                                $inertia.visit(
-                                    `/admin/order/${invoice.id}/edit`
-                                )
-                            "
+                            @edit="$inertia.visit(`/admin/order/${invoice.id}`)"
                         />
                     </div>
                 </template>

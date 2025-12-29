@@ -24,7 +24,7 @@ function formatPrice(price = 0) {
 
 <template>
     <div
-        class="flex flex-col items-start justify-center w-full gap-4 py-2.5 border-b"
+        class="flex flex-col items-start justify-center w-full gap-4 py-2.5 border-b border-gray-200"
         :class="{
             'border-none': !props.showDivider,
         }"
