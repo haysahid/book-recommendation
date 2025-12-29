@@ -19,7 +19,8 @@ class TransactionItemFactory extends Factory
     public function definition(): array
     {
         $book = Book::inRandomOrder()->first();
-        $quantity = $this->faker->numberBetween(1, 3);
+        // 80% chance for quantity = 1, 20% chance for quantity = 2
+        $quantity = $this->faker->boolean(80) ? 1 : 2;
 
         return [
             'store_id' => 1,

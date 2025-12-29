@@ -13,6 +13,9 @@ export function isFile(image: any) {
 export function getWhatsAppLink(phoneNumber: string, message: string = null) {
     if (!phoneNumber) return null;
 
+    // Replace non-digit characters except '+' sign
+    phoneNumber = phoneNumber.replace(/[^\d+]/g, "");
+
     if (phoneNumber.startsWith("08")) {
         phoneNumber = "62" + phoneNumber.slice(1);
     } else if (phoneNumber.startsWith("+")) {

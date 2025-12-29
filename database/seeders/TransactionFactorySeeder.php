@@ -16,8 +16,8 @@ class TransactionFactorySeeder extends Seeder
      */
     public function run(): void
     {
-        // Select 10 randomized user between ID 4 to 23
-        $userIds = range(4, 23);
+        // Select 10 randomized user between ID 4 to 43
+        $userIds = range(4, 43);
         shuffle($userIds);
         $userIds = array_slice($userIds, 0, 10);
 

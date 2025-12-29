@@ -139,4 +139,25 @@ class UserRepository
     {
         return User::with(['roles'])->findOrFail($userId);
     }
+
+    // Get user statistics
+    public static function getUserStats($userId)
+    {
+        $user = DB::table('users')
+            ->leftJoin('transactions', 'users.id', '=', 'transactions.user_id')
+            // Join invoices
+            ->leftJoin('invoices', 'transactions.id', '=', 'invoices.transaction_id')
+            ->where('users.id', $userId)
+            ->selectRaw('
+                COUNT(invoices.id) AS total_orders,
+                SUM(invoices.amount) AS total_spent
+            ')
+            ->groupBy('users.id')
+            ->first();
+
+        return [
+            'total_orders' => $user->total_orders ?? 0,
+            'total_spent' => $user->total_spent ?? 0,
+        ];
+    }
 }

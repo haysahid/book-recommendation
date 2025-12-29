@@ -6,42 +6,50 @@ import { ref } from "vue";
 import ThreeDotsLoading from "@/Components/ThreeDotsLoading.vue";
 import DefaultPagination from "@/Components/DefaultPagination.vue";
 import UserProfile from "./UserProfile.vue";
+import axios from "axios";
+import cookieManager from "@/plugins/cookie-manager";
+import Order from "@/Pages/Order/Order.vue";
 
 const props = defineProps({
     user: Object as () => UserEntity,
+    stats: Object as () => {
+        total_orders: number;
+        total_spent: number;
+    },
 });
 
-const pointTransactions = ref<PaginationModel<PointTransactionEntity>>(null);
-const getPointTransactionsStatus = ref(null);
-const pointTransactionFilter = ref({
+const invoices = ref<PaginationModel<InvoiceEntity>>(null);
+const getInvoicesStatus = ref(null);
+const invoicesFilter = ref({
     page: 1,
-    limit: 5,
+    limit: 3,
 });
 
-// function getPointTransactions() {
-//     getPointTransactionsStatus.value = "loading";
-//     axios
-//         .get(`/api/admin/user/${props.user?.id}/point-transaction`, {
-//             params: {
-//                 page: pointTransactionFilter.value.page,
-//                 limit: pointTransactionFilter.value.limit,
-//             },
-//             headers: {
-//                 Authorization: `Bearer ${cookieManager.getItem(
-//                     "access_token"
-//                 )}`,
-//             },
-//         })
-//         .then((response) => {
-//             pointTransactions.value = response.data.result;
-//             getPointTransactionsStatus.value = "success";
-//         })
-//         .catch((error) => {
-//             console.error("Error fetching point transactions:", error);
-//             getPointTransactionsStatus.value = "error";
-//         });
-// }
-// getPointTransactions();
+function getInvoices() {
+    getInvoicesStatus.value = "loading";
+    axios
+        .get(`/api/admin/invoice`, {
+            params: {
+                user_id: props.user.id,
+                page: invoicesFilter.value.page,
+                limit: invoicesFilter.value.limit,
+            },
+            headers: {
+                Authorization: `Bearer ${cookieManager.getItem(
+                    "access_token"
+                )}`,
+            },
+        })
+        .then((response) => {
+            invoices.value = response.data.result;
+            getInvoicesStatus.value = "success";
+        })
+        .catch((error) => {
+            console.error("Error fetching invoices:", error);
+            getInvoicesStatus.value = "error";
+        });
+}
+getInvoices();
 
 const userVouchers = ref<PaginationModel<UserVoucherEntity>>(null);
 const getVouchersStatus = ref(null);
@@ -81,73 +89,46 @@ const getVouchersStatus = ref(null);
             <UserProfile :user="props.user" />
 
             <!-- Summary -->
-            <div class="grid w-full grid-cols-2 gap-1 lg:grid-cols-4 sm:gap-2">
-                <SummaryCard title="Poin Saat Ini" :value="$formatNumber(0)" />
+            <div class="grid w-full grid-cols-2 gap-1 sm:gap-2">
                 <SummaryCard
-                    title="Total Poin Diperoleh"
-                    :value="$formatNumber(0)"
+                    title="Total Orders"
+                    :value="$formatNumber(props.stats.total_orders)"
                 />
-                <SummaryCard title="Total Pesanan" :value="$formatNumber(0)" />
                 <SummaryCard
-                    title="Total Pengeluaran"
-                    :value="$formatCurrency(0)"
+                    title="Total Spent"
+                    :value="$formatCurrency(props.stats.total_spent)"
                 />
             </div>
 
             <div class="flex flex-col w-full gap-1 lg:flex-row sm:gap-2">
-                <!-- Point Transactions -->
+                <!-- Orders -->
                 <DefaultCard class="w-full">
-                    <h3 class="font-semibold text-gray-900">Riwayat Poin</h3>
+                    <h3 class="font-semibold text-gray-900">Order History</h3>
                     <div class="w-full mt-2.5">
                         <div
-                            v-if="pointTransactions?.data?.length"
+                            v-if="invoices?.data?.length"
                             class="flex flex-col w-full gap-2"
                         >
-                            <div
-                                v-for="pointTransaction in pointTransactions.data"
-                                :key="pointTransaction.id"
-                                class="flex items-center justify-between gap-2.5 p-2.5 sm:gap-3 sm:p-4 transition-all duration-300 ease-in-out border border-gray-200 rounded-lg hover:border-primary-light hover:ring-1 hover:ring-primary-light"
-                            >
-                                <div class="flex flex-col">
-                                    <p class="font-medium text-gray-900">
-                                        {{ pointTransaction.description }}
-                                    </p>
-                                    <p class="text-sm text-gray-500">
-                                        {{
-                                            $formatDate(
-                                                pointTransaction.created_at
-                                            )
-                                        }}
-                                    </p>
-                                </div>
-                                <p
-                                    class="text-lg font-bold text-center"
-                                    :class="{
-                                        'text-green-600':
-                                            pointTransaction.points_amount > 0,
-                                        'text-red-600':
-                                            pointTransaction.points_amount < 0,
-                                    }"
-                                >
-                                    {{
-                                        pointTransaction.points_amount > 0
-                                            ? "+" +
-                                              $formatNumber(
-                                                  pointTransaction.points_amount
-                                              )
-                                            : $formatNumber(
-                                                  pointTransaction.points_amount
-                                              )
-                                    }}
-                                </p>
-                            </div>
+                            <Order
+                                v-for="(invoice, index) in invoices.data"
+                                :key="invoice.id"
+                                :invoice="invoice"
+                                :showDivider="false"
+                                :showStoreInfo="false"
+                                :items="
+                                    invoice.transaction.items.filter(
+                                        (item) =>
+                                            item.store_id === invoice.store_id
+                                    )
+                                "
+                            />
                         </div>
                         <div
                             v-else
                             class="flex items-center justify-center h-[10vh] mb-6"
                         >
                             <ThreeDotsLoading
-                                v-if="getPointTransactionsStatus === 'loading'"
+                                v-if="getInvoicesStatus === 'loading'"
                             />
                             <p v-else class="text-sm text-center text-gray-500">
                                 No data found.
@@ -155,21 +136,20 @@ const getVouchersStatus = ref(null);
                         </div>
                     </div>
                     <div
-                        v-if="pointTransactions?.total > 0"
+                        v-if="invoices?.total > 0"
                         class="flex flex-col gap-2 mt-4"
                     >
                         <p class="text-xs text-gray-500 sm:text-sm">
-                            Showing {{ pointTransactions.from }} -
-                            {{ pointTransactions.to }} of
-                            {{ pointTransactions.total }} items
+                            Showing {{ invoices.from }} - {{ invoices.to }} of
+                            {{ invoices.total }} items
                         </p>
                         <DefaultPagination
-                            :links="pointTransactions.links"
+                            :links="invoices.links"
                             :isApi="true"
                             @change="
                                 (page) => {
-                                    pointTransactionFilter.page = page;
-                                    // getPointTransactions();
+                                    invoicesFilter.page = page;
+                                    getInvoices();
                                 }
                             "
                         />
@@ -177,7 +157,7 @@ const getVouchersStatus = ref(null);
                 </DefaultCard>
 
                 <!-- Voucher -->
-                <DefaultCard class="w-full h-fit">
+                <!-- <DefaultCard class="w-full h-fit">
                     <h3 class="font-semibold text-gray-900">Voucher</h3>
                     <div class="w-full mt-2.5">
                         <div
@@ -218,7 +198,7 @@ const getVouchersStatus = ref(null);
                                                     'active'
                                                 "
                                                 class="px-1.5 py-0.5 text-xs font-medium text-green-800 bg-green-100 rounded-md"
-                                                >Aktif</span
+                                                >Active</span
                                             >
                                             <span
                                                 v-else-if="
@@ -226,7 +206,7 @@ const getVouchersStatus = ref(null);
                                                     'used'
                                                 "
                                                 class="px-1.5 py-0.5 text-xs font-medium text-blue-800 bg-blue-100 rounded-md"
-                                                >Terpakai</span
+                                                >Used</span
                                             >
                                             <span
                                                 v-else-if="
@@ -234,12 +214,12 @@ const getVouchersStatus = ref(null);
                                                     'expired'
                                                 "
                                                 class="px-1.5 py-0.5 text-xs font-medium text-red-800 bg-red-100 rounded-md"
-                                                >Kadaluarsa</span
+                                                >Expired</span
                                             >
                                             <span
                                                 v-else
                                                 class="px-1.5 py-0.5 text-xs font-medium text-gray-800 bg-gray-100 rounded-md"
-                                                >Tidak Aktif</span
+                                                >Inactive</span
                                             >
                                         </div>
                                     </div>
@@ -273,7 +253,7 @@ const getVouchersStatus = ref(null);
                             </p>
                         </div>
                     </div>
-                </DefaultCard>
+                </DefaultCard> -->
             </div>
         </div>
     </AdminLayout>

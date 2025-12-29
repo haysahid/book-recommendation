@@ -71,8 +71,10 @@ class UserController extends Controller
     {
         Log::info('Fetching user details', ['user_id' => $user->id]);
         $user = UserRepository::getUserDetail($user->id);
+        $userStats = UserRepository::getUserStats($user->id);
         return Inertia::render('Admin/User/UserDetail', [
             'user' => $user,
+            'stats' => $userStats,
         ]);
     }
 

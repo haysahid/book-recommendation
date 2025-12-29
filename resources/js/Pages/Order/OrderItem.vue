@@ -36,24 +36,36 @@ function formatPrice(price = 0) {
             <img
                 v-if="props.item.image"
                 :src="getImageUrl(props.item.image)"
-                alt="Product Image"
+                :alt="props.item.book.title"
                 class="object-cover size-20 sm:size-[120px] rounded-lg outline outline-gray-300"
             />
             <div
                 v-else
-                class="flex items-center justify-center size-20 sm:size-[120px] bg-gray-100 rounded-lg aspect-square"
+                class="flex items-center justify-center w-full bg-gray-100 rounded aspect-square shrink-0 group-hover:scale-105 transition-all duration-300 ease-in-out size-20 sm:size-[120px]"
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    class="size-6 fill-gray-400"
-                >
-                    <path
-                        d="M5 21C4.45 21 3.97933 20.8043 3.588 20.413C3.19667 20.0217 3.00067 19.5507 3 19V5C3 4.45 3.196 3.97933 3.588 3.588C3.98 3.19667 4.45067 3.00067 5 3H19C19.55 3 20.021 3.196 20.413 3.588C20.805 3.98 21.0007 4.45067 21 5V19C21 19.55 20.8043 20.021 20.413 20.413C20.0217 20.805 19.5507 21.0007 19 21H5ZM6 17H18L14.25 12L11.25 16L9 13L6 17Z"
-                    />
-                </svg>
+                <div class="flex flex-col items-center justify-center gap-3">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-book-open w-7 h-7 text-muted-foreground/50"
+                    >
+                        <path d="M12 7v14"></path>
+                        <path
+                            d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+                        ></path>
+                    </svg>
+                    <span
+                        class="text-sm text-center text-muted-foreground hidden sm:block"
+                        >No Cover</span
+                    >
+                </div>
             </div>
         </div>
 

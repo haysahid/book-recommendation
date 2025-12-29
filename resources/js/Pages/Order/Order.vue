@@ -18,6 +18,10 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
+    showStoreInfo: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 const items = props.items || [];
@@ -42,7 +46,10 @@ const total = computed(() => {
     >
         <div class="flex flex-col w-full sm:gap-y-1">
             <!-- Store Info -->
-            <div class="flex items-center justify-between w-full gap-4">
+            <div
+                v-if="props.showStoreInfo"
+                class="flex items-center justify-between w-full gap-4"
+            >
                 <div class="flex items-center w-full gap-4">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +77,7 @@ const total = computed(() => {
                             props.invoice.transaction?.status == 'pending'
                         "
                         type="warning"
-                        class="!text-xs !px-2 !py-1 !bg-yellow-50 !rounded-lg !w-fit text-nowrap hidden sm:flex"
+                        class="text-xs! px-2! py-1! bg-yellow-50! rounded-lg! w-fit! text-nowrap hidden sm:flex"
                         iconClass="!size-4 sm:!size-5"
                     >
                         <template #content> Menunggu Pembayaran </template>
@@ -89,22 +96,32 @@ const total = computed(() => {
                     props.invoice.transaction?.status == 'pending'
                 "
                 type="warning"
-                class="!text-xs !px-2 !py-2 !bg-yellow-50 !rounded-lg text-nowrap sm:hidden mb-1 mt-2.5"
+                class="text-xs! px-2! py-2! bg-yellow-50! rounded-lg! text-nowrap sm:hidden mb-1 mt-2.5"
                 iconClass="!size-4 sm:!size-5 "
             >
                 <template #content> Menunggu Pembayaran </template>
             </InfoHint>
 
             <!-- Divider -->
-            <div class="w-full h-px my-2 bg-gray-200"></div>
+            <div
+                v-if="props.showStoreInfo"
+                class="w-full h-px my-2 bg-gray-200"
+            ></div>
 
             <div
                 class="flex items-start justify-between sm:items-center gap-x-3"
             >
                 <!-- Invoice Code -->
-                <h3 class="text-sm font-bold text-gray-700 sm:text-base">
-                    {{ props.invoice.code }}
-                </h3>
+                <div class="flex items-start gap-x-2">
+                    <h3 class="text-sm font-bold text-gray-700 sm:text-base">
+                        {{ props.invoice.code }}
+                    </h3>
+                    <StatusChip
+                        v-if="!props.showStoreInfo"
+                        :status="props.invoice.status"
+                        :label="props.invoice.status?.toUpperCase()"
+                    />
+                </div>
 
                 <!-- Total Price -->
                 <p class="text-sm font-semibold sm:text-base text-primary">
