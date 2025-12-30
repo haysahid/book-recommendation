@@ -14,9 +14,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin'])->grou
     Route::get('scraping', [BookController::class, 'scraping'])->name('book.scraping');
     Route::get('preprocessing', [BookController::class, 'preprocessing'])->name('book.preprocessing');
     Route::resource('book', BookController::class);
+    Route::resource('category', CategoryController::class);
+
     Route::get('book-export', [BookController::class, 'export'])->name('book.export');
     Route::get('transaction-item-export', [TransactionItemController::class, 'export'])->name('transaction-item.export');
-    Route::resource('category', CategoryController::class);
+    Route::get('user-export', [UserController::class, 'export'])->name('user.export');
 
     // User
     Route::prefix('user')->name('user.')->group(function () {

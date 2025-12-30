@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Repositories\RoleRepository;
@@ -9,6 +10,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -118,5 +120,10 @@ class UserController extends Controller
         UserRepository::deleteUser($user);
         Log::info('User deleted successfully', ['user_id' => $user->id]);
         return redirect()->route('admin.user.index')->with('success', 'User successfully deleted.');
+    }
+
+    public function export()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
     }
 }
