@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\TransactionItemController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin'])->grou
     Route::get('preprocessing', [BookController::class, 'preprocessing'])->name('book.preprocessing');
     Route::resource('book', BookController::class);
     Route::get('book-export', [BookController::class, 'export'])->name('book.export');
+    Route::get('transaction-item-export', [TransactionItemController::class, 'export'])->name('transaction-item.export');
     Route::resource('category', CategoryController::class);
 
     // User
