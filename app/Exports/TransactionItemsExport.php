@@ -14,10 +14,11 @@ class TransactionItemsExport implements FromCollection, WithHeadings
      */
     public function collection()
     {
-        return TransactionItem::all()->map(function ($item, $index) {
+        return TransactionItem::with(['transaction'])->get()->map(function ($item, $index) {
             return [
                 'no' => $index + 1,
                 'id' => $item->id,
+                'user_id' => $item->transaction->user_id,
                 'store_id' => $item->store_id,
                 'transaction_id' => $item->transaction_id,
                 'book_id' => $item->book_id,
@@ -37,6 +38,7 @@ class TransactionItemsExport implements FromCollection, WithHeadings
         return [
             'no',
             'id',
+            'user_id',
             'store_id',
             'transaction_id',
             'book_id',
