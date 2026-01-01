@@ -53,7 +53,7 @@ onMounted(() => {
                     }"
                 ></span>
                 <p
-                    class="line-clamp-1 overflow-ellipsis"
+                    class="line-clamp-2 overflow-ellipsis text-start"
                     :class="{
                         'text-sm': props.responsive,
                     }"

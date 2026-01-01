@@ -191,7 +191,7 @@ onMounted(() => {
 
 <template>
     <AdminLayout title="Orders" :showTitle="true">
-        <DefaultCard :isMain="true">
+        <div class="p-4">
             <div class="flex items-center justify-between gap-4">
                 <PrimaryButton
                     type="button"
@@ -412,6 +412,6 @@ onMounted(() => {
                     </div>
                 </template>
             </ErrorDialog>
-        </DefaultCard>
+        </div>
     </AdminLayout>
 </template>
