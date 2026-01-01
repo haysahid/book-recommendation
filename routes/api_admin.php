@@ -25,7 +25,8 @@ Route::prefix('admin')->name('api.admin.')->middleware(['auth:sanctum'])->group(
     Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice.index');
 
     // Recommendation System
-    Route::post('/recommendation-system/train', [RecommendationSystemController::class, 'train'])->name('recommendation-system.train');
+    Route::post('/recommendation-system/train', [RecommendationSystemController::class, 'trainModel'])->name('recommendation-system.train');
+    Route::post('/recommendation-system/tune', [RecommendationSystemController::class, 'tuneModel'])->name('recommendation-system.tune');
     Route::get('/recommendation-system/model-history', [RecommendationSystemController::class, 'modelHistory'])->name('recommendation-system.model-history');
     Route::get('/recommendation-system/active-model', [RecommendationSystemController::class, 'activeModel'])->name('recommendation-system.active-model');
     Route::post('/recommendation-system/activate-model/{modelId}', [RecommendationSystemController::class, 'activateModel'])->name('recommendation-system.activate-model');

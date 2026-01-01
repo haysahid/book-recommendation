@@ -32,6 +32,8 @@ const form = useForm({
     n_epochs: null,
     lr_all: null,
     reg_all: null,
+    cv: null,
+    n_jobs: null,
 });
 
 const algorithms = [
@@ -42,12 +44,12 @@ const algorithms = [
 
 const trainModelStatus = ref(null);
 const model = ref<ModelEntity | null>(null);
-const error = ref(null);
+const trainModelError = ref(null);
 
 const startTraining = async () => {
     trainModelStatus.value = "loading";
     model.value = null;
-    error.value = null;
+    trainModelError.value = null;
 
     try {
         await axios
@@ -66,15 +68,15 @@ const startTraining = async () => {
             })
             .catch((err) => {
                 if (err.response && err.response.data.meta) {
-                    error.value =
+                    trainModelError.value =
                         err.response.data.meta.message || "Training failed.";
                 } else {
-                    error.value = "Training failed.";
+                    trainModelError.value = "Training failed.";
                 }
                 trainModelStatus.value = "error";
             });
     } catch (err) {
-        error.value = "An unexpected error occurred.";
+        trainModelError.value = "An unexpected error occurred.";
         trainModelStatus.value = "error";
     }
 };
@@ -90,7 +92,7 @@ const startTraining = async () => {
     <div>
         <div class="flex gap-2.5 items-center justify-between mb-4">
             <div>
-                <h3 class="text-lg font-semibold">Train Model</h3>
+                <h3 class="text-lg font-semibold">Training Model</h3>
                 <p class="text-sm text-gray-500">
                     Train the recommendation system model with new data.
                 </p>
@@ -111,16 +113,12 @@ const startTraining = async () => {
 
         <form @submit.prevent="startTraining" class="mt-4">
             <div class="flex flex-col w-full gap-4 lg:flex-row lg:gap-6">
-                <div class="flex flex-col w-full gap-4">
+                <div class="flex flex-col w-full gap-4 sm:max-w-2xl">
                     <div
                         class="flex flex-col w-full gap-4 lg:flex-row lg:gap-6"
                     >
                         <!-- Dataset Source -->
-                        <InputGroup
-                            id="dataset_source"
-                            label="Dataset Source"
-                            class="lg:w-1/3!"
-                        >
+                        <InputGroup id="dataset_source" label="Dataset Source">
                             <div class="flex gap-2">
                                 <Chip
                                     v-for="source in datasetSources"
@@ -132,51 +130,6 @@ const startTraining = async () => {
                                 />
                             </div>
                         </InputGroup>
-
-                        <div class="flex lg:w-2/3! gap-4">
-                            <!-- Number of Factors-->
-                            <InputGroup
-                                id="n_factors"
-                                label="Number of Factors"
-                            >
-                                <TextInput
-                                    id="n_factors"
-                                    v-model="form.n_factors"
-                                    type="number"
-                                    placeholder="100"
-                                    :error="form.errors.n_factors"
-                                    @update:modelValue="
-                                        form.errors.n_factors = null
-                                    "
-                                />
-                                <template #suffix>
-                                    <InfoTooltip
-                                        id="n-factors-info"
-                                        text="Number of latent factors used in the model."
-                                    />
-                                </template>
-                            </InputGroup>
-
-                            <!-- Number of Epochs -->
-                            <InputGroup id="n_epochs" label="Number of Epochs">
-                                <TextInput
-                                    id="n_epochs"
-                                    v-model="form.n_epochs"
-                                    type="number"
-                                    placeholder="20"
-                                    :error="form.errors.n_epochs"
-                                    @update:modelValue="
-                                        form.errors.n_epochs = null
-                                    "
-                                />
-                                <template #suffix>
-                                    <InfoTooltip
-                                        id="n-epochs-info"
-                                        text="Number of training iterations."
-                                    />
-                                </template>
-                            </InputGroup>
-                        </div>
                     </div>
 
                     <template v-if="form.dataset_source == 'Upload Files'">
@@ -207,12 +160,94 @@ const startTraining = async () => {
                             />
                         </InputGroup>
                     </template>
+
+                    <div class="flex gap-4">
+                        <!-- Factors-->
+                        <InputGroup id="n_factors" label="Factors">
+                            <TextInput
+                                id="n_factors"
+                                v-model="form.n_factors"
+                                type="number"
+                                placeholder="100"
+                                :error="form.errors.n_factors"
+                                @update:modelValue="
+                                    form.errors.n_factors = null
+                                "
+                            />
+                            <template #suffix>
+                                <InfoTooltip
+                                    id="n-factors-info"
+                                    text="Number of latent factors used in the model."
+                                />
+                            </template>
+                        </InputGroup>
+
+                        <!-- Epochs -->
+                        <InputGroup id="n_epochs" label="Epochs">
+                            <TextInput
+                                id="n_epochs"
+                                v-model="form.n_epochs"
+                                type="number"
+                                placeholder="20"
+                                :error="form.errors.n_epochs"
+                                @update:modelValue="form.errors.n_epochs = null"
+                            />
+                            <template #suffix>
+                                <InfoTooltip
+                                    id="n-epochs-info"
+                                    text="Number of training iterations."
+                                />
+                            </template>
+                        </InputGroup>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <!-- Learning Rate -->
+                        <InputGroup id="lr_all" label="Learning Rate">
+                            <TextInput
+                                id="lr_all"
+                                v-model="form.lr_all"
+                                type="number"
+                                step="0.001"
+                                placeholder="0.005"
+                                :error="form.errors.lr_all"
+                                @update:modelValue="form.errors.lr_all = null"
+                            />
+                            <template #suffix>
+                                <InfoTooltip
+                                    id="lr-all-info"
+                                    text="The learning rate for optimization."
+                                />
+                            </template>
+                        </InputGroup>
+
+                        <!-- Regularization -->
+                        <InputGroup id="reg_all" label="Regularization">
+                            <TextInput
+                                id="reg_all"
+                                v-model="form.reg_all"
+                                type="number"
+                                step="0.001"
+                                placeholder="0.02"
+                                :error="form.errors.reg_all"
+                                @update:modelValue="form.errors.reg_all = null"
+                            />
+                            <template #suffix>
+                                <InfoTooltip
+                                    id="reg-all-info"
+                                    text="Regularization term to prevent overfitting."
+                                />
+                            </template>
+                        </InputGroup>
+                    </div>
                 </div>
             </div>
         </form>
-        <div v-if="model" class="mt-6 bg-green-100 text-green-800 p-4 rounded-lg">
+        <div
+            v-if="model"
+            class="mt-6 bg-green-100 text-green-800 p-4 rounded-lg"
+        >
             <h2 class="font-semibold mb-2">Training Result</h2>
-            <!-- Make card -->
             <div
                 class="rounded-lg py-4 px-6 bg-white flex flex-col xl:flex-row gap-4 items-center border border-green-400"
             >
@@ -326,9 +361,12 @@ const startTraining = async () => {
                 </div>
             </div>
         </div>
-        <div v-if="error" class="mt-6 bg-red-100 text-red-800 p-4 rounded-lg">
+        <div
+            v-if="trainModelError"
+            class="mt-6 bg-red-100 text-red-800 p-4 rounded-lg"
+        >
             <h2 class="font-semibold mb-2">Error</h2>
-            <pre class="whitespace-pre-wrap">{{ error }}</pre>
+            <pre class="whitespace-pre-wrap">{{ trainModelError }}</pre>
         </div>
     </div>
 </template>

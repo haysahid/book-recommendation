@@ -13,8 +13,8 @@ const props = defineProps({
     },
 });
 
-const active = computed(() =>
-    props.menu.children.some((child) => child.active)
+const active = computed(
+    () => props.menu.children.some((child) => child.active) || props.menu.active
 );
 const expanded = ref(true);
 
@@ -38,8 +38,8 @@ onMounted(() => {
         <summary
             class="flex items-center justify-between px-6 py-4 text-base font-medium text-gray-500 border-l-4 border-transparent cursor-pointer select-none"
             :class="{
-                'bg-gray-50 border-primary text-primary': active,
-                '!px-4 !py-2.5': props.responsive,
+                'bg-gray-50 border-primary text-primary ': active,
+                'px-4! py-2.5!': props.responsive,
             }"
         >
             <div class="flex items-center">
@@ -48,7 +48,7 @@ onMounted(() => {
                     v-html="props.menu.icon"
                     class="me-3 [&>svg]:fill-gray-400 group/inner-hover:[&>svg]:fill-gray-600 [&>svg]:transition-all [&>svg]:duration-300 [&>svg]:ease-in-out [&>svg]:size-5"
                     :class="{
-                        '[&>svg]:!fill-primary': active,
+                        '[&>svg]:fill-primary!': active,
                         '[&>svg]:size-6 me-1.5': props.responsive,
                     }"
                 ></span>
@@ -85,7 +85,7 @@ onMounted(() => {
                     :key="child.name"
                     :menu="child"
                     :responsive="props.responsive"
-                    class="!pl-8 sm:!pl-10"
+                    class="pl-8! sm:pl-10!"
                 />
             </div>
         </Transition>

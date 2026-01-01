@@ -3,6 +3,7 @@ import cookieManager from "@/plugins/cookie-manager";
 import axios from "axios";
 import { ref } from "vue";
 import ModelCard from "./ModelCard.vue";
+import ThreeDotsLoading from "@/Components/ThreeDotsLoading.vue";
 
 const models = ref<ModelEntity[]>([]);
 const getModelHistoryStatus = ref(null);

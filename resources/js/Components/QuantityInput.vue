@@ -8,6 +8,10 @@ const props = defineProps({
         type: String,
         default: null,
     },
+    min: {
+        type: Number,
+        default: null,
+    },
     max: {
         type: Number,
         default: null,
@@ -50,7 +54,8 @@ function updateValue(value: number) {
                 id="quantity"
                 :modelValue="props.modelValue"
                 type="number"
-                min="1"
+                :min="props.min"
+                :max="props.max"
                 :hide-arrows="true"
                 class="w-[120px] grow-0"
                 :bgClass="
@@ -94,7 +99,7 @@ function updateValue(value: number) {
                     <button
                         class="absolute p-1 text-gray-600 left-2 hover:text-gray-800 disabled:opacity-30"
                         @click="updateValue(props.modelValue - 1)"
-                        :disabled="props.modelValue <= 1"
+                        :disabled="props.min && props.modelValue <= props.min"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
