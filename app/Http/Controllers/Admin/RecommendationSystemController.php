@@ -12,4 +12,14 @@ class RecommendationSystemController extends Controller
     {
         return Inertia::render('Admin/RecommendationSystem/Index');
     }
+
+    public function trainingModel(Request $request)
+    {
+        return Inertia::render('Admin/RecommendationSystem/TrainingModel');
+    }
+
+    public function tuningModel(Request $request)
+    {
+        return Inertia::render('Admin/RecommendationSystem/TuningModel');
+    }
 }

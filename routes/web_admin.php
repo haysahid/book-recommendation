@@ -39,4 +39,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin'])->grou
 
     // Recommendation System
     Route::get('/recommendation-system', [RecommendationSystemController::class, 'index'])->name('recommendation-system');
+    Route::get('/recommendation-system/training-model', [RecommendationSystemController::class, 'trainingModel'])->name('recommendation-system.training-model');
+    Route::get('/recommendation-system/tuning-model', [RecommendationSystemController::class, 'tuningModel'])->name('recommendation-system.tuning-model');
 });

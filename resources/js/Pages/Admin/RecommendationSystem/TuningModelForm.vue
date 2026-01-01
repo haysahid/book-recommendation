@@ -103,7 +103,7 @@ const tuningStore = useTuningStore();
                         </InputGroup>
                     </template>
 
-                    <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="flex flex-col sm:flex-row gap-4 sm:max-w-2xl">
                         <!-- Grid Size -->
                         <InputGroup
                             id="tuning_grid_size"

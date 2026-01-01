@@ -173,6 +173,9 @@ const startTraining = async () => {
                                 @update:modelValue="
                                     form.errors.n_factors = null
                                 "
+                                :bgClass="
+                                    form.n_factors ? 'border-gray-400' : ''
+                                "
                             />
                             <template #suffix>
                                 <InfoTooltip
@@ -191,6 +194,9 @@ const startTraining = async () => {
                                 placeholder="20"
                                 :error="form.errors.n_epochs"
                                 @update:modelValue="form.errors.n_epochs = null"
+                                :bgClass="
+                                    form.n_epochs ? 'border-gray-400' : ''
+                                "
                             />
                             <template #suffix>
                                 <InfoTooltip
@@ -212,6 +218,7 @@ const startTraining = async () => {
                                 placeholder="0.005"
                                 :error="form.errors.lr_all"
                                 @update:modelValue="form.errors.lr_all = null"
+                                :bgClass="form.lr_all ? 'border-gray-400' : ''"
                             />
                             <template #suffix>
                                 <InfoTooltip
@@ -231,6 +238,7 @@ const startTraining = async () => {
                                 placeholder="0.02"
                                 :error="form.errors.reg_all"
                                 @update:modelValue="form.errors.reg_all = null"
+                                :bgClass="form.reg_all ? 'border-gray-400' : ''"
                             />
                             <template #suffix>
                                 <InfoTooltip
