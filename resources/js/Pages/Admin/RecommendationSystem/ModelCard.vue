@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Tooltip from "@/Components/Tooltip.vue";
 import ModelStatsLabel from "./ModelStatsLabel.vue";
 import Switch from "@/Components/Switch.vue";
 
@@ -20,37 +21,48 @@ const emit = defineEmits(["activate"]);
     <div
         :class="[
             'border rounded-lg p-4',
-            isActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300',
+            isActive ? 'border-blue-500 bg-blue-50' : 'border-gray-200',
         ]"
         @click="$emit('activate', model.id)"
     >
         <div class="flex gap-4 justify-between">
-            <h4 class="text-md font-semibold mb-2">{{ model.filename }}</h4>
+            <p
+                class="text-md font-semibold mb-2 text-ellipsis overflow-hidden whitespace-nowrap"
+            >
+                {{ model.filename }}
+            </p>
             <div
                 v-if="props.isActive"
                 class="inline-block px-2 py-1 text-xs font-medium text-white bg-green-500 rounded-full mb-2"
             >
                 Active
             </div>
-            <Switch
+            <Tooltip
                 v-else
-                :modelValue="false"
-                @change="$emit('activate', model.id)"
-            />
+                :id="`activate-model-tooltip-${model.id}`"
+                placement="bottom"
+            >
+                <Switch
+                    :modelValue="false"
+                    @change="$emit('activate', model.id)"
+                />
+
+                <template #content> Activate this model </template>
+            </Tooltip>
         </div>
-        <p class="text-sm text-gray-600 mb-1">
+        <p class="text-xs text-gray-600 mb-1">
             {{ model.algorithm }} -
             {{ $formatDate(model.created_at) }}
         </p>
-        <!-- Stats (N Factors, N Epochs, RMSE, MAE) -->
+        <!-- Stats -->
         <div class="flex flex-wrap gap-4 mt-2">
             <ModelStatsLabel
-                label="N Factors"
+                label="Factors"
                 :value="model.n_factors.toString()"
                 :isActive="props.isActive"
             />
             <ModelStatsLabel
-                label="N Epochs"
+                label="Epochs"
                 :value="model.n_epochs.toString()"
                 :isActive="props.isActive"
             />

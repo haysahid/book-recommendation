@@ -15,6 +15,7 @@ const modelHistory = ref(null);
         <div class="p-4 flex flex-col gap-6">
             <DefaultCard class="w-full">
                 <TrainModelForm
+                    :previousModel="modelHistory?.models[1] ?? null"
                     @modelTrained="
                         async (model: ModelEntity) => {
                             resultModel = model;

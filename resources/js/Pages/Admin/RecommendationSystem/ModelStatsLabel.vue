@@ -18,10 +18,10 @@ const props = defineProps({
 
 <template>
     <div
-        class="text-sm text-gray-700 bg-gray-100 rounded-lg px-2 py-1"
-        :class="isActive ? 'bg-blue-100! font-semibold' : ''"
+        class="text-xs text-gray-700 bg-gray-100 rounded-lg px-2 py-1"
+        :class="isActive ? 'bg-blue-100!' : ''"
     >
-        <span class="font-medium">{{ label }}:</span>
+        <span class="">{{ label }}:</span>
         {{ value }}
     </div>
 </template>

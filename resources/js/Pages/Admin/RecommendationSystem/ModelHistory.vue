@@ -82,6 +82,7 @@ async function activateModel(modelId: number) {
 }
 
 defineExpose({
+    models,
     getModelHistory,
     getActiveModel,
     activateModel,
