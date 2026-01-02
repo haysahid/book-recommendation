@@ -130,7 +130,10 @@ defineExpose({
 <template>
     <div>
         <div>
-            <h3 class="text-lg font-semibold">Training Model History</h3>
+            <h3 class="text-lg font-semibold">
+                Training Model History
+                <span v-if="models"> ({{ models?.length ?? 0 }}) </span>
+            </h3>
         </div>
 
         <div v-if="getModelHistoryStatus === 'loading'" class="text-gray-600">

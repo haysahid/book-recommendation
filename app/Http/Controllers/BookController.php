@@ -18,6 +18,16 @@ class BookController extends Controller
         $limit = $request->input('limit', 10);
         $page = $request->input('page', 1);
 
+        $user = $request->user();
+        $userRecommendedBooks = null;
+
+        if ($user) {
+            $userRecommendedBooks = BookRepository::getUserRecommendedBooks(
+                user: $user,
+                limit: $limit,
+            );
+        }
+
         $books = BookRepository::getRecommendedBooks(
             search: $search,
             limit: $limit,
@@ -25,6 +35,7 @@ class BookController extends Controller
         );
 
         return Inertia::render('Book/Index', [
+            'userRecommendedBooks' => $userRecommendedBooks,
             'books' => $books,
         ]);
     }

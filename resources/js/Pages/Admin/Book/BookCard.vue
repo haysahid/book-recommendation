@@ -34,7 +34,7 @@ const hasDeleteCallback = computed(() => {
 
 <template>
     <div
-        class="flex flex-col items-center justify-between gap-2 sm:gap-3 p-4 transition-all duration-300 ease-in-out border border-gray-200 rounded-lg hover:border-primary-light hover:ring-1 hover:ring-primary-light relative group hover:shadow-lg cursor-pointer hover:-translate-y-2"
+        class="flex flex-col items-center justify-between gap-2 sm:gap-3 p-4 transition-all duration-300 ease-in-out border border-gray-200 rounded-lg hover:border-primary-light hover:ring-1 hover:ring-primary-light relative group hover:shadow-lg cursor-pointer hover:-translate-y-2 bg-white"
     >
         <!-- Ranking Badge -->
         <div

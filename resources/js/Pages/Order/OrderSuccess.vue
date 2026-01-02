@@ -131,14 +131,14 @@ onMounted(() => {
 </script>
 
 <template>
-    <LandingLayout title="Berhasil Membuat Pesanan">
+    <LandingLayout title="Order Created Successfully">
         <div
             class="p-6 sm:px-12 md:px-[100px] flex items-center justify-center"
         >
             <SuccessView
                 :order-number="props.transaction.code"
-                title="Pesanan Berhasil Dibuat!"
-                subtitle="Terima kasih telah melakukan pemesanan. Pesanan Anda telah berhasil dibuat."
+                title="Order Created Successfully!"
+                subtitle="Thank you for your order. Your order has been created successfully."
             />
         </div>
 
@@ -158,7 +158,7 @@ onMounted(() => {
                 <template v-if="showPaymentActions">
                     <div class="my-2 border-b border-gray-300"></div>
                     <OrderContentRow
-                        label="Status Pembayaran"
+                        label="Payment Status"
                         :value="payment?.status"
                     >
                         <template #value>
@@ -170,7 +170,7 @@ onMounted(() => {
                     </OrderContentRow>
                     <OrderContentRow
                         v-if="payment?.midtrans_response"
-                        label="Tipe Pembayaran"
+                        label="Payment Type"
                         :value="
                             payment?.midtrans_response?.payment_type
                                 ?.split('_')
@@ -184,14 +184,14 @@ onMounted(() => {
                     />
                     <OrderContentRow
                         v-if="payment?.midtrans_response?.va_numbers"
-                        label="Tujuan Pembayaran"
+                        label="Payment Destination"
                         :value="
                             payment?.midtrans_response?.va_numbers[0]?.bank?.toUpperCase()
                         "
                     />
                     <OrderContentRow
                         v-if="payment?.midtrans_response"
-                        label="Batas Akhir Pembayaran"
+                        label="Payment Deadline"
                         :value="payment?.midtrans_response?.expiry_time"
                     />
                 </template>
@@ -202,15 +202,15 @@ onMounted(() => {
                 >
                     <div class="my-2 border-b border-gray-300"></div>
                     <OrderContentRow
-                        label="Provinsi"
+                        label="Province"
                         :value="props.transaction.province_name"
                     />
                     <OrderContentRow
-                        label="Kota"
+                        label="City"
                         :value="props.transaction.city_name"
                     />
                     <OrderContentRow
-                        label="Alamat"
+                        label="Address"
                         :value="props.transaction.address"
                     />
                 </template>
@@ -224,7 +224,7 @@ onMounted(() => {
                         :disabled="resumePaymentStatus === 'loading'"
                         @click="showSnap()"
                     >
-                        Lanjutkan Pembayaran
+                        Continue Payment
                     </PrimaryButton>
                     <SecondaryButton
                         v-if="payment?.midtrans_response"
@@ -232,7 +232,7 @@ onMounted(() => {
                         :disabled="resumePaymentStatus === 'loading'"
                         @click="changePaymentType()"
                     >
-                        Ubah Tipe Pembayaran
+                        Change Payment Type
                     </SecondaryButton>
                 </div>
             </template>

@@ -25,7 +25,7 @@ const modelHistory = ref(null);
             },
         ]"
     >
-        <div class="p-4 flex flex-col gap-6">
+        <div class="p-2 sm:p-0 flex flex-col gap-2 sm:gap-6">
             <DefaultCard class="w-full">
                 <TrainingModelForm
                     :previousModel="modelHistory?.models[1] ?? null"

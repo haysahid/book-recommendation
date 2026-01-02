@@ -98,7 +98,7 @@ const detailLink =
                             />
                         </svg>
                     </template>
-                    Detail
+                    Details
                 </PrimaryButton>
             </Link>
         </div>

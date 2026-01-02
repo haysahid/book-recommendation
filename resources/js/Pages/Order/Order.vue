@@ -22,6 +22,10 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
+    limitItems: {
+        type: Number,
+        default: null,
+    },
 });
 
 const items = props.items || [];
@@ -80,7 +84,7 @@ const total = computed(() => {
                         class="text-xs! px-2! py-1! bg-yellow-50! rounded-lg! w-fit! text-nowrap hidden sm:flex"
                         iconClass="!size-4 sm:!size-5"
                     >
-                        <template #content> Menunggu Pembayaran </template>
+                        <template #content> Waiting for Payment </template>
                     </InfoHint>
                     <StatusChip
                         :status="props.invoice.status"
@@ -91,6 +95,7 @@ const total = computed(() => {
 
             <InfoHint
                 v-if="
+                    props.showStoreInfo &&
                     props.invoice.transaction?.payment_method.slug ==
                         'transfer' &&
                     props.invoice.transaction?.status == 'pending'
@@ -99,7 +104,7 @@ const total = computed(() => {
                 class="text-xs! px-2! py-2! bg-yellow-50! rounded-lg! text-nowrap sm:hidden mb-1 mt-2.5"
                 iconClass="!size-4 sm:!size-5 "
             >
-                <template #content> Menunggu Pembayaran </template>
+                <template #content> Waiting for Payment </template>
             </InfoHint>
 
             <!-- Divider -->
@@ -112,7 +117,7 @@ const total = computed(() => {
                 class="flex items-start justify-between sm:items-center gap-x-3"
             >
                 <!-- Invoice Code -->
-                <div class="flex items-start gap-x-2">
+                <div class="flex items-center gap-x-2">
                     <h3 class="text-sm font-bold text-gray-700 sm:text-base">
                         {{ props.invoice.code }}
                     </h3>
@@ -129,7 +134,7 @@ const total = computed(() => {
                 </p>
             </div>
 
-            <div class="flex items-center justify-between gap-x-2">
+            <div class="flex items-center justify-between gap-x-2 mt-0.5">
                 <!-- Created At -->
                 <p class="text-xs font-medium text-gray-500 sm:text-sm">
                     {{ $formatDate(props.invoice.created_at) }}
@@ -138,12 +143,28 @@ const total = computed(() => {
         </div>
 
         <div class="w-full">
-            <OrderItemSmall
-                v-for="(item, index) in items"
-                :key="index"
-                :item="item"
-                :showDivider="false"
-            />
+            <div v-if="props.limitItems">
+                <OrderItemSmall
+                    v-for="(item, index) in items.slice(0, props.limitItems)"
+                    :key="index"
+                    :item="item"
+                    :showDivider="false"
+                />
+                <div
+                    v-if="items.length > props.limitItems"
+                    class="py-2 text-xs sm:text-sm font-medium text-blue-600"
+                >
+                    +{{ items.length - props.limitItems }} more items
+                </div>
+            </div>
+            <template v-else>
+                <OrderItemSmall
+                    v-for="(item, index) in items"
+                    :key="index"
+                    :item="item"
+                    :showDivider="false"
+                />
+            </template>
         </div>
     </Link>
 </template>

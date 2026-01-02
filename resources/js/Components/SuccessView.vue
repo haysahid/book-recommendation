@@ -2,7 +2,7 @@
 const props = defineProps({
     title: {
         type: String,
-        default: "Pesanan Berhasil Dibuat!",
+        default: "Order Successfully Created!",
     },
     subtitle: {
         type: String,

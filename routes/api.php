@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\BookController;
 use App\Http\Controllers\API\OrderController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,8 @@ Route::name('api.')->group(function () {
         Route::get('/check-payment', [OrderController::class, 'checkPayment'])->name('check-payment');
         Route::put('/change-payment-type', [OrderController::class, 'changePaymentType'])->name('change-payment-type');
         Route::post('/confirm-payment', [OrderController::class, 'confirmPayment'])->name('confirm-payment');
+
+        Route::get('/recommended-books', [BookController::class, 'userRecommendedBooks'])->name('recommended-books');
     });
 });
 

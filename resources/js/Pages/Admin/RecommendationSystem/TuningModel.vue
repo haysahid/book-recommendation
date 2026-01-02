@@ -19,7 +19,7 @@ import DefaultCard from "@/Components/DefaultCard.vue";
             },
         ]"
     >
-        <div class="p-4">
+        <div class="p-2 sm:p-0">
             <DefaultCard class="w-full">
                 <TuningModelForm />
             </DefaultCard>

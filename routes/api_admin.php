@@ -34,4 +34,7 @@ Route::prefix('admin')->name('api.admin.')->middleware(['auth:sanctum'])->group(
         Route::delete('/model-history/{modelId}', [RecommendationSystemController::class, 'deleteModel'])->name('delete-model');
         Route::get('/recommend/{userId}', [RecommendationSystemController::class, 'recommend'])->name('recommend');
     });
+
+    // Book
+    Route::get('/recommended-books/{userId}', [BookController::class, 'userRecommendedBooks'])->name('user-recommended-books');
 });

@@ -20,4 +20,5 @@ interface BookEntity {
 
     // Additional attributes
     score: number | null;
+    reason: string | null;
 }

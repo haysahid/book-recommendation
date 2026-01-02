@@ -5,6 +5,12 @@ import CustomPageProps from "@/types/model/CustomPageProps";
 import LandingHeader from "@/Components/LandingHeader.vue";
 import LandingMainContainer from "@/Components/LandingMainContainer.vue";
 import { scrollToTop } from "@/plugins/helpers";
+import ThreeDotsLoading from "@/Components/ThreeDotsLoading.vue";
+import axios from "axios";
+import cookieManager from "@/plugins/cookie-manager";
+import StatusChip from "@/Components/StatusChip.vue";
+import BookCard from "../Admin/Book/BookCard.vue";
+import DefaultCard from "@/Components/DefaultCard.vue";
 
 const props = defineProps({
     books: {
@@ -62,6 +68,32 @@ const handleScroll = () => {
 const isScrolled = computed(() => {
     return scrolled.value;
 });
+
+const userRecommendedResult = ref<UserRecommendBookModel>(null);
+const getRecommendedBooksStatus = ref(null);
+function getRecommendedBooks() {
+    getRecommendedBooksStatus.value = "loading";
+    axios
+        .get(`/api/recommended-books`, {
+            params: {
+                limit: 4,
+            },
+            headers: {
+                Authorization: `Bearer ${cookieManager.getItem(
+                    "access_token"
+                )}`,
+            },
+        })
+        .then((response) => {
+            userRecommendedResult.value = response.data.result;
+            getRecommendedBooksStatus.value = "success";
+        })
+        .catch((error) => {
+            console.error("Error fetching vouchers:", error);
+            getRecommendedBooksStatus.value = "error";
+        });
+}
+getRecommendedBooks();
 
 onMounted(() => {
     window.addEventListener("scroll", handleScroll);
@@ -189,6 +221,62 @@ onMounted(() => {
 
         <!-- Results Section -->
         <LandingMainContainer class="mb-20">
+            <!-- Recommended Books -->
+            <DefaultCard
+                v-if="$page.props.auth.user && !currentSearch"
+                class="w-full mb-8 bg-primary-light!"
+            >
+                <div class="flex gap-3 items-center">
+                    <h2 class="font-semibold text-lg text-white">
+                        Recommended Books
+                    </h2>
+                    <StatusChip
+                        v-if="userRecommendedResult?.strategy"
+                        :label="userRecommendedResult?.strategy"
+                        :class="{
+                            'text-blue-500! bg-blue-100!':
+                                userRecommendedResult?.strategy ===
+                                'Cold Start',
+                            'text-purple-500! bg-purple-100!':
+                                userRecommendedResult?.strategy ===
+                                'SVD Matrix Factorization',
+                        }"
+                    />
+                </div>
+                <div class="w-full mt-2.5">
+                    <div
+                        v-if="userRecommendedResult?.results?.length"
+                        class="grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                    >
+                        <a
+                            v-for="(
+                                book, index
+                            ) in userRecommendedResult.results"
+                            :key="book.id"
+                            :href="`/book/${book.slug}`"
+                        >
+                            <BookCard
+                                :index="index"
+                                :book="book"
+                                class="h-full"
+                            />
+                        </a>
+                    </div>
+                    <div
+                        v-else
+                        class="flex items-center justify-center h-10 mb-6"
+                    >
+                        <ThreeDotsLoading
+                            v-if="getRecommendedBooksStatus === 'loading'"
+                        />
+                        <p v-else class="text-sm text-center text-gray-500">
+                            No data found.
+                        </p>
+                    </div>
+                </div>
+            </DefaultCard>
+
+            <!-- Books -->
             <div v-if="books.length > 0" class="mb-12">
                 <div class="flex items-center justify-between mb-8">
                     <h2 class="text-2xl md:text-3xl font-bold text-foreground">

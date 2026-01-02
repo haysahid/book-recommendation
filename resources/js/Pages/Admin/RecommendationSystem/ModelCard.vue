@@ -59,7 +59,7 @@ const showDeleteConfirmationModal = ref(false);
         </p>
         <div class="flex gap-4 justify-between items-end">
             <!-- Stats -->
-            <div class="flex flex-wrap gap-4 mt-2">
+            <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-2">
                 <ModelStatsLabel
                     label="Factors"
                     :value="model.n_factors.toString()"
@@ -68,6 +68,16 @@ const showDeleteConfirmationModal = ref(false);
                 <ModelStatsLabel
                     label="Epochs"
                     :value="model.n_epochs.toString()"
+                    :isActive="props.isActive"
+                />
+                <ModelStatsLabel
+                    label="Learning Rate"
+                    :value="model.lr_all.toFixed(4)"
+                    :isActive="props.isActive"
+                />
+                <ModelStatsLabel
+                    label="Regularization"
+                    :value="model.reg_all.toFixed(4)"
                     :isActive="props.isActive"
                 />
                 <ModelStatsLabel

@@ -3,10 +3,54 @@
 namespace App\Repositories;
 
 use App\Models\Book;
+use Exception;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
 
 class BookRepository
 {
+    public static function getUserRecommendedBooks($user, $limit = 10)
+    {
+        $client = new Client();
+        try {
+            $response = $client->get(
+                env('RECOMMENDATION_SYSTEM_API_URL') . "/recommend/{$user->id}",
+                [
+                    'query' => [
+                        'limit' => $limit,
+                    ],
+                ]
+            );
+
+            $responseData = json_decode($response->getBody()->getContents(), true);
+
+            $results = $responseData['results'];
+
+            $recommendedBooks = Book::whereIn('id', array_column($results, 'id'))->get();
+
+            // Sort books according to the order of recommendedBookIds
+            $recommendedBooks = $recommendedBooks->sortBy(function ($book) use ($results) {
+                // Include the score and reason
+                foreach ($results as $result) {
+                    if ($result['id'] == $book->id) {
+                        $book->score = $result['score'] ?? null;
+                        $book->reason = $result['reason'] ?? null;
+                        return array_search($result, $results);
+                    }
+                }
+                return PHP_INT_MAX; // If not found, put it at the end
+            })->values();
+
+            return [
+                ...$responseData,
+                'results' => $recommendedBooks,
+            ];
+        } catch (Exception $e) {
+            Log::error('Error fetching user recommended books: ' . $e->getMessage());
+            return collect();
+        }
+    }
+
     public static function getRecommendedBooks(
         $search = null,
         $limit = 10,

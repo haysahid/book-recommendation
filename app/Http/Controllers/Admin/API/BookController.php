@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\API;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\User;
 use App\Repositories\BookRepository;
 use Exception;
 use Illuminate\Http\Request;
@@ -72,6 +73,27 @@ class BookController extends Controller
             return ResponseFormatter::success($stemmedTitles, 'Titles stemmed successfully.');
         } catch (Exception $e) {
             return ResponseFormatter::error('Failed to stem titles.', 500);
+        }
+    }
+
+    public function userRecommendedBooks(Request $request, $userId)
+    {
+        $user = User::find($userId);
+        $limit = $request->input('limit', 10);
+
+        if (!$user) {
+            return ResponseFormatter::error('User not found.', 404);
+        }
+
+        try {
+            $result = BookRepository::getUserRecommendedBooks(
+                user: $user,
+                limit: $limit
+            );
+            return ResponseFormatter::success($result, 'User recommended books retrieved successfully.');
+        } catch (Exception $e) {
+            Log::error('Error in userRecommendedBooks controller: ' . $e->getMessage());
+            return ResponseFormatter::error('Failed to retrieve user recommended books.', 500);
         }
     }
 }

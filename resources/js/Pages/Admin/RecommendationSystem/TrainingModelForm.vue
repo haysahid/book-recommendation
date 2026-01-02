@@ -334,6 +334,38 @@ const startTraining = async () => {
                             "
                         />
                         <ModelResultStatsLabel
+                            label="Learning Rate"
+                            :value="model.lr_all.toFixed(4)"
+                            :isHigher="
+                                model.lr_all >
+                                (props.previousModel
+                                    ? props.previousModel.lr_all
+                                    : 0)
+                            "
+                            :isLower="
+                                model.lr_all <
+                                (props.previousModel
+                                    ? props.previousModel.lr_all
+                                    : 0)
+                            "
+                        />
+                        <ModelResultStatsLabel
+                            label="Regularization"
+                            :value="model.reg_all.toFixed(4)"
+                            :isHigher="
+                                model.reg_all >
+                                (props.previousModel
+                                    ? props.previousModel.reg_all
+                                    : 0)
+                            "
+                            :isLower="
+                                model.reg_all <
+                                (props.previousModel
+                                    ? props.previousModel.reg_all
+                                    : 0)
+                            "
+                        />
+                        <ModelResultStatsLabel
                             label="RMSE"
                             :value="model.rmse.toFixed(4)"
                             :isHigher="
