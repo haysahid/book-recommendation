@@ -4,6 +4,7 @@ import axios from "axios";
 import { ref } from "vue";
 import ModelCard from "./ModelCard.vue";
 import ThreeDotsLoading from "@/Components/ThreeDotsLoading.vue";
+import { useDialogStore } from "@/stores/dialog-store";
 
 const models = ref<ModelEntity[]>([]);
 const getModelHistoryStatus = ref(null);
@@ -75,10 +76,46 @@ async function activateModel(modelId: number) {
                 getActiveModel();
             })
             .catch((err) => {
-                // Handle error if needed
+                useDialogStore().openErrorDialog(
+                    "An error occurred while activating the model."
+                );
             });
     } catch (err) {
-        // Handle error if needed
+        useDialogStore().openErrorDialog(
+            "An error occurred while activating the model."
+        );
+    }
+}
+
+async function deleteModel(modelId: number) {
+    try {
+        await axios
+            .delete(
+                `/api/admin/recommendation-system/model-history/${modelId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${cookieManager.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                }
+            )
+            .then(async (response) => {
+                await getModelHistory();
+                await getActiveModel();
+                useDialogStore().openSuccessDialog(
+                    "Model deleted successfully."
+                );
+            })
+            .catch((err) => {
+                useDialogStore().openErrorDialog(
+                    "An error occurred while deleting the model."
+                );
+            });
+    } catch (err) {
+        useDialogStore().openErrorDialog(
+            "An error occurred while deleting the model."
+        );
     }
 }
 
@@ -112,6 +149,7 @@ defineExpose({
                     :model="model"
                     :isActive="model.id === activeModel?.id"
                     @activate="activateModel"
+                    @delete="deleteModel"
                 />
             </div>
             <div v-else class="flex items-center justify-center h-[10vh] mb-6">

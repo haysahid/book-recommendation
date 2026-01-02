@@ -15,7 +15,7 @@ import DefaultCard from "@/Components/DefaultCard.vue";
             },
             {
                 text: 'Tuning Model',
-                url: '/admin/recommendation-system/tuning-model',
+                active: true,
             },
         ]"
     >

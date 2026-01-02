@@ -21,7 +21,7 @@ const modelHistory = ref(null);
             },
             {
                 text: 'Training Model',
-                url: '/admin/recommendation-system/training-model',
+                active: true,
             },
         ]"
     >

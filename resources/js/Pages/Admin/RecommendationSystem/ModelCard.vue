@@ -2,6 +2,8 @@
 import Tooltip from "@/Components/Tooltip.vue";
 import ModelStatsLabel from "./ModelStatsLabel.vue";
 import Switch from "@/Components/Switch.vue";
+import { ref } from "vue";
+import DeleteConfirmationDialog from "@/Components/DeleteConfirmationDialog.vue";
 
 const props = defineProps({
     model: {
@@ -14,7 +16,9 @@ const props = defineProps({
         default: false,
     },
 });
-const emit = defineEmits(["activate"]);
+const emit = defineEmits(["activate", "delete"]);
+
+const showDeleteConfirmationModal = ref(false);
 </script>
 
 <template>
@@ -23,7 +27,6 @@ const emit = defineEmits(["activate"]);
             'border rounded-lg p-4',
             isActive ? 'border-blue-500 bg-blue-50' : 'border-gray-200',
         ]"
-        @click="$emit('activate', model.id)"
     >
         <div class="flex gap-4 justify-between">
             <p
@@ -37,6 +40,7 @@ const emit = defineEmits(["activate"]);
             >
                 Active
             </div>
+
             <Tooltip
                 v-else
                 :id="`activate-model-tooltip-${model.id}`"
@@ -44,9 +48,8 @@ const emit = defineEmits(["activate"]);
             >
                 <Switch
                     :modelValue="false"
-                    @change="$emit('activate', model.id)"
+                    @update:modelValue="emit('activate', model.id)"
                 />
-
                 <template #content> Activate this model </template>
             </Tooltip>
         </div>
@@ -54,28 +57,44 @@ const emit = defineEmits(["activate"]);
             {{ model.algorithm }} -
             {{ $formatDate(model.created_at) }}
         </p>
-        <!-- Stats -->
-        <div class="flex flex-wrap gap-4 mt-2">
-            <ModelStatsLabel
-                label="Factors"
-                :value="model.n_factors.toString()"
-                :isActive="props.isActive"
-            />
-            <ModelStatsLabel
-                label="Epochs"
-                :value="model.n_epochs.toString()"
-                :isActive="props.isActive"
-            />
-            <ModelStatsLabel
-                label="RMSE"
-                :value="model.rmse.toFixed(4)"
-                :isActive="props.isActive"
-            />
-            <ModelStatsLabel
-                label="MAE"
-                :value="model.mae.toFixed(4)"
-                :isActive="props.isActive"
-            />
+        <div class="flex gap-4 justify-between items-end">
+            <!-- Stats -->
+            <div class="flex flex-wrap gap-4 mt-2">
+                <ModelStatsLabel
+                    label="Factors"
+                    :value="model.n_factors.toString()"
+                    :isActive="props.isActive"
+                />
+                <ModelStatsLabel
+                    label="Epochs"
+                    :value="model.n_epochs.toString()"
+                    :isActive="props.isActive"
+                />
+                <ModelStatsLabel
+                    label="RMSE"
+                    :value="model.rmse.toFixed(4)"
+                    :isActive="props.isActive"
+                />
+                <ModelStatsLabel
+                    label="MAE"
+                    :value="model.mae.toFixed(4)"
+                    :isActive="props.isActive"
+                />
+            </div>
+            <button
+                class="whitespace-nowrap text-xs text-gray-400 hover:underline hover:text-red-600"
+                @click="showDeleteConfirmationModal = true"
+            >
+                Delete
+            </button>
         </div>
+
+        <DeleteConfirmationDialog
+            :show="showDeleteConfirmationModal"
+            :title="`Delete Model <b>${props.model.filename}</b>?`"
+            :description="`This action cannot be undone.`"
+            @close="showDeleteConfirmationModal = false"
+            @delete="$emit('delete', props.model.id)"
+        />
     </div>
 </template>

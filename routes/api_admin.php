@@ -24,11 +24,14 @@ Route::prefix('admin')->name('api.admin.')->middleware(['auth:sanctum'])->group(
     // Invoice
     Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice.index');
 
-    // Recommendation System
-    Route::post('/recommendation-system/train', [RecommendationSystemController::class, 'trainModel'])->name('recommendation-system.train');
-    Route::post('/recommendation-system/tune', [RecommendationSystemController::class, 'tuneModel'])->name('recommendation-system.tune');
-    Route::get('/recommendation-system/model-history', [RecommendationSystemController::class, 'modelHistory'])->name('recommendation-system.model-history');
-    Route::get('/recommendation-system/active-model', [RecommendationSystemController::class, 'activeModel'])->name('recommendation-system.active-model');
-    Route::post('/recommendation-system/activate-model/{modelId}', [RecommendationSystemController::class, 'activateModel'])->name('recommendation-system.activate-model');
-    Route::get('/recommendation-system/recommend/{userId}', [RecommendationSystemController::class, 'recommend'])->name('recommendation-system.recommend');
+    // Recommendation System (grouped with prefix)
+    Route::prefix('recommendation-system')->name('recommendation-system.')->group(function () {
+        Route::post('/train', [RecommendationSystemController::class, 'trainModel'])->name('train');
+        Route::post('/tune', [RecommendationSystemController::class, 'tuneModel'])->name('tune');
+        Route::get('/model-history', [RecommendationSystemController::class, 'modelHistory'])->name('model-history');
+        Route::get('/active-model', [RecommendationSystemController::class, 'activeModel'])->name('active-model');
+        Route::post('/activate-model/{modelId}', [RecommendationSystemController::class, 'activateModel'])->name('activate-model');
+        Route::delete('/model-history/{modelId}', [RecommendationSystemController::class, 'deleteModel'])->name('delete-model');
+        Route::get('/recommend/{userId}', [RecommendationSystemController::class, 'recommend'])->name('recommend');
+    });
 });

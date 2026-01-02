@@ -300,6 +300,21 @@ class RecommendationSystemController extends Controller
         }
     }
 
+    public function deleteModel(Request $request, $modelId)
+    {
+        try {
+            $client = new Client();
+            $response = $client->delete(env('RECOMMENDATION_SYSTEM_API_URL') . "/model-history/{$modelId}");
+
+            $responseData = json_decode($response->getBody()->getContents(), true);
+
+            return ResponseFormatter::success($responseData, 'Model deleted successfully.');
+        } catch (Exception $e) {
+            Log::error('Error deleting model: ' . $e->getMessage());
+            return ResponseFormatter::error('Failed to delete model: ' . $e->getMessage(), 500);
+        }
+    }
+
     public function recommend(Request $request, $userId)
     {
         $limit = $request->input('limit', 10);
