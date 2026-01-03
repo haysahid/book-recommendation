@@ -13,6 +13,7 @@ class Invoice extends Model
     protected $fillable = [
         'store_id',
         'transaction_id',
+        'user_id',
         'code',
         'description',
         'base_amount',
@@ -44,5 +45,10 @@ class Invoice extends Model
     public function transaction()
     {
         return $this->belongsTo(Transaction::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

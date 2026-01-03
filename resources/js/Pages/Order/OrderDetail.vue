@@ -524,9 +524,14 @@ const emit = defineEmits(["continuePayment"]);
                                 Customer Data
                             </h3>
                         </div>
+
                         <DetailRow
                             name="Name"
                             :value="props.transaction.user.name"
+                        />
+                        <DetailRow
+                            name="Username"
+                            :value="props.transaction.user.username"
                         />
                         <DetailRow
                             name="Email"

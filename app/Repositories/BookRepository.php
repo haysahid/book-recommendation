@@ -3,9 +3,12 @@
 namespace App\Repositories;
 
 use App\Models\Book;
+use App\Models\ReviewAttachmentFileType;
+use App\Models\TransactionItem;
 use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class BookRepository
 {
@@ -59,7 +62,12 @@ class BookRepository
         $excludeBookId = null,
     ) {
         if ($search) {
-            $allBooks = Book::query();
+            $allBooks = Book::query()
+                ->selectRaw('books.*, COALESCE(CAST(AVG(transaction_items.rating) AS FLOAT), 0) as average_rating')
+                ->selectRaw('COALESCE(CAST(SUM(CASE WHEN transaction_items.rating > 0 THEN 1 ELSE 0 END) AS FLOAT), 0) as rating_count')
+                ->selectRaw('COALESCE(SUM(transaction_items.quantity), 0) as sold')
+                ->leftJoin('transaction_items', 'books.id', '=', 'transaction_items.book_id')
+                ->groupBy('books.id');
 
             if ($categorySlug) {
                 $allBooks->whereHas('categories', function ($q) use ($categorySlug) {
@@ -68,7 +76,7 @@ class BookRepository
             }
 
             if ($excludeBookId) {
-                $allBooks->where('id', '!=', $excludeBookId);
+                $allBooks->where('books.id', '!=', $excludeBookId);
             }
 
             $allBooks = $allBooks->get();
@@ -136,8 +144,13 @@ class BookRepository
             });
         }
 
-        // Order by popularity based on transaction items
-        $query->withCount('transaction_items')->orderBy('transaction_items_count', 'desc');
+        $query
+            ->selectRaw('books.*, COALESCE(CAST(AVG(transaction_items.rating) AS FLOAT), 0) as average_rating')
+            ->selectRaw('COALESCE(CAST(SUM(CASE WHEN transaction_items.rating > 0 THEN 1 ELSE 0 END) AS FLOAT), 0) as rating_count')
+            ->selectRaw('COALESCE(SUM(transaction_items.quantity), 0) as sold')
+            ->leftJoin('transaction_items', 'books.id', '=', 'transaction_items.book_id')
+            ->groupBy('books.id')
+            ->orderBy('sold', 'desc');
 
         return $query->paginate($limit);
     }
@@ -149,7 +162,12 @@ class BookRepository
         $orderDirection = 'desc',
         $categorySlug = null
     ) {
-        $query = Book::query();
+        $query = Book::query()
+            ->selectRaw('books.*, COALESCE(CAST(AVG(transaction_items.rating) AS FLOAT), 0) as average_rating')
+            ->selectRaw('COALESCE(CAST(SUM(CASE WHEN transaction_items.rating > 0 THEN 1 ELSE 0 END) AS FLOAT), 0) as rating_count')
+            ->selectRaw('COALESCE(SUM(transaction_items.quantity), 0) as sold')
+            ->leftJoin('transaction_items', 'books.id', '=', 'transaction_items.book_id')
+            ->groupBy('books.id');
 
         if ($categorySlug) {
             $query->whereHas('categories', function ($q) use ($categorySlug) {
@@ -185,12 +203,67 @@ class BookRepository
 
     public static function findBookBySlug($slug)
     {
-        return Book::where('slug', $slug)->first();
+        return Book::query()
+            ->selectRaw('books.*, COALESCE(CAST(AVG(transaction_items.rating) AS FLOAT), 0) as average_rating')
+            ->selectRaw('COALESCE(CAST(SUM(CASE WHEN transaction_items.rating > 0 THEN 1 ELSE 0 END) AS FLOAT), 0) as rating_count')
+            ->selectRaw('COALESCE(SUM(transaction_items.quantity), 0) as sold')
+            ->leftJoin('transaction_items', 'books.id', '=', 'transaction_items.book_id')
+            ->groupBy('books.id')
+            ->where('slug', $slug)->first();
+    }
+
+    public static function addBookReview(
+        $transactionItem,
+        $rating,
+        $review,
+        $attachments = []
+    ) {
+        $transactionItem->rating = $rating;
+        $transactionItem->review = $review;
+        $transactionItem->reviewed_at = now();
+        $transactionItem->save();
+
+        if (!empty($attachments)) {
+            foreach ($attachments as $attachment) {
+                $filePath = Storage::disk('public')->put('reviews', $attachment);
+
+                $transactionItem->attachments()->create([
+                    'file_path' => $filePath,
+                    'file_type' => str_starts_with($attachment->getMimeType(), 'image/') ?
+                        ReviewAttachmentFileType::IMAGE->value :
+                        ReviewAttachmentFileType::VIDEO->value,
+                    'caption' => null,
+                ]);
+            }
+        }
+
+        $transactionItem->load('attachments');
+
+        return $transactionItem;
+    }
+
+    public static function getBookReviews($book)
+    {
+        return TransactionItem::where('book_id', $book->id)
+            ->select(
+                'transaction_items.id',
+                'transaction_items.user_id',
+                'transaction_items.rating',
+                'transaction_items.review',
+                'transaction_items.reviewed_at',
+                'transaction_items.created_at'
+            )
+            ->with(['user'])
+            ->whereNotNull('rating')
+            ->where('rating', '>', 0)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->makeHidden(['book', 'image']);
     }
 
     public static function createBook($data)
     {
-        $existingBook = self::findBookBySlug($data['slug']);
+        $existingBook = Book::where('slug', $data['slug'])->first();
 
         if (!$existingBook) {
             $book = Book::create($data);

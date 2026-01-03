@@ -5,6 +5,7 @@ import InvoiceSummaryCard from "@/Pages/Order/InvoiceSummaryCard.vue";
 import DetailRow from "@/Components/DetailRow.vue";
 import InfoHint from "@/Components/InfoHint.vue";
 import InvoiceTracking from "@/Pages/Order/InvoiceTracking.vue";
+import { Link } from "@inertiajs/vue3";
 
 const props = defineProps({
     invoice: {
@@ -95,10 +96,21 @@ const emit = defineEmits(["continuePayment"]);
                             <h3 class="font-semibold text-gray-800">
                                 Customer Data
                             </h3>
+                            <Link
+                                :href="`/admin/user/${props.invoice.transaction.user.id}`"
+                                class="text-sm text-blue-600 hover:underline"
+                            >
+                                View Profile
+                            </Link>
                         </div>
+
                         <DetailRow
                             name="Name"
                             :value="props.invoice.transaction.user.name"
+                        />
+                        <DetailRow
+                            name="Username"
+                            :value="props.invoice.transaction.user.username"
                         />
                         <DetailRow
                             name="Email"

@@ -48,6 +48,10 @@ class BookController extends Controller
             abort(404);
         }
 
+        $reviews = BookRepository::getBookReviews(
+            book: $book,
+        );
+
         $relatedBooks = BookRepository::getRelatedBooks(
             book: $book,
             limit: 8,
@@ -55,6 +59,7 @@ class BookController extends Controller
 
         return Inertia::render('Book/Show', [
             'book' => $book,
+            'reviews' => $reviews,
             'relatedBooks' => $relatedBooks,
         ]);
     }

@@ -31,7 +31,7 @@ const hasDeleteCallback = computed(() => {
                     $getImageUrl(props.user.profile_photo_path ?? '') ??
                     props.user.profile_photo_url
                 "
-                alt="Foto Pelanggan"
+                :alt="props.user.name"
                 class="object-contain rounded-full size-10 h-fit shrink-0"
             />
             <div

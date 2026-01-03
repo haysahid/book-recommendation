@@ -30,12 +30,15 @@ const rows = computed(() =>
 
 <template>
     <div class="w-full">
-        <h3 class="text-md font-semibold mb-2 text-green-800">
-            Tuning Details
-        </h3>
-        <div class="overflow-x-auto">
+        <div class="flex gap-4 justify-between items-center mb-2">
+            <h3 class="text-md font-semibold text-green-800">Tuning Details</h3>
+            <div class="text-sm text-gray-600 self-end">
+                Total Trials: <b>{{ rows.length }}</b>
+            </div>
+        </div>
+        <div class="overflow-x-auto h-96">
             <table class="min-w-full text-sm border border-gray-200 rounded-lg">
-                <thead class="bg-gray-100">
+                <thead class="bg-gray-100 sticky top-0 z-10">
                     <tr>
                         <th v-if="rows[0].n_factors" class="px-2 py-1 border">
                             n_factors

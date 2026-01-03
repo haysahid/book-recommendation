@@ -23,6 +23,8 @@ Route::name('api.')->group(function () {
         Route::post('/confirm-payment', [OrderController::class, 'confirmPayment'])->name('confirm-payment');
 
         Route::get('/recommended-books', [BookController::class, 'userRecommendedBooks'])->name('recommended-books');
+
+        Route::post('/book/add-review/{transactionItemId}', [BookController::class, 'addBookReview'])->name('book.add-review');
     });
 });
 

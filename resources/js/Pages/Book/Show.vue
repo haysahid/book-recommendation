@@ -10,11 +10,21 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import Tooltip from "@/Components/Tooltip.vue";
 import { useCartStore } from "@/stores/cart-store";
 import { useFavoriteStore } from "@/stores/favorite-store";
+import Rating from "@/Components/Rating.vue";
+import RatingSmall from "@/Components/RatingSmall.vue";
+import ReviewCard from "@/Components/ReviewCard.vue";
+import RatingSummary from "@/Components/RatingSummary.vue";
+import DefaultCard from "@/Components/DefaultCard.vue";
 
 const props = defineProps({
     book: {
         type: Object as () => BookEntity,
         required: true,
+    },
+    reviews: {
+        type: Array as () => BookReviewEntity[],
+        required: false,
+        default: () => [],
     },
     relatedBooks: {
         type: Array as () => BookEntity[],
@@ -90,11 +100,19 @@ onMounted(async () => {
                 </div>
 
                 <!-- Details -->
-                <div class="py-6 sm:py-12">
+                <div class="py-6">
                     <h1 class="text-3xl font-bold">{{ props.book.title }}</h1>
-                    <p class="text-lg text-muted-foreground mt-1">
-                        by {{ props.book.author }}
-                    </p>
+
+                    <div class="flex flex-wrap gap-x-2 mt-1 items-center">
+                        <p class="text-lg text-muted-foreground">
+                            by {{ props.book.author }}
+                        </p>
+                        <span class="text-lg text-gray-400">•</span>
+                        <Rating
+                            :rating="props.book.average_rating"
+                            :ratingCount="props.book.rating_count"
+                        />
+                    </div>
 
                     <!-- Price -->
                     <div class="mt-4 flex flex-col gap-2">
@@ -312,11 +330,48 @@ onMounted(async () => {
                             </SecondaryButton>
                         </Tooltip>
                     </div>
+
+                    <!-- Reviews -->
+                    <div class="mt-8">
+                        <h2 class="text-xl font-bold mb-2">Reviews</h2>
+
+                        <DefaultCard>
+                            <!-- Rating Summary -->
+                            <RatingSummary
+                                :book="props.book"
+                                :reviews="props.reviews"
+                            />
+
+                            <!-- Divider -->
+                            <hr
+                                v-if="props.reviews.length > 0"
+                                class="my-4 border-t border-gray-200"
+                            />
+
+                            <div
+                                v-if="props.reviews.length > 0"
+                                class="flex flex-col gap-4"
+                            >
+                                <template
+                                    v-for="(review, index) in props.reviews"
+                                    :key="review.id"
+                                >
+                                    <ReviewCard :review="review" />
+
+                                    <!-- Divider -->
+                                    <hr
+                                        v-if="index < props.reviews.length - 1"
+                                        class="border-t border-gray-200"
+                                    />
+                                </template>
+                            </div>
+                        </DefaultCard>
+                    </div>
                 </div>
             </div>
 
             <!-- Related Books -->
-            <div v-if="props.relatedBooks.length" class="mt-12">
+            <div v-if="props.relatedBooks.length" class="mt-2">
                 <h2 class="text-2xl font-bold mb-6">Related Books</h2>
                 <div
                     class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"

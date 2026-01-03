@@ -16,7 +16,7 @@ const props = defineProps({
 <template>
     <DefaultCard>
         <div
-            class="flex flex-col items-center w-full gap-3 py-2 lg:flex-row lg:py-0"
+            class="flex flex-col items-center lg:items-start w-full gap-3 py-2 lg:flex-row lg:py-0"
         >
             <img
                 :src="
@@ -32,12 +32,14 @@ const props = defineProps({
             <div
                 class="flex flex-col items-center justify-center w-full gap-2 lg:items-start"
             >
-                <p class="font-bold text-gray-900 md:text-lg">
-                    {{ props.user.name }}
-                </p>
-                <p v-if="props.user.username" class="text-sm text-gray-600">
-                    {{ props.user.username }}
-                </p>
+                <div class="flex flex-col items-center gap-1 lg:items-start">
+                    <h2 class="font-bold text-gray-900 md:text-lg">
+                        {{ props.user.name }}
+                    </h2>
+                    <p v-if="props.user.username" class="text-sm text-gray-600">
+                        {{ props.user.username }}
+                    </p>
+                </div>
                 <div
                     class="flex flex-wrap items-start justify-center w-full text-sm text-gray-600 max-lg:flex-col lg:justify-start gap-x-6 gap-y-1"
                 >
@@ -80,25 +82,6 @@ const props = defineProps({
                         </span>
                     </div>
                     <div
-                        v-if="props.user.roles[0]?.name"
-                        class="flex items-center gap-0.5"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            class="inline-block mr-1 size-5 fill-gray-400"
-                        >
-                            <path
-                                d="M20 4H4C2.897 4 2 4.897 2 6V18C2 19.103 2.897 20 4 20H20C21.103 20 22 19.103 22 18V6C22 4.897 21.103 4 20 4ZM8.715 8C9.866 8 10.715 8.849 10.715 10C10.715 11.151 9.866 12 8.715 12C7.564 12 6.715 11.151 6.715 10C6.715 8.849 7.563 8 8.715 8ZM12.43 16H5V15.535C5 14.162 6.676 12.75 8.715 12.75C10.754 12.75 12.43 14.162 12.43 15.535V16ZM19 15H15V13H19V15ZM19 11H14V9H19V11Z"
-                            />
-                        </svg>
-                        <span>
-                            {{ props.user.roles[0]?.name }}
-                        </span>
-                    </div>
-                    <div
                         v-if="props.user.address"
                         class="flex items-center gap-0.5"
                     >
@@ -115,6 +98,25 @@ const props = defineProps({
                         </svg>
                         <span>
                             {{ props.user.address }}
+                        </span>
+                    </div>
+                    <div
+                        v-if="props.user.roles[0]?.name"
+                        class="flex items-center gap-0.5"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            class="inline-block mr-1 size-5 fill-gray-400"
+                        >
+                            <path
+                                d="M20 4H4C2.897 4 2 4.897 2 6V18C2 19.103 2.897 20 4 20H20C21.103 20 22 19.103 22 18V6C22 4.897 21.103 4 20 4ZM8.715 8C9.866 8 10.715 8.849 10.715 10C10.715 11.151 9.866 12 8.715 12C7.564 12 6.715 11.151 6.715 10C6.715 8.849 7.563 8 8.715 8ZM12.43 16H5V15.535C5 14.162 6.676 12.75 8.715 12.75C10.754 12.75 12.43 14.162 12.43 15.535V16ZM19 15H15V13H19V15ZM19 11H14V9H19V11Z"
+                            />
+                        </svg>
+                        <span>
+                            {{ props.user.roles[0]?.name }}
                         </span>
                     </div>
                 </div>

@@ -43,9 +43,7 @@ class InvoiceRepository
         }
 
         if ($userId) {
-            $invoices->whereHas('transaction', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            });
+            $invoices->where('user_id', $userId);
         }
 
         if ($search) {

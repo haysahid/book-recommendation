@@ -13,6 +13,7 @@ class TransactionItem extends Model
     protected $fillable = [
         'store_id',
         'transaction_id',
+        'user_id',
         'book_id',
         'quantity',
         'unit_base_price',
@@ -21,6 +22,9 @@ class TransactionItem extends Model
         'unit_final_price',
         'subtotal',
         'fullfillment_status',
+        'rating',
+        'review',
+        'reviewed_at',
     ];
 
     protected $appends = [
@@ -46,5 +50,15 @@ class TransactionItem extends Model
     public function book()
     {
         return $this->belongsTo(Book::class, 'book_id');
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(ReviewAttachment::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -18,7 +18,7 @@ class TransactionItemsExport implements FromCollection, WithHeadings
             return [
                 'no' => $index + 1,
                 'id' => $item->id,
-                'user_id' => $item->transaction->user_id,
+                'user_id' => $item->user_id,
                 'store_id' => $item->store_id,
                 'transaction_id' => $item->transaction_id,
                 'book_id' => $item->book_id,
@@ -29,6 +29,9 @@ class TransactionItemsExport implements FromCollection, WithHeadings
                 'unit_final_price' => $item->unit_final_price,
                 'subtotal' => $item->subtotal,
                 'fullfillment_status' => $item->fullfillment_status,
+                'rating' => $item->rating,
+                'review' => $item->review,
+                'created_at' => $item->created_at,
             ];
         });
     }

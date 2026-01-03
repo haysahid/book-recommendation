@@ -33,6 +33,8 @@ const items = props.items || [];
 const total = computed(() => {
     return props.invoice.amount;
 });
+
+const currentPath = window.location.pathname;
 </script>
 
 <template>
@@ -41,6 +43,8 @@ const total = computed(() => {
             props.invoice.transaction.payment_method?.slug === 'transfer' &&
             props.invoice.transaction.status === 'pending'
                 ? `/order-success?transaction_code=${props.invoice.transaction.code}`
+                : currentPath.startsWith('/admin')
+                ? `/admin/order/${props.invoice.id}`
                 : `/my-order/${props.invoice.code}`
         "
         class="flex flex-col items-start justify-between gap-4 p-4 transition-all duration-200 ease-in-out border-b rounded-lg sm:px-6 outline -outline-1 outline-gray-200 group hover:outline-primary hover:scale-[1.01]"

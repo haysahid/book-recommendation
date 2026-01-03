@@ -16,33 +16,16 @@ class TransactionFactorySeeder extends Seeder
      */
     public function run(): void
     {
-        // Select 10 randomized user between ID 4 to 43
-        $userIds = range(4, 43);
+        // Set user IDs range & shuffle to get random users
+        $userIds = range(4, 103);
         shuffle($userIds);
-        $userIds = array_slice($userIds, 0, 10);
+
+        // Limit users
+        $userIds = array_slice($userIds, 0, 25);
 
         foreach ($userIds as $userId) {
-            $transaction = Transaction::factory()->create([
+            Transaction::factory()->create([
                 'user_id' => $userId,
-            ]);
-
-            $items = TransactionItem::factory()->count(rand(1, 5))->create([
-                'transaction_id' => $transaction->id,
-            ]);
-
-            $finalAmount = $items->sum('subtotal') + $transaction->shipping_cost;
-
-            Invoice::factory()->create([
-                'transaction_id' => $transaction->id,
-                'base_amount' => $items->sum('subtotal'),
-                'shipping_cost' => $transaction->shipping_cost,
-                'amount' => $finalAmount,
-            ]);
-
-            Payment::factory()->create([
-                'transaction_id' => $transaction->id,
-                'payment_method_id' => $transaction->payment_method_id,
-                'amount' => $finalAmount,
             ]);
         }
     }

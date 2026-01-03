@@ -21,4 +21,7 @@ interface BookEntity {
     // Additional attributes
     score: number | null;
     reason: string | null;
+    average_rating: number | null;
+    rating_count: number | null;
+    sold: number | null;
 }

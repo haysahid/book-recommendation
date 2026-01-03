@@ -104,23 +104,33 @@ export const useTuningStore = defineStore("tuning", () => {
                     form.value.transactions_file
                 );
             }
+            // Helper to limit array by gridSize
+            const limitByGridSize = (arr: any[]) =>
+                arr
+                    .filter((value) => value !== null && value !== "")
+                    .slice(0, gridSize.value);
+
             if (form.value.n_factors.length > 0) {
-                form.value.n_factors.forEach((value, index) => {
+                const n_factors = limitByGridSize(form.value.n_factors);
+                n_factors.forEach((value, index) => {
                     formData.append(`n_factors[${index}]`, value);
                 });
             }
             if (form.value.n_epochs.length > 0) {
-                form.value.n_epochs.forEach((value, index) => {
+                const n_epochs = limitByGridSize(form.value.n_epochs);
+                n_epochs.forEach((value, index) => {
                     formData.append(`n_epochs[${index}]`, value);
                 });
             }
             if (form.value.lr_all.length > 0) {
-                form.value.lr_all.forEach((value, index) => {
+                const lr_all = limitByGridSize(form.value.lr_all);
+                lr_all.forEach((value, index) => {
                     formData.append(`lr_all[${index}]`, value);
                 });
             }
             if (form.value.reg_all.length > 0) {
-                form.value.reg_all.forEach((value, index) => {
+                const reg_all = limitByGridSize(form.value.reg_all);
+                reg_all.forEach((value, index) => {
                     formData.append(`reg_all[${index}]`, value);
                 });
             }

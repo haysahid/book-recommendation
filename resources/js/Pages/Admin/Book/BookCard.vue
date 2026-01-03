@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AdminItemAction from "@/Components/AdminItemAction.vue";
+import RatingSmall from "@/Components/RatingSmall.vue";
 import { computed, getCurrentInstance } from "vue";
 
 const props = defineProps({
@@ -65,7 +66,7 @@ const hasDeleteCallback = computed(() => {
             <img
                 v-if="props.book.image"
                 :src="props.book.image"
-                alt="Foto Pelanggan"
+                :alt="props.book.title"
                 class="object-cover rounded w-full shrink-0 group-hover:scale-105 aspect-3/4 transition-all duration-300 ease-in-out"
             />
             <div
@@ -113,8 +114,14 @@ const hasDeleteCallback = computed(() => {
 
                     <!-- Price -->
                     <div class="flex flex-col gap-2">
-                        <div class="text-lg font-semibold text-gray-900">
-                            {{ $formatCurrency(props.book.final_price) }}
+                        <div class="flex items-center gap-2 justify-between">
+                            <p class="text-lg font-semibold text-gray-900">
+                                {{ $formatCurrency(props.book.final_price) }}
+                            </p>
+                            <RatingSmall
+                                :rating="props.book.average_rating"
+                                :ratingCount="props.book.rating_count"
+                            />
                         </div>
                         <div
                             v-if="props.book.discount"

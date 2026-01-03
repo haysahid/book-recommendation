@@ -2,6 +2,7 @@ interface InvoiceEntity {
     id: number;
     store_id: number;
     transaction_id: number;
+    user_id: number;
     code: string;
     description: string;
     base_amount: number;
@@ -24,4 +25,5 @@ interface InvoiceEntity {
     store: StoreEntity | null;
     transaction: TransactionEntity | null;
     voucher: VoucherEntity | null;
+    user: UserEntity | null;
 }

@@ -23,6 +23,7 @@ class InvoiceFactory extends Factory
         return [
             'store_id' => 1,
             'transaction_id' => null,
+            'user_id' => null,
             'code' => strtoupper(fake()->unique()->bothify('INV-' . '####??')),
             'description' => fake()->optional()->sentence(),
             'base_amount' => $baseAmount,
@@ -38,6 +39,7 @@ class InvoiceFactory extends Factory
             'picked_up_at' => null,
             'delivered_at' => null,
             'status' => 'pending',
+            'created_at' => fake()->dateTimeBetween('-6 months', '-1 month'),
         ];
     }
 }

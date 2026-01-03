@@ -25,14 +25,22 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $name = $this->faker->name();
+        $baseUsername = Str::slug($name, '_');
+        $suffix = $this->faker->unique()->numberBetween(1, 9999);
+        $uniqueUsername = $baseUsername . '_' . $suffix;
+
+        $emailDomain = $this->faker->freeEmailDomain();
+        $uniqueEmail = $uniqueUsername . '@' . $emailDomain;
+
         return [
-            'name' => fake()->name(),
-            'username' => fake()->unique()->userName(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => $name,
+            'username' => $uniqueUsername,
+            'email' => $uniqueEmail,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'phone' => fake()->phoneNumber(),
-            'address' => fake()->address(),
+            'phone' => $this->faker->phoneNumber(),
+            'address' => $this->faker->address(),
             'remember_token' => Str::random(10),
         ];
     }

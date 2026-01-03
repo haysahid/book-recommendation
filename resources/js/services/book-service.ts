@@ -525,6 +525,63 @@ export default function useBookService() {
             });
     }
 
+    async function addBookReview(
+        {
+            transactionItemId = null,
+            rating = null,
+            review = null,
+            attachments = [] as File[],
+        } = {},
+        {
+            autoShowDialog = false,
+            onSuccess = (data: BookDetailModel | null) => {},
+            onError = (error: any) => {},
+            onChangeStatus = (status: string) => {},
+        } = {}
+    ) {
+        onChangeStatus("loading");
+
+        const formData = new FormData();
+        formData.append("rating", rating);
+
+        if (review) {
+            formData.append("review", review);
+        }
+
+        attachments.forEach((file, index) => {
+            formData.append(`attachments[${index}]`, file);
+        });
+
+        await axios
+            .post(`/api/book/add-review/${transactionItemId}`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: token,
+                },
+            })
+            .then((response) => {
+                onChangeStatus("success");
+                onSuccess(response.data.data);
+                if (autoShowDialog) {
+                    dialogStore.openSuccessDialog(
+                        response.data.meta.message ||
+                            "Book review successfully added."
+                    );
+                }
+            })
+            .catch((error) => {
+                console.error("Error adding book review:", error);
+                onChangeStatus("error");
+                onError(error);
+                if (autoShowDialog) {
+                    dialogStore.openErrorDialog(
+                        error.response?.data?.meta?.message ||
+                            "An error occurred while adding book review."
+                    );
+                }
+            });
+    }
+
     return {
         loadCategories,
         saveCategories,
@@ -534,5 +591,6 @@ export default function useBookService() {
         stemBookTitles,
         exportBooksExcel,
         loadBookDetail,
+        addBookReview,
     };
 }

@@ -319,7 +319,12 @@ onMounted(() => {
                             </Link>
                         </td>
                         <td class="whitespace-normal!">
-                            {{ invoice.transaction.user.name }}
+                            <Link
+                                :href="`/admin/user/${invoice.transaction.user.id}`"
+                                class="hover:underline"
+                            >
+                                {{ invoice.transaction.user.name }}
+                            </Link>
                         </td>
                         <td>
                             {{ invoice.transaction.items.length }}

@@ -37,6 +37,7 @@ class Book extends Model
         return url('/book/' . $this->slug);
     }
 
+    // Relationships
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'book_category', 'book_id', 'category_id');
