@@ -226,7 +226,7 @@ onMounted(() => {
                 v-if="$page.props.auth.user && !currentSearch"
                 class="w-full mb-8 bg-primary-light!"
             >
-                <div class="flex gap-3 items-center">
+                <div class="flex gap-3 items-center mb-4">
                     <h2 class="font-semibold text-lg text-white">
                         Recommended Books
                     </h2>

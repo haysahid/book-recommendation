@@ -165,7 +165,7 @@ getRecommendedBooks();
 
             <!-- Recommended Books -->
             <DefaultCard class="w-full bg-primary-light!">
-                <div class="flex gap-3">
+                <div class="flex gap-3 mb-4 items-center">
                     <h3 class="font-semibold text-white">Recommended Books</h3>
                     <StatusChip
                         v-if="userRecommendedResult?.strategy"
