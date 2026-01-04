@@ -35,7 +35,10 @@ const props = defineProps({
                 :showRatingCount="false"
                 class="mt-0.5"
             />
-            <p v-if="props.review.review" class="text-sm text-gray-700 mt-1">
+            <p
+                v-if="props.review.review"
+                class="text-sm text-gray-700 mt-1 whitespace-pre-line"
+            >
                 {{ props.review.review }}
             </p>
         </div>

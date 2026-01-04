@@ -140,6 +140,7 @@ defineExpose({
                 @input="updateValue($event.target.value)"
                 @focus="emit('focus')"
                 @focusout="emit('focusout')"
+                @keyup.space.prevent
             />
             <slot name="suffix"></slot>
         </label>

@@ -132,7 +132,10 @@ function refresh() {
                             {{ $formatDate(props.item.reviewed_at) }}
                         </div>
                     </div>
-                    <p v-if="props.item.review" class="text-sm text-gray-700">
+                    <p
+                        v-if="props.item.review"
+                        class="text-sm text-gray-700 whitespace-pre-line line-clamp-3"
+                    >
                         {{ props.item.review }}
                     </p>
                     <div

@@ -84,7 +84,7 @@ function refresh() {
                 </div>
             </div>
 
-            <div class="flex flex-col w-full gap-1">
+            <div class="flex flex-col items-start w-full gap-1">
                 <!-- Detail -->
                 <p class="text-sm font-medium text-gray-800 sm:text-base">
                     {{ props.item.book.title }}
@@ -135,7 +135,7 @@ function refresh() {
 
                         <p
                             v-if="props.item.review"
-                            class="text-xs text-gray-700"
+                            class="text-xs text-gray-700 whitespace-pre-line line-clamp-3"
                         >
                             {{ props.item.review }}
                         </p>
@@ -191,6 +191,7 @@ function refresh() {
             :show="showBookReviewForm"
             maxWidth="sm"
             @close="showBookReviewForm = false"
+            @click.stop
         >
             <template #content>
                 <BookReviewForm

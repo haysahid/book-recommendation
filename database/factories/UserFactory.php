@@ -26,9 +26,9 @@ class UserFactory extends Factory
     public function definition(): array
     {
         $name = $this->faker->name();
-        $baseUsername = Str::slug($name, '_');
+        $baseUsername = Str::slug($name, '.');
         $suffix = $this->faker->unique()->numberBetween(1, 9999);
-        $uniqueUsername = $baseUsername . '_' . $suffix;
+        $uniqueUsername = $baseUsername . '.' . $suffix;
 
         $emailDomain = $this->faker->freeEmailDomain();
         $uniqueEmail = $uniqueUsername . '@' . $emailDomain;

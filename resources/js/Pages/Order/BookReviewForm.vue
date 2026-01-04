@@ -98,10 +98,12 @@ const submit = async () => {
                 </InputGroup>
 
                 <div class="flex items-center gap-4 mt-4">
-                    <SecondaryButton type="button" @click="emit('close')">
+                    <SecondaryButton type="button" @click.stop="emit('close')">
                         Cancel
                     </SecondaryButton>
-                    <PrimaryButton type="submit"> Save </PrimaryButton>
+                    <PrimaryButton type="submit" @click.stop>
+                        Save
+                    </PrimaryButton>
                 </div>
             </div>
         </form>

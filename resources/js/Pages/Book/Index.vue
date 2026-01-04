@@ -90,6 +90,7 @@ async function getRecommendedBooks() {
             },
         })
         .then((response) => {
+            console.log(response.data.result);
             userRecommendedResult.value = response.data.result;
             getRecommendedBooksStatus.value = "success";
         })

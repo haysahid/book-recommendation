@@ -38,16 +38,18 @@ const currentPath = window.location.pathname;
 </script>
 
 <template>
-    <Link
-        :href="
-            props.invoice.transaction.payment_method?.slug === 'transfer' &&
-            props.invoice.transaction.status === 'pending'
-                ? `/order-success?transaction_code=${props.invoice.transaction.code}`
-                : currentPath.startsWith('/admin')
-                ? `/admin/order/${props.invoice.id}`
-                : `/my-order/${props.invoice.code}`
+    <button
+        @click="
+            $inertia.visit(
+                props.invoice.transaction.payment_method?.slug === 'transfer' &&
+                    props.invoice.transaction.status === 'pending'
+                    ? `/order-success?transaction_code=${props.invoice.transaction.code}`
+                    : currentPath.startsWith('/admin')
+                    ? `/admin/order/${props.invoice.id}`
+                    : `/my-order/${props.invoice.code}`
+            )
         "
-        class="flex flex-col items-start justify-between gap-4 p-4 transition-all duration-200 ease-in-out border-b rounded-lg sm:px-6 outline -outline-1 outline-gray-200 group hover:outline-primary hover:scale-[1.01]"
+        class="flex flex-col items-start justify-between gap-4 p-4 transition-all duration-200 ease-in-out border-b rounded-lg sm:px-6 outline -outline-1 outline-gray-200 group hover:outline-primary hover:scale-[1.01] text-start"
         :class="{
             'border-none': !props.showDivider,
         }"
@@ -170,5 +172,5 @@ const currentPath = window.location.pathname;
                 />
             </template>
         </div>
-    </Link>
+    </button>
 </template>

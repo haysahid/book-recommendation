@@ -29,7 +29,12 @@ class BookRepository
 
             $results = $responseData['results'];
 
-            $recommendedBooks = Book::whereIn('id', array_column($results, 'id'))->get();
+            $recommendedBooks = Book::selectRaw('books.*, COALESCE(CAST(AVG(transaction_items.rating) AS FLOAT), 0) as average_rating')
+                ->selectRaw('COALESCE(CAST(SUM(CASE WHEN transaction_items.rating > 0 THEN 1 ELSE 0 END) AS FLOAT), 0) as rating_count')
+                ->selectRaw('COALESCE(SUM(transaction_items.quantity), 0) as sold')
+                ->leftJoin('transaction_items', 'books.id', '=', 'transaction_items.book_id')
+                ->groupBy('books.id')
+                ->whereIn('books.id', array_column($results, 'id'))->get();
 
             // Sort books according to the order of recommendedBookIds
             $recommendedBooks = $recommendedBooks->sortBy(function ($book) use ($results) {
