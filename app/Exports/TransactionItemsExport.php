@@ -31,6 +31,7 @@ class TransactionItemsExport implements FromCollection, WithHeadings
                 'fullfillment_status' => $item->fullfillment_status,
                 'rating' => $item->rating,
                 'review' => $item->review,
+                'reviewed_at' => $item->reviewed_at,
                 'created_at' => $item->created_at,
             ];
         });
@@ -52,6 +53,10 @@ class TransactionItemsExport implements FromCollection, WithHeadings
             'unit_final_price',
             'subtotal',
             'fullfillment_status',
+            'rating',
+            'review',
+            'reviewed_at',
+            'created_at',
         ];
     }
 }

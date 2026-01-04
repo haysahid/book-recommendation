@@ -8,8 +8,6 @@ import Chip from "@/Components/Chip.vue";
 import FileInput from "@/Components/FileInput.vue";
 import QuantityInput from "@/Components/QuantityInput.vue";
 import { useTuningStore } from "@/stores/tuning-store";
-import { h } from "vue";
-import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TuningDetail from "./TuningDetail.vue";
 import InputError from "@/Components/InputError.vue";
 
@@ -393,128 +391,137 @@ const tuningStore = useTuningStore();
         </div>
 
         <!-- Error -->
-        <div
-            v-if="tuningStore.tuneModelError"
-            class="mt-6 bg-red-100 text-red-800 p-4 rounded-lg"
-        >
-            <div class="flex items-center justify-between gap-4 mb-2">
-                <h2 class="font-semibold">Error</h2>
-                <button
-                    class="whitespace-nowrap text-sm text-red-700 hover:underline hover:text-red-600"
-                    @click="tuningStore.clearTuningResult"
-                >
-                    Clear Error
-                </button>
-            </div>
-            <pre class="whitespace-pre-wrap">{{
-                tuningStore.tuneModelError
-            }}</pre>
-        </div>
-
-        <!-- Success -->
-        <div v-if="tuningStore.result" class="mt-6 bg-green-100 p-4 rounded-lg">
+        <Transition name="accordion">
             <div
-                class="flex items-center justify-between gap-4 mb-2 text-green-800"
+                v-if="tuningStore.tuneModelError"
+                class="mt-6 bg-red-100 text-red-800 p-4 rounded-lg"
             >
-                <h2 class="font-semibold">Tuning Result</h2>
-                <div class="flex gap-4">
+                <div class="flex items-center justify-between gap-4 mb-2">
+                    <h2 class="font-semibold">Error</h2>
                     <button
                         class="whitespace-nowrap text-sm text-red-700 hover:underline hover:text-red-600"
                         @click="tuningStore.clearTuningResult"
                     >
-                        Clear Result
+                        Clear Error
                     </button>
                 </div>
+                <pre class="whitespace-pre-wrap">{{
+                    tuningStore.tuneModelError
+                }}</pre>
             </div>
+        </Transition>
 
+        <!-- Success -->
+        <Transition name="accordion">
             <div
-                class="rounded-lg py-4 px-6 bg-white flex flex-row gap-4 items-start border border-green-400 mb-2 text-green-800"
+                v-if="tuningStore.result"
+                class="mt-6 bg-green-100 p-4 rounded-lg"
             >
-                <div class="w-full lg:w-2/3">
-                    <h3 class="text-md font-semibold mb-2">
-                        Best Hyperparameters
-                    </h3>
-                    <div
-                        class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-2 p-2 justify-start bg-gray-50 w-full rounded-md border border-gray-200"
-                    >
-                        <ModelResultStatsLabel
-                            label="Factors"
-                            :value="
-                                tuningStore.result.best_params?.n_factors?.toString() ??
-                                '-'
-                            "
-                            :isHigher="false"
-                            :isLower="false"
-                            class="items-start!"
-                        />
-                        <ModelResultStatsLabel
-                            label="Epochs"
-                            :value="
-                                tuningStore.result.best_params?.n_epochs?.toString() ??
-                                '-'
-                            "
-                            :isHigher="false"
-                            :isLower="false"
-                            class="items-start!"
-                        />
-                        <ModelResultStatsLabel
-                            label="Learning Rate"
-                            :value="
-                                tuningStore.result.best_params?.lr_all?.toString() ??
-                                '-'
-                            "
-                            :isHigher="false"
-                            :isLower="false"
-                            class="items-start!"
-                        />
-                        <ModelResultStatsLabel
-                            label="Regularization"
-                            :value="
-                                tuningStore.result.best_params?.reg_all?.toString() ??
-                                '-'
-                            "
-                            :isHigher="false"
-                            :isLower="false"
-                            class="items-start!"
-                        />
+                <div
+                    class="flex items-center justify-between gap-4 mb-2 text-green-800"
+                >
+                    <h2 class="font-semibold">Tuning Result</h2>
+                    <div class="flex gap-4">
+                        <button
+                            class="whitespace-nowrap text-sm text-red-700 hover:underline hover:text-red-600"
+                            @click="tuningStore.clearTuningResult"
+                        >
+                            Clear Result
+                        </button>
                     </div>
                 </div>
 
-                <div class="w-full lg:w-1/3">
-                    <h3 class="text-md font-semibold mb-2">Best Scores</h3>
-                    <div
-                        class="grid grid-cols-1 xl:grid-cols-2 gap-2 p-2 justify-start bg-gray-50 w-full rounded-md border border-gray-200"
-                    >
-                        <ModelResultStatsLabel
-                            label="RMSE Score"
-                            :value="
-                                tuningStore.result.best_score_rmse.toFixed(4)
-                            "
-                            :isHigher="false"
-                            :isLower="false"
-                            class="items-start!"
-                        />
-                        <ModelResultStatsLabel
-                            label="MAE Score"
-                            :value="
-                                tuningStore.result.best_score_mae.toFixed(4)
-                            "
-                            :isHigher="false"
-                            :isLower="false"
-                            class="items-start!"
-                        />
+                <div
+                    class="rounded-lg py-4 px-6 bg-white flex flex-row gap-4 items-start border border-green-400 mb-2 text-green-800"
+                >
+                    <div class="w-full lg:w-2/3">
+                        <h3 class="text-md font-semibold mb-2">
+                            Best Hyperparameters
+                        </h3>
+                        <div
+                            class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-2 p-2 justify-start bg-gray-50 w-full rounded-md border border-gray-200"
+                        >
+                            <ModelResultStatsLabel
+                                label="Factors"
+                                :value="
+                                    tuningStore.result.best_params?.n_factors?.toString() ??
+                                    '-'
+                                "
+                                :isHigher="false"
+                                :isLower="false"
+                                class="items-start!"
+                            />
+                            <ModelResultStatsLabel
+                                label="Epochs"
+                                :value="
+                                    tuningStore.result.best_params?.n_epochs?.toString() ??
+                                    '-'
+                                "
+                                :isHigher="false"
+                                :isLower="false"
+                                class="items-start!"
+                            />
+                            <ModelResultStatsLabel
+                                label="Learning Rate"
+                                :value="
+                                    tuningStore.result.best_params?.lr_all?.toString() ??
+                                    '-'
+                                "
+                                :isHigher="false"
+                                :isLower="false"
+                                class="items-start!"
+                            />
+                            <ModelResultStatsLabel
+                                label="Regularization"
+                                :value="
+                                    tuningStore.result.best_params?.reg_all?.toString() ??
+                                    '-'
+                                "
+                                :isHigher="false"
+                                :isLower="false"
+                                class="items-start!"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="w-full lg:w-1/3">
+                        <h3 class="text-md font-semibold mb-2">Best Scores</h3>
+                        <div
+                            class="grid grid-cols-1 xl:grid-cols-2 gap-2 p-2 justify-start bg-gray-50 w-full rounded-md border border-gray-200"
+                        >
+                            <ModelResultStatsLabel
+                                label="RMSE Score"
+                                :value="
+                                    tuningStore.result.best_score_rmse.toFixed(
+                                        4
+                                    )
+                                "
+                                :isHigher="false"
+                                :isLower="false"
+                                class="items-start!"
+                            />
+                            <ModelResultStatsLabel
+                                label="MAE Score"
+                                :value="
+                                    tuningStore.result.best_score_mae.toFixed(4)
+                                "
+                                :isHigher="false"
+                                :isLower="false"
+                                class="items-start!"
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div
-                class="rounded-lg py-4 px-6 bg-white flex flex-row gap-4 items-start border border-green-400"
-            >
-                <TuningDetail
-                    v-if="tuningStore.result"
-                    :result="tuningStore.result.cv_results"
-                />
+                <div
+                    class="rounded-lg py-4 px-6 bg-white flex flex-row gap-4 items-start border border-green-400"
+                >
+                    <TuningDetail
+                        v-if="tuningStore.result"
+                        :result="tuningStore.result.cv_results"
+                    />
+                </div>
             </div>
-        </div>
+        </Transition>
     </div>
 </template>

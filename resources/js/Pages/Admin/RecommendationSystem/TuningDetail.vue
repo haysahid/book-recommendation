@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 const props = defineProps({
     result: {
@@ -36,10 +36,11 @@ const rows = computed(() =>
                 Total Trials: <b>{{ rows.length }}</b>
             </div>
         </div>
-        <div class="overflow-x-auto h-96">
+        <div class="overflow-x-auto max-h-[600px]">
             <table class="min-w-full text-sm border border-gray-200 rounded-lg">
                 <thead class="bg-gray-100 sticky top-0 z-10">
                     <tr>
+                        <th class="px-2 py-1 border">No</th>
                         <th v-if="rows[0].n_factors" class="px-2 py-1 border">
                             n_factors
                         </th>
@@ -71,6 +72,9 @@ const rows = computed(() =>
                         "
                         class="[&>td]:break-all"
                     >
+                        <td class="px-2 py-1 border text-center">
+                            {{ Number(i) + 1 }}
+                        </td>
                         <td
                             v-if="row.n_factors"
                             class="px-2 py-1 border text-center"
@@ -123,39 +127,41 @@ const rows = computed(() =>
                 </tbody>
             </table>
         </div>
+
         <div class="mt-4">
-            <h3 class="font-semibold mb-1 text-md text-green-800">
-                Keterangan:
-            </h3>
+            <h3 class="font-semibold mb-1 text-md text-green-800">Notes:</h3>
             <ul class="list-disc ml-6 text-sm text-gray-700">
                 <li>
-                    <b>Mean RMSE</b>: Rata-rata Root Mean Squared Error pada
-                    validasi.
-                </li>
-                <li><b>Std RMSE</b>: Standar deviasi RMSE pada validasi.</li>
-                <li>
-                    <b>Rank RMSE</b>: Ranking performa RMSE (semakin kecil
-                    semakin baik).
+                    <b>Mean RMSE</b>: Average Root Mean Squared Error on
+                    validation.
                 </li>
                 <li>
-                    <b>Mean MAE</b>: Rata-rata Mean Absolute Error pada
-                    validasi.
-                </li>
-                <li><b>Std MAE</b>: Standar deviasi MAE pada validasi.</li>
-                <li>
-                    <b>Rank MAE</b>: Ranking performa MAE (semakin kecil semakin
-                    baik).
+                    <b>Std RMSE</b>: Standard deviation of RMSE on validation.
                 </li>
                 <li>
-                    <b>Fit Time</b>: Waktu rata-rata training per fold (detik).
+                    <b>Rank RMSE</b>: RMSE performance ranking (lower is
+                    better).
                 </li>
                 <li>
-                    <b>Test Time</b>: Waktu rata-rata evaluasi per fold (detik).
+                    <b>Mean MAE</b>: Average Mean Absolute Error on validation.
                 </li>
                 <li>
-                    Baris berwarna
-                    <span class="bg-blue-100 px-1">biru</span> menandakan
-                    parameter dengan performa RMSE terbaik.
+                    <b>Std MAE</b>: Standard deviation of MAE on validation.
+                </li>
+                <li>
+                    <b>Rank MAE</b>: MAE performance ranking (lower is better).
+                </li>
+                <li>
+                    <b>Fit Time</b>: Average training time per fold (seconds).
+                </li>
+                <li>
+                    <b>Test Time</b>: Average evaluation time per fold
+                    (seconds).
+                </li>
+                <li>
+                    Rows highlighted in
+                    <span class="bg-blue-100 px-1">blue</span> indicate the
+                    parameter set with the best RMSE performance.
                 </li>
             </ul>
         </div>

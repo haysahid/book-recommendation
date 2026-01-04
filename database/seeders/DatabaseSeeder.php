@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Set multiplier if needed
-        $multiplier = 4;
+        $multiplier = 100;
 
         // Create transactions for randomized users
         // based on user count - 3 (admin users) * multiplier
