@@ -2,7 +2,7 @@
 const props = defineProps({
     label: {
         type: String,
-        required: true,
+        required: false,
     },
     value: {
         type: [String, Number],
@@ -21,7 +21,7 @@ const props = defineProps({
         class="text-xs text-gray-700 bg-gray-100 rounded-lg px-2 py-1"
         :class="isActive ? 'bg-blue-100!' : ''"
     >
-        <span class="">{{ label }}:</span>
+        <span v-if="label" class="">{{ label }}:</span>
         {{ value }}
     </div>
 </template>

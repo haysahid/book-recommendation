@@ -94,7 +94,6 @@ function refresh() {
                     v-if="props.item.book.discount > 0"
                     discount-type="percentage"
                     :discount="props.item.book.discount"
-                    class="text-xs! px-1! py-0.5!"
                 />
                 <p class="text-sm text-gray-800">
                     {{ formatPrice(props.item.book.final_price) }}

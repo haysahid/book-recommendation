@@ -3,11 +3,10 @@ import AdminLayout from "@/Layouts/AdminLayout.vue";
 import TrainingModelForm from "./TrainingModelForm.vue";
 import DefaultCard from "@/Components/DefaultCard.vue";
 import ModelHistory from "./ModelHistory.vue";
-import { ref } from "vue";
+import { useTrainingStore } from "@/stores/training-store";
+import TrainingResult from "./TrainingResult.vue";
 
-const resultModel = ref<ModelEntity | null>(null);
-
-const modelHistory = ref(null);
+const trainingStore = useTrainingStore();
 </script>
 
 <template>
@@ -28,18 +27,17 @@ const modelHistory = ref(null);
         <div class="p-2 sm:p-0 flex flex-col gap-2 sm:gap-6">
             <DefaultCard class="w-full">
                 <TrainingModelForm
-                    :previousModel="modelHistory?.models[1] ?? null"
+                    :previousModel="trainingStore?.models[1] ?? null"
                     @modelTrained="
                         async (model: ModelEntity) => {
-                            resultModel = model;
-                            await modelHistory?.getModelHistory();
-                            await modelHistory?.getActiveModel();
+                            await trainingStore.getModelHistory();
+                            await trainingStore?.getActiveModel();
                         }
                     "
                 />
             </DefaultCard>
             <DefaultCard class="w-full">
-                <ModelHistory ref="modelHistory" />
+                <ModelHistory />
             </DefaultCard>
         </div>
     </AdminLayout>

@@ -247,9 +247,14 @@ onMounted(() => {
                                         alt="Foto User"
                                         class="object-cover rounded-full size-8"
                                     />
-                                    <p class="group-hover:underline">
-                                        {{ user.name }}
-                                    </p>
+                                    <div>
+                                        <p class="group-hover:underline">
+                                            {{ user.name }}
+                                        </p>
+                                        <p class="text-xs text-gray-500">
+                                            {{ user.username }}
+                                        </p>
+                                    </div>
                                 </div>
                             </Link>
                         </td>

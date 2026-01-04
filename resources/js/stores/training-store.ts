@@ -2,13 +2,19 @@ import { defineStore } from "pinia";
 import { ref, watch } from "vue";
 import axios from "axios";
 import cookieManager from "@/plugins/cookie-manager";
+import { useDialogStore } from "./dialog-store";
 
 export const useTrainingStore = defineStore("training", () => {
     const datasetSources = ["Database", "Upload Files"];
+    const references = {
+        rating: "Rating",
+        transaction: "Transaction",
+    };
 
     const form = ref(
         JSON.parse(localStorage.getItem("training_form")) || {
             dataset_source: "Database",
+            reference: "rating",
             books_file: null,
             transactions_file: null,
             n_factors: null,
@@ -59,19 +65,40 @@ export const useTrainingStore = defineStore("training", () => {
         localStorage.setItem("training_model_error", JSON.stringify(newError));
     });
 
-    const startTraining = async () => {
+    const startTraining = async ({ onSuccess = () => {} }) => {
+        if (form.value.dataset_source === "Upload Files") {
+            if (!form.value.books_file) {
+                form.value.errors.books_file = "Books file is required.";
+            } else {
+                form.value.errors.books_file = null;
+            }
+
+            if (!form.value.transactions_file) {
+                form.value.errors.transactions_file =
+                    "Transactions file is required.";
+            } else {
+                form.value.errors.transactions_file = null;
+            }
+
+            if (
+                form.value.errors.books_file ||
+                form.value.errors.transactions_file
+            ) {
+                return;
+            }
+        }
+
         clearTrainingResult();
 
         trainModelStatus.value = "loading";
         trainedModel.value = null;
         trainModelError.value = null;
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
         try {
             const formData = new FormData();
 
             formData.append("dataset_source", form.value.dataset_source);
+            formData.append("reference", form.value.reference);
 
             if (form.value.dataset_source === "Upload Files") {
                 if (form.value.books_file) {
@@ -110,6 +137,7 @@ export const useTrainingStore = defineStore("training", () => {
                 .then((response) => {
                     trainedModel.value = response.data.result.model;
                     trainModelStatus.value = "success";
+                    onSuccess();
                 })
                 .catch((err) => {
                     if (err.status === 422) {
@@ -144,19 +172,172 @@ export const useTrainingStore = defineStore("training", () => {
         }
     };
 
+    const models = ref<ModelEntity[]>(
+        JSON.parse(localStorage.getItem("model_history")) || []
+    );
+    const activeModel = ref(
+        JSON.parse(localStorage.getItem("active_model")) || null
+    );
+    const getModelHistoryStatus = ref(
+        JSON.parse(localStorage.getItem("get_model_history_status")) || null
+    );
+
+    watch(models, (newModels) => {
+        localStorage.setItem("model_history", JSON.stringify(newModels));
+    });
+
+    watch(activeModel, (newActiveModel) => {
+        localStorage.setItem("active_model", JSON.stringify(newActiveModel));
+    });
+
+    watch(getModelHistoryStatus, (newStatus) => {
+        localStorage.setItem(
+            "get_model_history_status",
+            JSON.stringify(newStatus)
+        );
+    });
+
+    async function getModelHistory() {
+        getModelHistoryStatus.value = "loading";
+        try {
+            await axios
+                .get("/api/admin/recommendation-system/model-history", {
+                    headers: {
+                        Authorization: `Bearer ${cookieManager.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                })
+                .then((response) => {
+                    models.value = response.data.result;
+                    getModelHistoryStatus.value = "success";
+                })
+                .catch((err) => {
+                    getModelHistoryStatus.value = "error";
+                });
+        } catch (err) {
+            getModelHistoryStatus.value = "error";
+        }
+    }
+
+    async function getActiveModel() {
+        try {
+            await axios
+                .get("/api/admin/recommendation-system/active-model", {
+                    headers: {
+                        Authorization: `Bearer ${cookieManager.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                })
+                .then((response) => {
+                    activeModel.value = response.data.result.model;
+                })
+                .catch((err) => {
+                    activeModel.value = null;
+                });
+            return activeModel.value;
+        } catch (err) {
+            return null;
+        }
+    }
+
+    async function activateModel(modelId: number) {
+        try {
+            await axios
+                .post(
+                    `/api/admin/recommendation-system/activate-model/${modelId}`,
+                    {},
+                    {
+                        headers: {
+                            Authorization: `Bearer ${cookieManager.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((response) => {
+                    getActiveModel();
+                })
+                .catch((err) => {
+                    useDialogStore().openErrorDialog(
+                        "An error occurred while activating the model."
+                    );
+                });
+        } catch (err) {
+            useDialogStore().openErrorDialog(
+                "An error occurred while activating the model."
+            );
+        }
+    }
+
+    async function deleteModel(modelId: number) {
+        try {
+            await axios
+                .delete(
+                    `/api/admin/recommendation-system/model-history/${modelId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${cookieManager.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then(async (response) => {
+                    await getModelHistory();
+                    await getActiveModel();
+                    useDialogStore().openSuccessDialog(
+                        "Model deleted successfully."
+                    );
+                })
+                .catch((err) => {
+                    useDialogStore().openErrorDialog(
+                        "An error occurred while deleting the model."
+                    );
+                });
+        } catch (err) {
+            useDialogStore().openErrorDialog(
+                "An error occurred while deleting the model."
+            );
+        }
+    }
+
     const clearTrainingResult = () => {
         trainedModel.value = null;
         trainModelStatus.value = null;
         trainModelError.value = null;
     };
 
+    const clearErrors = () => {
+        form.value.books_file = null;
+        form.value.transactions_file = null;
+        form.value.errors = {
+            books_file: null,
+            transactions_file: null,
+            n_factors: null,
+            n_epochs: null,
+            lr_all: null,
+            reg_all: null,
+        };
+    };
+
     return {
         datasetSources,
+        references,
         form,
         trainModelStatus,
         trainedModel,
         trainModelError,
         startTraining,
         clearTrainingResult,
+        clearErrors,
+        models,
+        activeModel,
+        getModelHistoryStatus,
+        getModelHistory,
+        getActiveModel,
+        activateModel,
+        deleteModel,
     };
 });

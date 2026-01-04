@@ -8,5 +8,6 @@ interface ModelEntity {
     reg_all: number;
     rmse: number;
     mae: number;
+    reference: string;
     created_at: string;
 }

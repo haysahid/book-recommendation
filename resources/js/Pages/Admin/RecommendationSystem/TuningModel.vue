@@ -2,6 +2,11 @@
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import TuningModelForm from "./TuningModelForm.vue";
 import DefaultCard from "@/Components/DefaultCard.vue";
+import { useTrainingStore } from "@/stores/training-store";
+import TrainingResult from "./TrainingResult.vue";
+import ModelStats from "./ModelStats.vue";
+
+const trainingStore = useTrainingStore();
 </script>
 
 <template>
@@ -19,7 +24,7 @@ import DefaultCard from "@/Components/DefaultCard.vue";
             },
         ]"
     >
-        <div class="p-2 sm:p-0">
+        <div class="p-2 sm:p-0 flex flex-col gap-4">
             <DefaultCard class="w-full">
                 <TuningModelForm />
             </DefaultCard>

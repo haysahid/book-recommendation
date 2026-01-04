@@ -5,6 +5,10 @@ import cookieManager from "@/plugins/cookie-manager";
 
 export const useTuningStore = defineStore("tuning", () => {
     const datasetSources = ["Database", "Upload Files"];
+    const references = {
+        rating: "Rating",
+        transaction: "Transaction",
+    };
 
     const gridSize = ref(
         JSON.parse(localStorage.getItem("tuning_grid_size")) || 3
@@ -23,6 +27,7 @@ export const useTuningStore = defineStore("tuning", () => {
     const form = ref(
         JSON.parse(localStorage.getItem("tuning_form")) || {
             dataset_source: "Database",
+            reference: "rating",
             books_file: null,
             transactions_file: null,
             n_factors: [],
@@ -87,6 +92,28 @@ export const useTuningStore = defineStore("tuning", () => {
     });
 
     const startTuning = async () => {
+        if (form.value.dataset_source === "Upload Files") {
+            if (!form.value.books_file) {
+                form.value.errors.books_file = "Books file is required.";
+            } else {
+                form.value.errors.books_file = null;
+            }
+
+            if (!form.value.transactions_file) {
+                form.value.errors.transactions_file =
+                    "Transactions file is required.";
+            } else {
+                form.value.errors.transactions_file = null;
+            }
+
+            if (
+                form.value.errors.books_file ||
+                form.value.errors.transactions_file
+            ) {
+                return;
+            }
+        }
+
         clearTuningResult();
 
         tuneModelStatus.value = "loading";
@@ -110,6 +137,9 @@ export const useTuningStore = defineStore("tuning", () => {
                     .filter((value) => value !== null && value !== "")
                     .slice(0, gridSize.value);
 
+            if (form.value.reference) {
+                formData.append("reference", form.value.reference);
+            }
             if (form.value.n_factors.length > 0) {
                 const n_factors = limitByGridSize(form.value.n_factors);
                 n_factors.forEach((value, index) => {
@@ -192,8 +222,24 @@ export const useTuningStore = defineStore("tuning", () => {
         tuneModelError.value = null;
     };
 
+    const clearErrors = () => {
+        form.value.books_file = null;
+        form.value.transactions_file = null;
+        form.value.errors = {
+            books_file: null,
+            transactions_file: null,
+            n_factors: null,
+            n_epochs: null,
+            lr_all: null,
+            reg_all: null,
+            cv: null,
+            n_jobs: null,
+        };
+    };
+
     return {
         datasetSources,
+        references,
         gridSize,
         nFactorsPlaceholder,
         nEpochsPlaceholder,
@@ -205,5 +251,6 @@ export const useTuningStore = defineStore("tuning", () => {
         tuneModelError,
         startTuning,
         clearTuningResult,
+        clearErrors,
     };
 });

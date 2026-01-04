@@ -26,6 +26,10 @@ const props = defineProps({
         type: String,
         default: "Choose a file",
     },
+    containerClass: {
+        type: String,
+        default: "",
+    },
 });
 
 const emit = defineEmits(["update:file"]);
@@ -48,6 +52,7 @@ const emit = defineEmits(["update:file"]);
                 {
                     'border-red-500': props.error,
                 },
+                props.containerClass,
             ]"
             :placeholder="props.placeholder"
         />

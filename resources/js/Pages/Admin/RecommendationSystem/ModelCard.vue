@@ -61,6 +61,21 @@ const showDeleteConfirmationModal = ref(false);
             <!-- Stats -->
             <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-2">
                 <ModelStatsLabel
+                    :value="model.reference.toUpperCase()"
+                    :isActive="props.isActive"
+                    class="font-medium"
+                    :class="{
+                        'bg-orange-100 text-orange-700':
+                            model.reference === 'rating',
+                        'bg-indigo-100 text-indigo-700':
+                            model.reference === 'transaction',
+                        'bg-orange-100! text-orange-700':
+                            model.reference === 'rating' && props.isActive,
+                        'bg-indigo-100! text-indigo-700':
+                            model.reference === 'transaction' && props.isActive,
+                    }"
+                />
+                <ModelStatsLabel
                     label="Factors"
                     :value="model.n_factors.toString()"
                     :isActive="props.isActive"

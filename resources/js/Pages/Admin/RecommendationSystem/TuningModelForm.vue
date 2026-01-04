@@ -10,12 +10,21 @@ import QuantityInput from "@/Components/QuantityInput.vue";
 import { useTuningStore } from "@/stores/tuning-store";
 import TuningDetail from "./TuningDetail.vue";
 import InputError from "@/Components/InputError.vue";
+import { onMounted } from "vue";
+import { useTrainingStore } from "@/stores/training-store";
+import ModelStats from "./ModelStats.vue";
+import ModelResultStats from "./ModelResultStats.vue";
 
 const props = defineProps({});
 
 const emit = defineEmits(["tuned"]);
 
 const tuningStore = useTuningStore();
+const trainingStore = useTrainingStore();
+
+onMounted(() => {
+    tuningStore.clearErrors();
+});
 </script>
 
 <template>
@@ -43,11 +52,12 @@ const tuningStore = useTuningStore();
 
         <div class="flex flex-col w-full gap-4 lg:flex-row lg:gap-6">
             <div class="flex flex-col w-full gap-4">
-                <div class="flex flex-col gap-4">
+                <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:max-w-3xl">
                     <!-- Dataset Source -->
                     <InputGroup
                         id="tuning_dataset_source"
                         label="Dataset Source"
+                        class="col-span-2 md:col-span-1 xl:col-span-1"
                     >
                         <div class="flex gap-2">
                             <Chip
@@ -65,8 +75,36 @@ const tuningStore = useTuningStore();
                         </div>
                     </InputGroup>
 
-                    <template
-                        v-if="tuningStore.form.dataset_source == 'Upload Files'"
+                    <!-- Reference -->
+                    <InputGroup
+                        id="reference"
+                        label="Reference"
+                        class="col-span-2 md:col-span-1 lg:col-span-2"
+                    >
+                        <div class="flex gap-2">
+                            <Chip
+                                v-for="(label, value) in tuningStore.references"
+                                :key="value"
+                                :label="label"
+                                :selected="tuningStore.form.reference === value"
+                                class="whitespace-nowrap"
+                                @click="tuningStore.form.reference = value"
+                            />
+                        </div>
+
+                        <template #suffix>
+                            <InfoTooltip
+                                id="reference-info"
+                                text="The type of recommendation reference used in tuning."
+                            />
+                        </template>
+                    </InputGroup>
+
+                    <div
+                        v-show="
+                            tuningStore.form.dataset_source == 'Upload Files'
+                        "
+                        class="col-span-2 lg:col-span-3"
                     >
                         <!-- Books File -->
                         <InputGroup id="tuning_books_file" label="Books File">
@@ -77,6 +115,11 @@ const tuningStore = useTuningStore();
                                 @update:file="
                                     (file) =>
                                         (tuningStore.form.books_file = file)
+                                "
+                                :containerClass="
+                                    tuningStore.form.books_file
+                                        ? 'border-gray-400'
+                                        : ''
                                 "
                             />
                         </InputGroup>
@@ -97,90 +140,88 @@ const tuningStore = useTuningStore();
                                         (tuningStore.form.transactions_file =
                                             file)
                                 "
+                                :containerClass="
+                                    tuningStore.form.transactions_file
+                                        ? 'border-gray-400'
+                                        : ''
+                                "
                             />
                         </InputGroup>
-                    </template>
-
-                    <div class="flex flex-col sm:flex-row gap-4 sm:max-w-2xl">
-                        <!-- Grid Size -->
-                        <InputGroup
-                            id="tuning_grid_size"
-                            label="Grid Size"
-                            class="w-min"
-                        >
-                            <QuantityInput
-                                id="tuning_grid_size"
-                                v-model="tuningStore.gridSize"
-                                :min="2"
-                                :max="10"
-                                :step="1"
-                                :label="null"
-                                :show-availability="false"
-                            />
-                            <template #suffix>
-                                <InfoTooltip
-                                    id="tuning-grid-size-info"
-                                    text="Number of values to try for each hyperparameter."
-                                />
-                            </template>
-                        </InputGroup>
-
-                        <div class="flex gap-4 w-full">
-                            <!-- Cross-Validation Folds -->
-                            <InputGroup
-                                id="tuning_cv"
-                                label="Cross-Validation Folds"
-                            >
-                                <TextInput
-                                    id="tuning_cv"
-                                    v-model="tuningStore.form.cv"
-                                    type="number"
-                                    placeholder="3"
-                                    :error="tuningStore.form.errors?.cv"
-                                    @update:modelValue="
-                                        tuningStore.form.errors.cv = null
-                                    "
-                                    class="w-full"
-                                    :bgClass="
-                                        tuningStore.form.cv
-                                            ? 'border-gray-400'
-                                            : ''
-                                    "
-                                />
-                                <template #suffix>
-                                    <InfoTooltip
-                                        id="cv-info"
-                                        text="Number of folds for cross-validation."
-                                    />
-                                </template>
-                            </InputGroup>
-
-                            <!-- Jobs -->
-                            <InputGroup id="tuning_n_jobs" label="Jobs">
-                                <TextInput
-                                    id="tuning_n_jobs"
-                                    v-model="tuningStore.form.n_jobs"
-                                    type="number"
-                                    placeholder="1"
-                                    :error="tuningStore.form.errors?.n_jobs"
-                                    @update:modelValue="
-                                        tuningStore.form.errors.n_jobs = null
-                                    "
-                                    :bgClass="
-                                        tuningStore.form.n_jobs
-                                            ? 'border-gray-400'
-                                            : ''
-                                    "
-                                />
-                                <template #suffix>
-                                    <InfoTooltip
-                                        id="tuning-n-jobs-info"
-                                        text="Number of parallel jobs to run."
-                                    />
-                                </template>
-                            </InputGroup>
-                        </div>
                     </div>
+
+                    <!-- Cross-Validation Folds -->
+                    <InputGroup
+                        id="tuning_cv"
+                        label="Cross-Validation Folds"
+                        class="whitespace-nowrap col-span-2 sm:col-span-1"
+                    >
+                        <QuantityInput
+                            id="tuning_cv"
+                            v-model.number="tuningStore.form.cv"
+                            placeholder="5"
+                            :min="2"
+                            :max="10"
+                            :step="1"
+                            :showAvailability="false"
+                            :label="null"
+                            :error="tuningStore.form.errors?.cv"
+                            @update:modelValue="
+                                tuningStore.form.errors.cv = null
+                            "
+                        />
+                        <template #suffix>
+                            <InfoTooltip
+                                id="cv-info"
+                                text="Number of folds for cross-validation."
+                            />
+                        </template>
+                    </InputGroup>
+
+                    <!-- Jobs -->
+                    <InputGroup id="tuning_n_jobs" label="Jobs">
+                        <QuantityInput
+                            id="tuning_n_jobs"
+                            v-model.number="tuningStore.form.n_jobs"
+                            placeholder="1"
+                            :min="-1"
+                            :max="10"
+                            :step="1"
+                            :showAvailability="false"
+                            :label="null"
+                            :error="tuningStore.form.errors?.n_jobs"
+                            @update:modelValue="
+                                tuningStore.form.errors.n_jobs = null
+                            "
+                            :bgClass="
+                                tuningStore.form.n_jobs ? 'border-gray-400' : ''
+                            "
+                        />
+                        <template #suffix>
+                            <InfoTooltip
+                                id="tuning-n-jobs-info"
+                                text="Number of parallel jobs to run."
+                            />
+                        </template>
+                    </InputGroup>
+
+                    <!-- Grid Size -->
+                    <InputGroup id="tuning_grid_size" label="Grid Size">
+                        <QuantityInput
+                            id="tuning_grid_size"
+                            v-model="tuningStore.gridSize"
+                            :min="2"
+                            :max="10"
+                            :step="1"
+                            :label="null"
+                            :show-availability="false"
+                        />
+                        <template #suffix>
+                            <InfoTooltip
+                                id="tuning-grid-size-info"
+                                text="Number of values to try for each hyperparameter."
+                            />
+                        </template>
+                    </InputGroup>
                 </div>
 
                 <h3 class="text-md font-semibold mt-2">Hyperparameter Grid</h3>
@@ -415,12 +456,12 @@ const tuningStore = useTuningStore();
         <Transition name="accordion">
             <div
                 v-if="tuningStore.result"
-                class="mt-6 bg-green-100 p-4 rounded-lg"
+                class="mt-6 bg-green-100 p-4 rounded-lg flex flex-col gap-3"
             >
                 <div
-                    class="flex items-center justify-between gap-4 mb-2 text-green-800"
+                    class="flex items-center justify-between gap-4 text-green-800"
                 >
-                    <h2 class="font-semibold">Tuning Result</h2>
+                    <h2 class="font-semibold text-lg">Tuning Result</h2>
                     <div class="flex gap-4">
                         <button
                             class="whitespace-nowrap text-sm text-red-700 hover:underline hover:text-red-600"
@@ -428,88 +469,38 @@ const tuningStore = useTuningStore();
                         >
                             Clear Result
                         </button>
+                        <PrimaryButton> Apply to Train Model </PrimaryButton>
                     </div>
                 </div>
 
                 <div
-                    class="rounded-lg py-4 px-6 bg-white flex flex-row gap-4 items-start border border-green-400 mb-2 text-green-800"
+                    class="rounded-lg py-4 px-6 bg-white border border-green-400 text-green-800 flex flex-col gap-3.5"
                 >
-                    <div class="w-full lg:w-2/3">
-                        <h3 class="text-md font-semibold mb-2">
-                            Best Hyperparameters
-                        </h3>
-                        <div
-                            class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-2 p-2 justify-start bg-gray-50 w-full rounded-md border border-gray-200"
-                        >
-                            <ModelResultStatsLabel
-                                label="Factors"
-                                :value="
-                                    tuningStore.result.best_params?.n_factors?.toString() ??
-                                    '-'
-                                "
-                                :isHigher="false"
-                                :isLower="false"
-                                class="items-start!"
-                            />
-                            <ModelResultStatsLabel
-                                label="Epochs"
-                                :value="
-                                    tuningStore.result.best_params?.n_epochs?.toString() ??
-                                    '-'
-                                "
-                                :isHigher="false"
-                                :isLower="false"
-                                class="items-start!"
-                            />
-                            <ModelResultStatsLabel
-                                label="Learning Rate"
-                                :value="
-                                    tuningStore.result.best_params?.lr_all?.toString() ??
-                                    '-'
-                                "
-                                :isHigher="false"
-                                :isLower="false"
-                                class="items-start!"
-                            />
-                            <ModelResultStatsLabel
-                                label="Regularization"
-                                :value="
-                                    tuningStore.result.best_params?.reg_all?.toString() ??
-                                    '-'
-                                "
-                                :isHigher="false"
-                                :isLower="false"
-                                class="items-start!"
-                            />
-                        </div>
-                    </div>
+                    <ModelResultStats
+                        :model="({
+                        id: null,
+                        reference: tuningStore.form.reference,
+                        n_factors: tuningStore.result.best_params.n_factors,
+                        n_epochs: tuningStore.result.best_params.n_epochs,
+                        lr_all: tuningStore.result.best_params.lr_all,
+                        reg_all: tuningStore.result.best_params.reg_all,
+                        rmse: tuningStore.result.best_score_rmse,
+                        mae: tuningStore.result.best_score_mae,
+                        created_at: new Date().toISOString(),
+                    } as ModelEntity)"
+                        :compareModel="trainingStore.activeModel"
+                        :showSubTitles="true"
+                    />
 
-                    <div class="w-full lg:w-1/3">
-                        <h3 class="text-md font-semibold mb-2">Best Scores</h3>
-                        <div
-                            class="grid grid-cols-1 xl:grid-cols-2 gap-2 p-2 justify-start bg-gray-50 w-full rounded-md border border-gray-200"
-                        >
-                            <ModelResultStatsLabel
-                                label="RMSE Score"
-                                :value="
-                                    tuningStore.result.best_score_rmse.toFixed(
-                                        4
-                                    )
-                                "
-                                :isHigher="false"
-                                :isLower="false"
-                                class="items-start!"
-                            />
-                            <ModelResultStatsLabel
-                                label="MAE Score"
-                                :value="
-                                    tuningStore.result.best_score_mae.toFixed(4)
-                                "
-                                :isHigher="false"
-                                :isLower="false"
-                                class="items-start!"
-                            />
-                        </div>
+                    <div>
+                        <p class="text-sm text-gray-500 mb-2">
+                            Compared to the active model:
+                        </p>
+
+                        <ModelResultStats
+                            :model="trainingStore.activeModel"
+                            class="text-primary"
+                        />
                     </div>
                 </div>
 

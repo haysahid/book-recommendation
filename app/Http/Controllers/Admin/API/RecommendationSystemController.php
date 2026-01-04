@@ -24,6 +24,7 @@ class RecommendationSystemController extends Controller
             'n_epochs' => 'nullable|integer|min:1',
             'lr_all' => 'nullable|numeric|min:0',
             'reg_all' => 'nullable|numeric|min:0',
+            'reference' => 'nullable|string',
         ]);
 
         try {
@@ -33,6 +34,7 @@ class RecommendationSystemController extends Controller
             $nEpochs = $validated['n_epochs'] ?? null;
             $lrAll = $validated['lr_all'] ?? null;
             $regAll = $validated['reg_all'] ?? null;
+            $reference = $validated['reference'] ?? null;
 
             $client = new Client();
             $multipart = [];
@@ -84,6 +86,13 @@ class RecommendationSystemController extends Controller
                 ];
             }
 
+            if (isset($reference)) {
+                $multipart[] = [
+                    'name'     => 'reference',
+                    'contents' => $reference,
+                ];
+            }
+
             if (isset($nFactors)) {
                 $multipart[] = [
                     'name'     => 'n_factors',
@@ -127,6 +136,7 @@ class RecommendationSystemController extends Controller
         $validated = $request->validate([
             'books_file' => 'nullable|file|mimes:xlsx,xls',
             'transactions_file' => 'nullable|file|mimes:xlsx,xls',
+            'reference' => 'nullable|string',
             'n_factors' => 'nullable|array',
             'n_factors.*' => 'integer|min:1',
             'n_epochs' => 'nullable|array',
@@ -144,6 +154,7 @@ class RecommendationSystemController extends Controller
         try {
             $books_file = $validated['books_file'] ?? null;
             $transactions_file = $validated['transactions_file'] ?? null;
+            $reference = $validated['reference'] ?? null;
             $nFactors = $validated['n_factors'] ?? null;
             $nEpochs = $validated['n_epochs'] ?? null;
             $lrAll = $validated['lr_all'] ?? null;
@@ -199,6 +210,13 @@ class RecommendationSystemController extends Controller
                     'name'     => 'transactions_file',
                     'contents' => fopen($transactions_file->getRealPath(), 'r'),
                     'filename' => $transactions_file->getClientOriginalName(),
+                ];
+            }
+
+            if (isset($reference)) {
+                $multipart[] = [
+                    'name'     => 'reference',
+                    'contents' => $reference,
                 ];
             }
 

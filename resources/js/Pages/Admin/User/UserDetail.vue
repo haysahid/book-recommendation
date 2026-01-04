@@ -9,15 +9,14 @@ import UserProfile from "./UserProfile.vue";
 import axios from "axios";
 import cookieManager from "@/plugins/cookie-manager";
 import Order from "@/Pages/Order/Order.vue";
-import BookCard from "../Book/BookCard.vue";
 import StatusChip from "@/Components/StatusChip.vue";
-import BookCardHorizontal from "../Book/BookCardHorizontal.vue";
 import BookCardHorizontalSmall from "../Book/BookCardHorizontalSmall.vue";
 
 const props = defineProps({
     user: Object as () => UserEntity,
     stats: Object as () => {
         total_orders: number;
+        books_ordered: number;
         total_spent: number;
     },
 });
@@ -106,10 +105,18 @@ getRecommendedBooks();
                 <div class="flex flex-col w-full gap-2 xl:flex-row sm:gap-4">
                     <div class="flex flex-col gap-2 sm:gap-4 w-full">
                         <!-- Summary -->
-                        <div class="grid w-full grid-cols-2 gap-2 sm:gap-4">
+                        <div
+                            class="grid w-full grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4"
+                        >
                             <SummaryCard
                                 title="Total Orders"
                                 :value="$formatNumber(props.stats.total_orders)"
+                            />
+                            <SummaryCard
+                                title="Books Ordered"
+                                :value="
+                                    $formatNumber(props.stats.books_ordered)
+                                "
                             />
                             <SummaryCard
                                 title="Total Spent"
@@ -143,6 +150,11 @@ getRecommendedBooks();
                                     (el: HTMLElement) => {
                                         el.style.transitionDelay =
                                             index * 100 + 'ms';
+                                    }
+                                "
+                                            @after-enter="
+                                    (el: HTMLElement) => {
+                                        el.style.transitionDelay = '';
                                     }
                                 "
                                             @after-leave="

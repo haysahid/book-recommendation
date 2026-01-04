@@ -37,7 +37,8 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue"]);
 
 function updateValue(value: number) {
-    emit("update:modelValue", Math.max(1, value));
+    let min = props.min !== null ? props.min : 1;
+    emit("update:modelValue", Math.max(min, value));
 }
 </script>
 
@@ -65,15 +66,25 @@ function updateValue(value: number) {
                 placeholder="0"
                 errorClass="px-0"
                 :error="
-                    !props.modelValue || (props.max && props.modelValue <= 0)
+                    props.modelValue === null ||
+                    (props.min !== null && props.modelValue < props.min)
                         ? 'Quantity is not valid'
-                        : props.max && props.modelValue > props.max
+                        : props.max !== null && props.modelValue > props.max
                         ? 'Insufficient stock'
                         : ''
                 "
                 @keydown="
                     (event) => {
-                        if (/^[eE\-\+]$/.test(event.key)) {
+                        // Allow '-' at the start if min is negative
+                        if (
+                            /^[eE\+]$/.test(event.key) ||
+                            (event.key === '-' &&
+                                !(
+                                    props.min < 0 &&
+                                    event.target.selectionStart === 0 &&
+                                    !event.target.value.includes('-')
+                                ))
+                        ) {
                             event.preventDefault();
                         }
                     }

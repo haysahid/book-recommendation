@@ -145,18 +145,20 @@ class UserRepository
     {
         $user = DB::table('users')
             ->leftJoin('transactions', 'users.id', '=', 'transactions.user_id')
-            // Join invoices
             ->leftJoin('invoices', 'transactions.id', '=', 'invoices.transaction_id')
+            ->leftJoin('transaction_items', 'transactions.id', '=', 'transaction_items.transaction_id')
             ->where('users.id', $userId)
             ->selectRaw('
-                COUNT(invoices.id) AS total_orders,
-                SUM(invoices.amount) AS total_spent
+                COUNT(DISTINCT invoices.id) AS total_orders,
+                COALESCE(SUM(transaction_items.quantity), 0) AS books_ordered,
+                COALESCE(SUM(invoices.amount), 0) AS total_spent
             ')
             ->groupBy('users.id')
             ->first();
 
         return [
             'total_orders' => $user->total_orders ?? 0,
+            'books_ordered' => $user->books_ordered ?? 0,
             'total_spent' => $user->total_spent ?? 0,
         ];
     }
