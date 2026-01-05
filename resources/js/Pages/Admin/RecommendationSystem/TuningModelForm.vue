@@ -14,13 +14,29 @@ import { onMounted } from "vue";
 import { useTrainingStore } from "@/stores/training-store";
 import ModelStats from "./ModelStats.vue";
 import ModelResultStats from "./ModelResultStats.vue";
+import { router } from "@inertiajs/vue3";
 
 const props = defineProps({});
 
-const emit = defineEmits(["tuned"]);
-
 const tuningStore = useTuningStore();
 const trainingStore = useTrainingStore();
+
+const applyToTrainModel = () => {
+    if (tuningStore.result) {
+        const bestParams = tuningStore.result.best_params;
+
+        trainingStore.form.dataset_source = "Database";
+        trainingStore.form.reference = tuningStore.form.reference;
+        trainingStore.form.n_factors = bestParams.n_factors;
+        trainingStore.form.n_epochs = bestParams.n_epochs;
+        trainingStore.form.lr_all = bestParams.lr_all;
+        trainingStore.form.reg_all = bestParams.reg_all;
+
+        trainingStore.clearTrainingResult();
+    }
+
+    router.visit("/admin/recommendation-system/training-model?from_tuning=1");
+};
 
 onMounted(() => {
     tuningStore.clearErrors();
@@ -469,7 +485,9 @@ onMounted(() => {
                         >
                             Clear Result
                         </button>
-                        <PrimaryButton> Apply to Train Model </PrimaryButton>
+                        <PrimaryButton @click="applyToTrainModel()">
+                            Apply to Train Model
+                        </PrimaryButton>
                     </div>
                 </div>
 
