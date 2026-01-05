@@ -91,7 +91,7 @@ export const useTuningStore = defineStore("tuning", () => {
         localStorage.setItem("tuning_model_error", JSON.stringify(newValue));
     });
 
-    const startTuning = async () => {
+    const startTuning = async ({ onSuccess = () => {} } = {}) => {
         if (form.value.dataset_source === "Upload Files") {
             if (!form.value.books_file) {
                 form.value.errors.books_file = "Books file is required.";
@@ -181,8 +181,9 @@ export const useTuningStore = defineStore("tuning", () => {
                     },
                 })
                 .then((response) => {
-                    tuneModelStatus.value = "success";
                     result.value = response.data.result;
+                    tuneModelStatus.value = "success";
+                    onSuccess();
                 })
                 .catch((err) => {
                     if (err.status === 422) {

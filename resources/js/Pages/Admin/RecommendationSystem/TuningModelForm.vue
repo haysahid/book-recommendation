@@ -3,16 +3,14 @@ import InfoTooltip from "@/Components/InfoTooltip.vue";
 import InputGroup from "@/Components/InputGroup.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import ModelResultStatsLabel from "./ModelResultStatsLabel.vue";
 import Chip from "@/Components/Chip.vue";
 import FileInput from "@/Components/FileInput.vue";
 import QuantityInput from "@/Components/QuantityInput.vue";
 import { useTuningStore } from "@/stores/tuning-store";
 import TuningDetail from "./TuningDetail.vue";
 import InputError from "@/Components/InputError.vue";
-import { onMounted } from "vue";
+import { nextTick, onMounted } from "vue";
 import { useTrainingStore } from "@/stores/training-store";
-import ModelStats from "./ModelStats.vue";
 import ModelResultStats from "./ModelResultStats.vue";
 import { router } from "@inertiajs/vue3";
 
@@ -38,6 +36,27 @@ const applyToTrainModel = () => {
     router.visit("/admin/recommendation-system/training-model?from_tuning=1");
 };
 
+const startTuning = () => {
+    tuningStore.startTuning({
+        onSuccess: () => {
+            nextTick(() => {
+                setTimeout(() => {
+                    const tuningResult = document.getElementById(
+                        "tuningResultSection"
+                    );
+                    const mainArea = document.getElementById("main-area");
+                    if (tuningResult && mainArea) {
+                        mainArea.scrollTo({
+                            top: tuningResult.getBoundingClientRect().top,
+                            behavior: "smooth",
+                        });
+                    }
+                }, 300);
+            });
+        },
+    });
+};
+
 onMounted(() => {
     tuningStore.clearErrors();
 });
@@ -45,7 +64,10 @@ onMounted(() => {
 
 <template>
     <div>
-        <div class="flex gap-2.5 items-center justify-between mb-4">
+        <div
+            id="tuningHeaderSection"
+            class="flex gap-2.5 items-center justify-between mb-4"
+        >
             <div>
                 <h3 class="text-lg font-semibold">Tuning Model</h3>
                 <p class="text-sm text-gray-500">
@@ -56,7 +78,7 @@ onMounted(() => {
                 type="submit"
                 :disabled="tuningStore.tuneModelStatus == 'loading'"
                 class="whitespace-nowrap"
-                @click="tuningStore.startTuning"
+                @click="startTuning()"
             >
                 {{
                     tuningStore.tuneModelStatus == "loading"
@@ -66,7 +88,10 @@ onMounted(() => {
             </PrimaryButton>
         </div>
 
-        <div class="flex flex-col w-full gap-4 lg:flex-row lg:gap-6">
+        <div
+            id="tuningFormSection"
+            class="flex flex-col w-full gap-4 lg:flex-row lg:gap-6"
+        >
             <div class="flex flex-col w-full gap-4">
                 <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:max-w-3xl">
                     <!-- Dataset Source -->
@@ -472,6 +497,7 @@ onMounted(() => {
         <Transition name="accordion">
             <div
                 v-if="tuningStore.result"
+                id="tuningResultSection"
                 class="mt-6 bg-green-100 p-4 rounded-lg flex flex-col gap-3"
             >
                 <div

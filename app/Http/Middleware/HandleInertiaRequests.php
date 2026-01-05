@@ -40,6 +40,9 @@ class HandleInertiaRequests extends Middleware
 
         return [
             ...parent::share($request),
+            'setting' => function () {
+                return \App\Repositories\SettingRepository::getSettings();
+            },
             'flash' => [
                 'success' => session('success'),
                 'error' => session('error'),

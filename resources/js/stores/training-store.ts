@@ -65,7 +65,7 @@ export const useTrainingStore = defineStore("training", () => {
         localStorage.setItem("training_model_error", JSON.stringify(newError));
     });
 
-    const startTraining = async ({ onSuccess = () => {} }) => {
+    const startTraining = async ({ onSuccess = () => {} } = {}) => {
         if (form.value.dataset_source === "Upload Files") {
             if (!form.value.books_file) {
                 form.value.errors.books_file = "Books file is required.";
