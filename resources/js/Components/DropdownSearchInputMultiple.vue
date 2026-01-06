@@ -53,6 +53,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    searchable: {
+        type: Boolean,
+        default: false,
+    },
     autofocus: {
         type: Boolean,
         default: false,
@@ -77,10 +81,20 @@ const isDropdownOpen = ref(false);
 const search = ref("");
 
 const filteredOptions = computed(() => {
-    return props.options.filter(
-        (option) =>
-            !props.modelValue.some((item) => item.value === option.value)
-    );
+    if (props.searchable && search.value.length > 0) {
+        return props.options.filter(
+            (option) =>
+                !props.modelValue.some((item) => item.value === option.value) &&
+                option.label
+                    .toLowerCase()
+                    .includes(search.value.toLowerCase().trim())
+        );
+    } else {
+        return props.options.filter(
+            (option) =>
+                !props.modelValue.some((item) => item.value === option.value)
+        );
+    }
 });
 
 watch(

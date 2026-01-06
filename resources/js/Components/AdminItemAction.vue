@@ -35,7 +35,7 @@ const hasDeleteCallback = computed(() => {
             type="button"
             :disabled="props.disabled"
             class="group"
-            @click="$emit('edit')"
+            @click.prevent="$emit('edit')"
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +59,7 @@ const hasDeleteCallback = computed(() => {
             type="button"
             :disabled="props.disabled"
             class="group"
-            @click="$emit('delete')"
+            @click.prevent="$emit('delete')"
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"

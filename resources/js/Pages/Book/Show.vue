@@ -381,11 +381,33 @@ onMounted(async () => {
                         :key="relatedBook.id"
                         :href="`/book/${relatedBook.slug}`"
                     >
-                        <BookCard
-                            :book="relatedBook"
-                            :index="index"
-                            class="h-full"
-                        />
+                        <Transition
+                            name="fade"
+                            mode="out-in"
+                            appear
+                            @before-enter="
+                                    (el: HTMLElement) => {
+                                        el.style.transitionDelay =
+                                            index * 50 + 'ms';
+                                    }
+                                "
+                            @after-enter="
+                                    (el: HTMLElement) => {
+                                        el.style.transitionDelay = '';
+                                    }
+                                "
+                            @after-leave="
+                                    (el: HTMLElement) => {
+                                        el.style.transitionDelay = '';
+                                    }
+                                "
+                        >
+                            <BookCard
+                                :book="relatedBook"
+                                :index="index"
+                                class="h-full"
+                            />
+                        </Transition>
                     </a>
                 </div>
             </div>

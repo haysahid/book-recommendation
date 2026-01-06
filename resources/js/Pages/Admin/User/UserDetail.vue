@@ -328,25 +328,25 @@ getRecommendedBooks();
                         </a>
                     </div>
                 </template>
-                <div v-else class="flex items-center justify-center">
+                <Transition name="fade">
                     <div
                         v-if="getRecommendedBooksStatus === 'loading'"
-                        class="w-full flex flex-col gap-3"
+                        class="flex items-center justify-center"
                     >
-                        <div
-                            v-for="n in 5"
-                            :key="n"
-                            class="h-40 w-full bg-white/50 rounded-lg animate-pulse"
-                        ></div>
+                        <div class="w-full flex flex-col gap-3">
+                            <div
+                                v-for="n in 10"
+                                :key="n"
+                                class="h-40 w-full bg-white/50 rounded-lg animate-pulse"
+                            ></div>
+                        </div>
                     </div>
-                    <div
-                        v-else
-                        class="h-[20vh] flex items-center justify-center mb-6"
-                    >
-                        <p class="text-sm text-center text-white">
-                            No data found.
-                        </p>
-                    </div>
+                </Transition>
+                <div
+                    v-if="!userRecommendedResult?.results?.length"
+                    class="h-[20vh] flex items-center justify-center mb-6"
+                >
+                    <p class="text-sm text-center text-white">No data found.</p>
                 </div>
             </DefaultCard>
         </div>

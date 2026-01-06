@@ -283,6 +283,10 @@ class BookRepository
             }
         }
 
+        if (!empty($data['categories'])) {
+            $book->categories()->syncWithoutDetaching($data['categories']);
+        }
+
         return $book;
     }
 
@@ -296,6 +300,15 @@ class BookRepository
     public static function updateBook($book, $data)
     {
         $book->update($data);
+
+        if (array_key_exists('categories', $data)) {
+            if (!empty($data['categories'])) {
+                $book->categories()->sync($data['categories']);
+            } else {
+                $book->categories()->detach();
+            }
+        }
+
         return $book;
     }
 

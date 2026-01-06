@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { computed, onMounted, ref } from "vue";
-import { router } from "@inertiajs/vue3";
+import { router, useForm } from "@inertiajs/vue3";
 import CustomPageProps from "@/types/model/CustomPageProps";
 import cookieManager from "@/plugins/cookie-manager";
 import DefaultPagination from "@/Components/DefaultPagination.vue";
@@ -12,6 +12,8 @@ import { scrollToTop } from "@/plugins/helpers";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import useBookService from "@/services/book-service";
+import DeleteConfirmationDialog from "@/Components/DeleteConfirmationDialog.vue";
+import { useDialogStore } from "@/stores/dialog-store";
 
 const props = defineProps({
     books: {
@@ -78,6 +80,39 @@ function getBooks() {
         },
     });
 }
+
+const selectedBook = ref<BookEntity | null>(null);
+const showDeleteBookDialog = ref(false);
+
+const openDeleteBookDialog = (book: BookEntity) => {
+    if (book) {
+        selectedBook.value = book;
+        showDeleteBookDialog.value = true;
+    }
+};
+
+const closeDeleteBookDialog = (result = false) => {
+    showDeleteBookDialog.value = false;
+    if (result) {
+        selectedBook.value = null;
+        useDialogStore().openSuccessDialog("Data Berhasil Dihapus");
+    }
+};
+
+const deleteBook = () => {
+    if (selectedBook.value) {
+        const form = useForm({});
+        form.delete(`/admin/book/${selectedBook.value.id}`, {
+            onError: (errors) => {
+                useDialogStore().openErrorDialog(errors.error);
+            },
+            onSuccess: () => {
+                closeDeleteBookDialog(true);
+                getBooks();
+            },
+        });
+    }
+};
 
 onMounted(() => {
     getQueryParams();
@@ -178,7 +213,37 @@ onMounted(() => {
                         :key="book.id"
                         :href="`/book/${book.slug}`"
                     >
-                        <BookCard :index="index" :book="book" class="h-full" />
+                        <Transition
+                            name="fade"
+                            mode="out-in"
+                            appear
+                            @before-enter="
+                                    (el: HTMLElement) => {
+                                        el.style.transitionDelay =
+                                            index * 50 + 'ms';
+                                    }
+                                "
+                            @after-enter="
+                                    (el: HTMLElement) => {
+                                        el.style.transitionDelay = '';
+                                    }
+                                "
+                            @after-leave="
+                                    (el: HTMLElement) => {
+                                        el.style.transitionDelay = '';
+                                    }
+                                "
+                        >
+                            <BookCard
+                                :index="index"
+                                :book="book"
+                                @edit="
+                                    $inertia.get(`/admin/book/${book.id}/edit`)
+                                "
+                                @delete="openDeleteBookDialog(book)"
+                                class="h-full"
+                            />
+                        </Transition>
                     </a>
                 </div>
 
@@ -203,5 +268,13 @@ onMounted(() => {
                 </div>
             </div>
         </div>
+
+        <DeleteConfirmationDialog
+            :show="showDeleteBookDialog"
+            :title="`Delete Book <b>${selectedBook?.title}</b>?`"
+            :description="`This action cannot be undone.`"
+            @close="closeDeleteBookDialog()"
+            @delete="deleteBook()"
+        />
     </AdminLayout>
 </template>

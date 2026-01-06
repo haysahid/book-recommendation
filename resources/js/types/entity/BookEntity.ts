@@ -24,4 +24,7 @@ interface BookEntity {
     average_rating: number | null;
     rating_count: number | null;
     sold: number | null;
+
+    // Relationships
+    categories: CategoryEntity[] | null;
 }

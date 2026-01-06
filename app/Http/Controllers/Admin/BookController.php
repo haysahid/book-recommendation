@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Category;
 use App\Repositories\BookRepository;
+use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -67,6 +68,8 @@ class BookController extends Controller
             'author' => 'nullable|string|max:255',
             'store_name' => 'nullable|string|max:255',
             'isbn' => 'nullable|string|max:255',
+            'categories' => 'nullable|array',
+            'categories.*' => 'exists:categories,id',
         ]);
 
         BookRepository::createBook($data);
@@ -89,8 +92,12 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
+        $book->load('categories');
+        $categories = CategoryRepository::getCategoryDropdown();
+
         return Inertia::render('Admin/Book/Edit', [
             'book' => $book,
+            'categories' => $categories,
         ]);
     }
 
@@ -107,6 +114,8 @@ class BookController extends Controller
             'author' => 'nullable|string|max:255',
             'store_name' => 'nullable|string|max:255',
             'isbn' => 'nullable|string|max:255',
+            'categories' => 'nullable|array',
+            'categories.*' => 'exists:categories,id',
         ]);
 
         BookRepository::updateBook($book, $data);

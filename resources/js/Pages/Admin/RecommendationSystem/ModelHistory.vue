@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import cookieManager from "@/plugins/cookie-manager";
-import axios from "axios";
-import { ref } from "vue";
 import ModelCard from "./ModelCard.vue";
 import ThreeDotsLoading from "@/Components/ThreeDotsLoading.vue";
-import { useDialogStore } from "@/stores/dialog-store";
 import { useTrainingStore } from "@/stores/training-store";
 
 const trainingStore = useTrainingStore();
@@ -23,33 +19,38 @@ trainingStore.getActiveModel();
             </h3>
         </div>
 
-        <div
+        <!-- <div
             v-if="trainingStore.getModelHistoryStatus === 'loading'"
-            class="text-gray-600"
+            class="flex items-center justify-center h-[10vh]"
         >
-            Loading model history...
-        </div>
+            <ThreeDotsLoading class="text-blue-500" />
+        </div> -->
 
         <div
-            v-else-if="trainingStore.getModelHistoryStatus === 'error'"
-            class="text-red-600"
+            v-if="trainingStore.getModelHistoryStatus === 'error'"
+            class="flex items-center justify-center h-[10vh]"
         >
-            Failed to load model history. Please try again later.
+            <p class="text-sm text-center text-gray-500">
+                Failed to load model history. Please try again later.
+            </p>
         </div>
 
-        <div v-else class="w-full mt-2.5">
+        <div class="w-full mt-2.5">
             <div
                 v-if="trainingStore.models?.length"
                 class="flex flex-col w-full gap-2"
             >
-                <ModelCard
+                <template
                     v-for="(model, index) in trainingStore.models"
                     :key="model.id"
-                    :model="model"
-                    :isActive="model.id === trainingStore.activeModel?.id"
-                    @activate="trainingStore.activateModel"
-                    @delete="trainingStore.deleteModel"
-                />
+                >
+                    <ModelCard
+                        :model="model"
+                        :isActive="model.id === trainingStore.activeModel?.id"
+                        @activate="trainingStore.activateModel"
+                        @delete="trainingStore.deleteModel"
+                    />
+                </template>
             </div>
             <div v-else class="flex items-center justify-center h-[10vh] mb-6">
                 <ThreeDotsLoading
