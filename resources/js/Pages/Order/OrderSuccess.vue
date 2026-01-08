@@ -121,8 +121,15 @@ onMounted(() => {
             router.visit(`/my-order/${props.transaction.code}`);
         }
     } else if (props.transaction.status == "pending") {
-        if (params.get("show_snap") == "1") {
+        if (params.get("show_snap") == "true") {
             showSnap();
+
+            // Delete show_snap from URL
+            params.delete("show_snap");
+            const newUrl =
+                window.location.pathname +
+                (params.toString() ? "?" + params.toString() : "");
+            window.history.replaceState({}, document.title, newUrl);
         } else {
             checkPayment();
         }

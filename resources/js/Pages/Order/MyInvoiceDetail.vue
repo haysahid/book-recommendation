@@ -170,10 +170,17 @@ onMounted(() => {
         // Reload the page
         router.visit(`/my-order/${props.invoice.code}`);
     } else if (
-        urlParams.get("show_snap") === "1" &&
+        urlParams.get("show_snap") === "true" &&
         props.invoice.status === "pending"
     ) {
         showSnap();
+
+        // Delete show_snap from URL
+        urlParams.delete("show_snap");
+        const newUrl =
+            window.location.pathname +
+            (urlParams.toString() ? "?" + urlParams.toString() : "");
+        window.history.replaceState({}, document.title, newUrl);
     }
 });
 </script>
