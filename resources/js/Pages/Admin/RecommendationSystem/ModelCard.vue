@@ -118,6 +118,12 @@ const showDeleteConfirmationModal = ref(false);
                     :value="model.mae.toFixed(4)"
                     :isActive="props.isActive"
                 />
+                <ModelStatsLabel
+                    v-if="model.min_value && model.max_value"
+                    label="Range"
+                    :value="`${model.min_value} - ${model.max_value}`"
+                    :isActive="props.isActive"
+                />
             </div>
             <button
                 class="whitespace-nowrap text-xs text-gray-400 hover:underline hover:text-red-600"

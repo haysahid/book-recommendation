@@ -27,6 +27,12 @@ class RecommendationSystemRepository
         $this->transactionItemsExport = new TransactionItemsExport();
     }
 
+    private function convertToIso8601WithTimezone($datetimeString)
+    {
+        $dt = new \DateTime($datetimeString, new \DateTimeZone('UTC'));
+        return $dt->format('c'); // ISO 8601 with timezone
+    }
+
     private function prepareMultipartFile(
         $name,
         $file,
@@ -106,7 +112,14 @@ class RecommendationSystemRepository
             'multipart' => $multipart,
         ]);
 
-        return json_decode($response->getBody()->getContents(), true);
+        $result = json_decode($response->getBody()->getContents(), true);
+
+        // Convert 'created_at' to ISO 8601 with timezone if present
+        if (isset($result['model']['created_at'])) {
+            $result['model']['created_at'] = $this->convertToIso8601WithTimezone($result['model']['created_at']);
+        }
+
+        return $result;
     }
 
     public function tuneModel(
@@ -162,19 +175,46 @@ class RecommendationSystemRepository
     public function getModelHistory()
     {
         $response = $this->client->get('/model-history');
-        return json_decode($response->getBody()->getContents(), true);
+        $result = json_decode($response->getBody()->getContents(), true);
+
+        // Convert 'created_at' to ISO 8601 with timezone for each model
+        if (is_array($result['models'] ?? null)) {
+            foreach ($result['models'] as &$model) {
+                if (isset($model['created_at'])) {
+                    $model['created_at'] = $this->convertToIso8601WithTimezone($model['created_at']);
+                }
+            }
+        }
+
+        return $result;
     }
 
     public function setActiveModel($modelId)
     {
         $response = $this->client->post("/set-active-model/{$modelId}");
-        return json_decode($response->getBody()->getContents(), true);
+        $result = json_decode($response->getBody()->getContents(), true);
+
+        if (isset($result['created_at'])) {
+            $result['created_at'] = $this->convertToIso8601WithTimezone($result['created_at']);
+        } elseif (isset($result['model']['created_at'])) {
+            $result['model']['created_at'] = $this->convertToIso8601WithTimezone($result['model']['created_at']);
+        }
+
+        return $result;
     }
 
     public function getActiveModel()
     {
         $response = $this->client->get('/active-model');
-        return json_decode($response->getBody()->getContents(), true);
+        $result = json_decode($response->getBody()->getContents(), true);
+
+        if (isset($result['created_at'])) {
+            $result['created_at'] = $this->convertToIso8601WithTimezone($result['created_at']);
+        } elseif (isset($result['model']['created_at'])) {
+            $result['model']['created_at'] = $this->convertToIso8601WithTimezone($result['model']['created_at']);
+        }
+
+        return $result;
     }
 
     public function deleteModel($modelId)

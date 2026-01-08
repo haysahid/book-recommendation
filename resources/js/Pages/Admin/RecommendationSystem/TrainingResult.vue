@@ -2,6 +2,7 @@
 import { useTrainingStore } from "@/stores/training-store";
 import ModelResultStatsLabel from "./ModelResultStatsLabel.vue";
 import ModelStats from "./ModelStats.vue";
+import ModelResultStats from "./ModelResultStats.vue";
 
 const props = defineProps({
     model: {
@@ -57,9 +58,10 @@ const trainingStore = useTrainingStore();
             </div>
 
             <!-- Stats -->
-            <ModelStats
+            <ModelResultStats
                 :model="props.model"
-                :previousModel="props.previousModel"
+                :compareModel="props.previousModel"
+                class="w-full"
             />
         </div>
     </div>

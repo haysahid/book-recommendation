@@ -19,7 +19,7 @@ const trainingStore = useTrainingStore();
 
 <template>
     <div
-        class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4 items-center justify-center w-full p-2 bg-gray-50 rounded-md border border-gray-200"
+        class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 gap-4 items-center justify-center w-full p-2 bg-gray-50 rounded-md border border-gray-200"
     >
         <!-- Reference -->
         <ModelResultStatsLabel
@@ -143,6 +143,17 @@ const trainingStore = useTrainingStore();
                       (props.previousModel ? props.previousModel.mae : Infinity)
                     : false
             "
+        />
+        <ModelResultStatsLabel
+            label="Scale Range"
+            :value="
+                props.model.min_value && props.model.max_value
+                    ? `${props.model.min_value} - ${props.model.max_value}`
+                    : '-'
+            "
+            :isHigher="false"
+            :isLower="false"
+            class="items-start!"
         />
     </div>
 </template>
