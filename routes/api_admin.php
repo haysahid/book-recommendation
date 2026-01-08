@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\API\CategoryController;
 use App\Http\Controllers\Admin\API\OrderController;
 use App\Http\Controllers\Admin\API\InvoiceController;
 use App\Http\Controllers\Admin\API\RecommendationSystemController;
+use App\Http\Controllers\Admin\API\SettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->name('api.admin.')->middleware(['auth:sanctum'])->group(function () {
@@ -37,4 +38,7 @@ Route::prefix('admin')->name('api.admin.')->middleware(['auth:sanctum'])->group(
 
     // Book
     Route::get('/recommended-books/{userId}', [BookController::class, 'userRecommendedBooks'])->name('user-recommended-books');
+
+    // Setting
+    Route::post('/setting/auto-train-model', [SettingController::class, 'setAutoTrainingModel'])->name('setting.auto-train-model');
 });

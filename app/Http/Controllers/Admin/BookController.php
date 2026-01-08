@@ -8,12 +8,21 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Repositories\BookRepository;
 use App\Repositories\CategoryRepository;
+use App\UseCases\AutoTrainModelUseCase;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 
 class BookController extends Controller
 {
+
+    private AutoTrainModelUseCase $autoTrainModelUseCase;
+
+    public function __construct()
+    {
+        $this->autoTrainModelUseCase = new AutoTrainModelUseCase();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -74,6 +83,8 @@ class BookController extends Controller
 
         BookRepository::createBook($data);
 
+        $this->autoTrainModelUseCase->execute();
+
         return redirect()->route('admin.books.index')->with('success', 'Book created successfully.');
     }
 
@@ -129,6 +140,8 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         BookRepository::deleteBook($book);
+
+        $this->autoTrainModelUseCase->execute();
 
         return redirect()->route('admin.book.index')->with('success', 'Book deleted successfully.');
     }

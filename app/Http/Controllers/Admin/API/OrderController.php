@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\API;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
+use App\UseCases\AutoTrainModelUseCase;
 use App\UseCases\CheckoutUseCase;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,10 +16,12 @@ use Illuminate\Support\Facades\Log;
 class OrderController extends Controller
 {
     private CheckoutUseCase $checkoutUseCase;
+    private AutoTrainModelUseCase $autoTrainModelUseCase;
 
     public function __construct()
     {
         $this->checkoutUseCase = new CheckoutUseCase();
+        $this->autoTrainModelUseCase = new AutoTrainModelUseCase();
     }
 
     public function checkoutStore(Request $request)
@@ -85,7 +88,10 @@ class OrderController extends Controller
             data: $validated,
             isStoreCheckout: true,
         )->fold(
-            onSuccess: fn($data, $code) => ResponseFormatter::success($data, 'Order created successfully', $code),
+            onSuccess: function ($data, $code) {
+                $this->autoTrainModelUseCase->execute();
+                return ResponseFormatter::success($data, 'Order created successfully', $code);
+            },
             onError: fn($error, $code) => ResponseFormatter::error($error, $code)
         );
     }

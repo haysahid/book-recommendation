@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin\API;
 
+use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Repositories\SettingRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SettingController extends Controller
 {
@@ -13,6 +15,8 @@ class SettingController extends Controller
     {
         $validatedData = $request->validate([
             'auto_training' => 'required|boolean',
+            'auto_training_interval' => 'nullable|numeric',
+            'interval_unit' => 'nullable|string|in:seconds,minutes,hours,days',
             'reference' => 'nullable|string',
             'n_factors' => 'nullable|integer',
             'n_epochs' => 'nullable|integer',
@@ -20,66 +24,72 @@ class SettingController extends Controller
             'reg_all' => 'nullable|numeric',
         ]);
 
-        $group = 'model';
+        $keyPrefix = 'model.';
+        $group = 'general';
 
-        $autoTraining = new Setting();
-        $autoTraining->key = 'auto_training';
-        $autoTraining->value = $validatedData['auto_training'] ? '1' : '0';
-        $autoTraining->type = 'boolean';
-        $autoTraining->group = $group;
+        // Get previous interval to check for changes
+        $prevInterval = Setting::where('key', $keyPrefix . 'auto_training_interval')->value('value');
+        $newInterval = isset($validatedData['auto_training_interval']) ? (string)$validatedData['auto_training_interval'] : null;
 
-        $autoTraining = SettingRepository::updateOrCreateSetting($autoTraining);
+        $settings = [
+            [
+                'key' => $keyPrefix . 'auto_training',
+                'value' => $validatedData['auto_training'] ? '1' : '0',
+                'type' => 'boolean',
+            ],
+            [
+                'key' => $keyPrefix . 'auto_training_interval',
+                'value' => $newInterval,
+                'type' => 'float',
+            ],
+            [
+                'key' => $keyPrefix . 'interval_unit',
+                'value' => $validatedData['interval_unit'] ?? null,
+                'type' => 'string',
+            ],
+            [
+                'key' => $keyPrefix . 'reference',
+                'value' => $validatedData['reference'] ?? null,
+                'type' => 'string',
+            ],
+            [
+                'key' => $keyPrefix . 'n_factors',
+                'value' => isset($validatedData['n_factors']) ? (string)$validatedData['n_factors'] : null,
+                'type' => 'integer',
+            ],
+            [
+                'key' => $keyPrefix . 'n_epochs',
+                'value' => isset($validatedData['n_epochs']) ? (string)$validatedData['n_epochs'] : null,
+                'type' => 'integer',
+            ],
+            [
+                'key' => $keyPrefix . 'lr_all',
+                'value' => isset($validatedData['lr_all']) ? (string)$validatedData['lr_all'] : null,
+                'type' => 'float',
+            ],
+            [
+                'key' => $keyPrefix . 'reg_all',
+                'value' => isset($validatedData['reg_all']) ? (string)$validatedData['reg_all'] : null,
+                'type' => 'float',
+            ],
+        ];
 
-        if (isset($validatedData['reference'])) {
-            $reference = new Setting();
-            $reference->key = 'reference';
-            $reference->value = $validatedData['reference'];
-            $reference->type = 'text';
-            $reference->group = $group;
-
-            SettingRepository::updateOrCreateSetting($reference);
+        foreach ($settings as $setting) {
+            if (!is_null($setting['value'])) {
+                $setting['group'] = $group;
+                SettingRepository::updateOrCreateSetting($setting);
+            }
         }
 
-        if (isset($validatedData['n_factors'])) {
-            $nFactors = new Setting();
-            $nFactors->key = 'n_factors';
-            $nFactors->value = (string)$validatedData['n_factors'];
-            $nFactors->type = 'integer';
-            $nFactors->group = $group;
-
-            SettingRepository::updateOrCreateSetting($nFactors);
+        // If auto_training_interval changes, clear cache
+        if ($prevInterval !== $newInterval) {
+            Log::info('SettingController: Auto-training interval changed, clearing debounce cache');
+            cache()->forget('auto_train_model_last_run');
         }
 
-        if (isset($validatedData['n_epochs'])) {
-            $nEpochs = new Setting();
-            $nEpochs->key = 'n_epochs';
-            $nEpochs->value = (string)$validatedData['n_epochs'];
-            $nEpochs->type = 'integer';
-            $nEpochs->group = $group;
-
-            SettingRepository::updateOrCreateSetting($nEpochs);
-        }
-
-        if (isset($validatedData['lr_all'])) {
-            $lrAll = new Setting();
-            $lrAll->key = 'lr_all';
-            $lrAll->value = (string)$validatedData['lr_all'];
-            $lrAll->type = 'float';
-            $lrAll->group = $group;
-
-            SettingRepository::updateOrCreateSetting($lrAll);
-        }
-
-        if (isset($validatedData['reg_all'])) {
-            $regAll = new Setting();
-            $regAll->key = 'reg_all';
-            $regAll->value = (string)$validatedData['reg_all'];
-            $regAll->type = 'float';
-            $regAll->group = $group;
-
-            SettingRepository::updateOrCreateSetting($regAll);
-        }
-
-        return response()->json(['message' => 'Auto training model setting updated successfully.']);
+        return ResponseFormatter::success(
+            $validatedData,
+            'Auto-training model setting updated successfully.'
+        );
     }
 }

@@ -68,6 +68,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    step: {
+        type: [String, Number],
+        default: null,
+    },
 });
 
 const emit = defineEmits(["update:modelValue", "focusout", "focus"]);
@@ -113,6 +117,7 @@ defineExpose({
                 :name="props.name"
                 :placeholder="props.placeholder"
                 :type="props.type"
+                :step="props.step"
                 :autofocus="props.autofocus ? true : false"
                 :autocomplete="props.autocomplete"
                 :required="props.required"

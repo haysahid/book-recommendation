@@ -303,6 +303,48 @@ export const useTrainingStore = defineStore("training", () => {
         }
     }
 
+    async function setAutoTraining(
+        {
+            reference = "rating",
+            autoTraining = false,
+            autoTrainingInterval = null,
+            intervalUnit = null,
+            nFactors = null,
+            nEpochs = null,
+            lrAll = null,
+            regAll = null,
+        } = {},
+        { onSuccess = (response) => {} } = {}
+    ) {
+        const data = {
+            reference: reference,
+            auto_training: autoTraining,
+            auto_training_interval: autoTrainingInterval,
+            interval_unit: intervalUnit,
+            n_factors: nFactors,
+            n_epochs: nEpochs,
+            lr_all: lrAll,
+            reg_all: regAll,
+        };
+
+        await axios
+            .post("/api/admin/setting/auto-train-model", data, {
+                headers: {
+                    Authorization: `Bearer ${cookieManager.getItem(
+                        "access_token"
+                    )}`,
+                },
+            })
+            .then((response) => {
+                onSuccess(response);
+            })
+            .catch((err) => {
+                useDialogStore().openErrorDialog(
+                    "An error occurred while updating auto training settings."
+                );
+            });
+    }
+
     const clearTrainingResult = () => {
         trainedModel.value = null;
         trainModelStatus.value = null;
@@ -339,5 +381,6 @@ export const useTrainingStore = defineStore("training", () => {
         getActiveModel,
         activateModel,
         deleteModel,
+        setAutoTraining,
     };
 });

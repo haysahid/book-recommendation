@@ -63,6 +63,7 @@ class RecommendationSystemRepository
         $nEpochs,
         $lrAll,
         $regAll,
+        $createdBy,
     ) {
         $multipart = [];
 
@@ -90,6 +91,7 @@ class RecommendationSystemRepository
                 'n_epochs'  => $nEpochs,
                 'lr_all'    => $lrAll,
                 'reg_all'   => $regAll,
+                'created_by' => $createdBy,
             ] as $key => $value
         ) {
             if (isset($value)) {

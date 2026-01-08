@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Setting;
+use Illuminate\Support\Facades\Log;
 
 class SettingRepository
 {
@@ -25,14 +26,16 @@ class SettingRepository
         return array_map([self::class, 'arrayToObject'], $value);
     }
 
-    public static function getSettings()
+    private static function processSettingsItems($items)
     {
-        $items = Setting::all()->pluck('value', 'key')->toArray();
         $result = [];
         foreach ($items as $key => $value) {
             $setting = Setting::where('key', $key)->first();
             if ($setting && $setting->type === 'json') {
                 $value = json_decode($value, true);
+            }
+            if ($setting && $setting->type === 'boolean') {
+                $value = $value === '1' ? true : false;
             }
             if (strpos($key, '.') !== false) {
                 \Illuminate\Support\Arr::set($result, $key, $value);
@@ -40,6 +43,14 @@ class SettingRepository
                 $result[$key] = $value;
             }
         }
+
+        return $result;
+    }
+
+    public static function getSettings()
+    {
+        $items = Setting::all()->pluck('value', 'key')->toArray();
+        $result = self::processSettingsItems($items);
         return self::arrayToObject($result);
     }
 
@@ -57,26 +68,64 @@ class SettingRepository
         return $result;
     }
 
-    public static function updateOrCreateSetting(Setting $setting)
+    public static function updateOrCreateSetting($setting)
     {
+
         $existing = Setting::where('key', $setting['key'])->first();
         if ($existing) {
-            $existing->value = $setting->value;
-            if (isset($setting->type)) {
-                $existing->type = $setting->type;
+            Log::info('Updating setting: ' . json_encode($setting));
+            $existing->value = $setting['value'];
+
+            foreach (['type', 'name', 'description', 'group'] as $attr) {
+                if (isset($setting[$attr])) {
+                    $existing->$attr = $setting[$attr];
+                }
             }
-            if (isset($setting->name)) {
-                $existing->name = $setting->name;
-            }
-            if (isset($setting->description)) {
-                $existing->description = $setting->description;
-            }
-            if (isset($setting->group)) {
-                $existing->group = $setting->group;
-            }
+
+            Log::info('Setting exists. Updating value to: ' . $setting['value']);
+
             $existing->save();
+            return $existing;
         } else {
-            Setting::create($setting);
+            Log::info('Creating new setting: ' . json_encode($setting));
+            return Setting::create($setting);
         }
+    }
+
+    /**
+     * Retrieve a setting by its key.
+     *
+     * @param string $key The key of the setting to retrieve.
+     * @return Setting|null The Setting model instance if found, or null if not found.
+     */
+    public static function getSettingByKey($key): ?Setting
+    {
+        return Setting::where('key', $key)->first();
+    }
+
+    /**
+     * Retrieve settings whose keys start with the given prefix.
+     *
+     * @param string $prefix The prefix to filter setting keys.
+     * @return object An object containing the processed settings with keys and values.
+     */
+    public static function getSettingByPrefix($prefix): object
+    {
+        $settings = Setting::where('key', 'like', $prefix . '%')->get()->pluck('value', 'key')->toArray();
+        $result = self::processSettingsItems($settings);
+        return self::arrayToObject($result)->model;
+    }
+
+    /**
+     * Retrieve settings by group.
+     *
+     * @param string $group The group name to filter settings.
+     * @return object An object containing the processed settings with keys and values.
+     */
+    public static function getSettingByGroup($group): object
+    {
+        $settings = Setting::where('group', $group)->get()->pluck('value', 'key')->toArray();
+        $result = self::processSettingsItems($settings);
+        return self::arrayToObject($result)->model;
     }
 }

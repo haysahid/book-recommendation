@@ -2,17 +2,12 @@
 
 namespace App\Http\Controllers\Admin\API;
 
-use App\Exports\BooksExport;
-use App\Exports\TransactionItemsExport;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Repositories\RecommendationSystemRepository;
 use Exception;
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Maatwebsite\Excel\Excel as MaatwebsiteExcel;
-use Maatwebsite\Excel\Facades\Excel;
 
 class RecommendationSystemController extends Controller
 {
@@ -44,6 +39,7 @@ class RecommendationSystemController extends Controller
                 nEpochs: $validated['n_epochs'] ?? null,
                 lrAll: $validated['lr_all'] ?? null,
                 regAll: $validated['reg_all'] ?? null,
+                createdBy: 'manual',
             );
 
             return ResponseFormatter::success($responseData, 'Model trained successfully.', 201);

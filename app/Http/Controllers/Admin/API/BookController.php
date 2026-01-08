@@ -7,12 +7,20 @@ use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\User;
 use App\Repositories\BookRepository;
+use App\UseCases\AutoTrainModelUseCase;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class BookController extends Controller
 {
+    private AutoTrainModelUseCase $autoTrainModelUseCase;
+
+    public function __construct()
+    {
+        $this->autoTrainModelUseCase = new AutoTrainModelUseCase();
+    }
+
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -40,6 +48,9 @@ class BookController extends Controller
 
         try {
             BookRepository::insertBooks($data['books']);
+
+            $this->autoTrainModelUseCase->execute();
+
             return ResponseFormatter::success(null, 'Books created successfully.');
         } catch (Exception $e) {
             return ResponseFormatter::error('Failed to create books.' . $e, 500);

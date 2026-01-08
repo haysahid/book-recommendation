@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import { useTrainingStore } from "@/stores/training-store";
 import AdminSidebar from "./AdminSidebar.vue";
 import BaseHeader from "./BaseHeader.vue";
+import Switch from "./Switch.vue";
 import UserDropdown from "./UserDropdown.vue";
+import InfoTooltip from "./InfoTooltip.vue";
+import Tooltip from "./Tooltip.vue";
 
 const props = defineProps({
     title: String,
@@ -18,6 +22,9 @@ const props = defineProps({
         default: null,
     },
 });
+
+const trainingStore = useTrainingStore();
+const currentPath = window.location.pathname;
 </script>
 
 <template>

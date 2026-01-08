@@ -4,15 +4,25 @@ namespace App\Http\Controllers\API;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Jobs\TrainModel;
 use App\Models\Book;
 use App\Models\TransactionItem;
 use App\Repositories\BookRepository;
+use App\Repositories\SettingRepository;
+use App\UseCases\AutoTrainModelUseCase;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class BookController extends Controller
 {
+    private AutoTrainModelUseCase $autoTrainModelUseCase;
+
+    public function __construct()
+    {
+        $this->autoTrainModelUseCase = new AutoTrainModelUseCase();
+    }
+
     public function userRecommendedBooks(Request $request)
     {
         $user = $request->user();
@@ -57,6 +67,8 @@ class BookController extends Controller
                 review: $review,
                 attachments: $attachments
             );
+
+            $this->autoTrainModelUseCase->execute();
 
             return ResponseFormatter::success($transactionItem, 'Book review added successfully.');
         } catch (Exception $e) {

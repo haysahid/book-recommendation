@@ -18,6 +18,7 @@ use App\Models\TransactionItem;
 use App\Models\User;
 use App\Repositories\MidtransRepository;
 use App\Repositories\VoucherRepository;
+use App\UseCases\AutoTrainModelUseCase;
 use App\UseCases\CheckoutUseCase;
 use App\UseCases\SyncCartUseCase;
 use App\UseCases\ValidateTransactionPaymentUseCase;
@@ -34,8 +35,10 @@ class OrderController extends Controller
     private CheckoutUseCase $checkoutUseCase;
     private ValidateTransactionPaymentUseCase $validateTransactionPaymentUseCase;
 
-    protected $rajaongkirRepository;
-    protected $midtransRepository;
+    protected RajaongkirRepository $rajaongkirRepository;
+    protected MidtransRepository $midtransRepository;
+
+    private AutoTrainModelUseCase $autoTrainModelUseCase;
 
     protected $weight = 1000; // 1000 gram (1 kg)
     protected $courier = 'jne'; // Courier service
@@ -46,6 +49,7 @@ class OrderController extends Controller
         $this->validateTransactionPaymentUseCase = new ValidateTransactionPaymentUseCase();
         $this->rajaongkirRepository = new RajaongkirRepository();
         $this->midtransRepository = new MidtransRepository();
+        $this->autoTrainModelUseCase = new AutoTrainModelUseCase();
     }
 
     public function getVouchers(Request $request)
@@ -341,7 +345,10 @@ class OrderController extends Controller
             data: $validated,
             isGuestCheckout: false,
         )->fold(
-            onSuccess: fn($data, $code) => ResponseFormatter::success($data, 'Pesanan berhasil dibuat', $code),
+            onSuccess: function ($data, $code) {
+                $this->autoTrainModelUseCase->execute();
+                return ResponseFormatter::success($data, 'Pesanan berhasil dibuat', $code);
+            },
             onError: fn($error, $code) => ResponseFormatter::error($error, $code)
         );
     }
@@ -410,7 +417,10 @@ class OrderController extends Controller
             data: $validated,
             isGuestCheckout: true,
         )->fold(
-            onSuccess: fn($data, $code) => ResponseFormatter::success($data, 'Pesanan berhasil dibuat', $code),
+            onSuccess: function ($data, $code) {
+                $this->autoTrainModelUseCase->execute();
+                return ResponseFormatter::success($data, 'Pesanan berhasil dibuat', $code);
+            },
             onError: fn($error, $code) => ResponseFormatter::error($error, $code)
         );
     }

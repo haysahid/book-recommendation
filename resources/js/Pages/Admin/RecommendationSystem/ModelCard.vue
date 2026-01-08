@@ -29,18 +29,29 @@ const showDeleteConfirmationModal = ref(false);
         ]"
     >
         <div class="flex gap-4 justify-between">
-            <p
-                class="text-md font-semibold mb-2 text-ellipsis overflow-hidden whitespace-nowrap"
-            >
-                {{ model.filename }}
-            </p>
+            <div class="mb-2 text-base text-ellipsis overflow-hidden">
+                <span class="font-semibold break-all">
+                    {{ model.filename }}
+                </span>
+                <span class="text-gray-400 text-sm"> - </span>
+                <span
+                    class="italic text-sm"
+                    :class="
+                        props.model.created_by === 'auto'
+                            ? 'text-blue-500'
+                            : 'text-gray-500'
+                    "
+                >
+                    {{ props.model.created_by === "auto" ? "Auto" : "Manual" }}
+                </span>
+            </div>
+
             <div
                 v-if="props.isActive"
-                class="inline-block px-2 py-1 text-xs font-medium text-white bg-green-500 rounded-full mb-2"
+                class="inline-block px-2 py-1 text-xs font-medium text-white bg-green-500 rounded-full mb-2 h-fit w-fit"
             >
                 Active
             </div>
-
             <Tooltip
                 v-else
                 :id="`activate-model-tooltip-${model.id}`"
@@ -53,10 +64,12 @@ const showDeleteConfirmationModal = ref(false);
                 <template #content> Activate this model </template>
             </Tooltip>
         </div>
-        <p class="text-xs text-gray-600 mb-1">
-            {{ model.algorithm }} -
-            {{ $formatDate(model.created_at) }}
-        </p>
+        <div class="flex gap-2 items-center mb-1">
+            <span class="text-xs text-gray-600">
+                {{ model.algorithm }} -
+                {{ $formatDate(model.created_at) }}
+            </span>
+        </div>
         <div class="flex gap-4 justify-between items-end">
             <!-- Stats -->
             <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-2">

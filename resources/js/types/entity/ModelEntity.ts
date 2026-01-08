@@ -9,5 +9,6 @@ interface ModelEntity {
     rmse: number;
     mae: number;
     reference: string;
+    created_by: string;
     created_at: string;
 }

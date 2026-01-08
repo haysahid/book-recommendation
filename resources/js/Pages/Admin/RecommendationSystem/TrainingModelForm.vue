@@ -6,10 +6,14 @@ import TextInput from "@/Components/TextInput.vue";
 import Chip from "@/Components/Chip.vue";
 import FileInput from "@/Components/FileInput.vue";
 import { useTrainingStore } from "@/stores/training-store";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import TrainingResult from "./TrainingResult.vue";
-import { useDialogStore } from "@/stores/dialog-store";
 import DialogModal from "@/Components/DialogModal.vue";
+import CustomPageProps from "@/types/model/CustomPageProps";
+import { usePage } from "@inertiajs/vue3";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import AutoTrainingModelForm from "./AutoTrainingModelForm.vue";
+import { router } from "@inertiajs/vue3";
 
 const props = defineProps({
     previousModel: {
@@ -24,6 +28,13 @@ const emit = defineEmits(["modelTrained"]);
 const trainingStore = useTrainingStore();
 
 const showFromTuningDialog = ref(false);
+const showAutoTrainingModelDialog = ref(false);
+
+const page = usePage<CustomPageProps>();
+
+const isAutoTrainingEnabled = computed(() => {
+    return page.props.setting.model.auto_training === true;
+});
 
 onMounted(() => {
     trainingStore.clearErrors();
@@ -51,22 +62,67 @@ onMounted(() => {
                     Train the recommendation system model with new data.
                 </p>
             </div>
-            <PrimaryButton
-                type="submit"
-                :disabled="trainingStore.trainModelStatus == 'loading'"
-                class="whitespace-nowrap"
-                @click="
-                    trainingStore.startTraining({
-                        onSuccess: () => emit('modelTrained'),
-                    })
-                "
-            >
-                {{
-                    trainingStore.trainModelStatus == "loading"
-                        ? "Training..."
-                        : "Start Training"
-                }}
-            </PrimaryButton>
+            <div class="flex gap-3 items-center">
+                <SecondaryButton
+                    type="button"
+                    :disabled="trainingStore.trainModelStatus == 'loading'"
+                    class="whitespace-nowrap px-2! sm:px-4!"
+                    :class="{
+                        'border-blue-500! hover:bg-blue-50! focus:ring-blue-500! text-blue-500!':
+                            isAutoTrainingEnabled,
+                    }"
+                    @click="showAutoTrainingModelDialog = true"
+                >
+                    <template #prefix>
+                        <svg
+                            v-if="isAutoTrainingEnabled"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            class="size-5 text-blue-500"
+                        >
+                            <path
+                                d="M19.9998 7L20.9398 4.94L22.9998 4L20.9398 3.06L19.9998 1L19.0598 3.06L16.9998 4L19.0598 4.94L19.9998 7ZM8.49984 7L9.43984 4.94L11.4998 4L9.43984 3.06L8.49984 1L7.55984 3.06L5.49984 4L7.55984 4.94L8.49984 7ZM19.9998 12.5L19.0598 14.56L16.9998 15.5L19.0598 16.44L19.9998 18.5L20.9398 16.44L22.9998 15.5L20.9398 14.56L19.9998 12.5ZM18.4098 9.83L14.1698 5.59L1.58984 18.17L5.82984 22.41L18.4098 9.83ZM14.2098 11.21L12.7998 9.8L14.1798 8.42L15.5898 9.83L14.2098 11.21Z"
+                                fill="currentColor"
+                            />
+                        </svg>
+                        <svg
+                            v-else
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            class="size-5 text-gray-600"
+                        >
+                            <path
+                                d="M20.0001 7L20.9401 4.94L23.0001 4L20.9401 3.06L20.0001 1L19.0601 3.06L17.0001 4L19.0601 4.94L20.0001 7ZM14.1701 8.42L15.5801 9.83L14.1201 11.29L15.5401 12.71L18.4101 9.83L14.1701 5.59L11.2901 8.46L12.7101 9.88L14.1701 8.42ZM1.39014 4.22L8.46014 11.29L1.59014 18.17L5.83014 22.41L12.7101 15.54L19.7801 22.61L21.1901 21.19L2.81014 2.81L1.39014 4.22Z"
+                                fill="currentColor"
+                            />
+                        </svg>
+                    </template>
+
+                    <span class="hidden sm:inline-block">Auto Training</span>
+                </SecondaryButton>
+                <PrimaryButton
+                    type="submit"
+                    :disabled="trainingStore.trainModelStatus == 'loading'"
+                    class="whitespace-nowrap"
+                    @click="
+                        trainingStore.startTraining({
+                            onSuccess: () => emit('modelTrained'),
+                        })
+                    "
+                >
+                    {{
+                        trainingStore.trainModelStatus == "loading"
+                            ? "Training..."
+                            : "Start Training"
+                    }}
+                </PrimaryButton>
+            </div>
         </div>
 
         <form
@@ -77,7 +133,7 @@ onMounted(() => {
             "
         >
             <div class="flex flex-col w-full gap-4 lg:flex-row lg:gap-6">
-                <div class="flex flex-col w-full gap-4 sm:max-w-2xl">
+                <div class="flex flex-col w-full gap-4 sm:max-w-3xl">
                     <div class="flex flex-col w-full gap-4 sm:flex-row">
                         <!-- Dataset Source -->
                         <InputGroup id="dataset_source" label="Dataset Source">
@@ -377,6 +433,30 @@ onMounted(() => {
                 >
                     Start Training
                 </PrimaryButton>
+            </template>
+        </DialogModal>
+
+        <!-- From Tuning Dialog -->
+        <DialogModal
+            :show="showAutoTrainingModelDialog"
+            @close="showAutoTrainingModelDialog = false"
+            max-width="md"
+        >
+            <template #content>
+                <AutoTrainingModelForm
+                    @enabled="
+                        showAutoTrainingModelDialog = false;
+                        router.reload();
+                    "
+                    @updated="
+                        showAutoTrainingModelDialog = false;
+                        router.reload();
+                    "
+                    @disabled="
+                        showAutoTrainingModelDialog = false;
+                        router.reload();
+                    "
+                />
             </template>
         </DialogModal>
     </div>
