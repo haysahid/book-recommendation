@@ -17,7 +17,7 @@ const scrapingStore = useScrapingStore();
             <div class="flex gap-4 items-center justify-between mb-6">
                 <div>
                     <h1 class="text-2xl font-bold mb-1">Scraping Data</h1>
-                    <p class="text-base text-gray-600">Source: Gramedia</p>
+                    <p class="text-sm text-gray-600">Source: Gramedia</p>
                 </div>
                 <SecondaryButton @click="scrapingStore.clearStore()">
                     Clear

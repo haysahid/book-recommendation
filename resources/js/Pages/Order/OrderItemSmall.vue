@@ -13,6 +13,7 @@ const props = defineProps({
         type: Object as () => TransactionItemEntity,
         required: true,
     },
+    invoiceStatus: String,
     showDivider: {
         type: Boolean,
         default: false,
@@ -117,7 +118,7 @@ function refresh() {
                     </p>
                 </div>
 
-                <template v-if="props.item.fullfillment_status === 'completed'">
+                <template v-if="props.invoiceStatus === 'completed'">
                     <!-- Review -->
                     <div
                         v-if="props.item.rating || props.item.review"

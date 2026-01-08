@@ -82,9 +82,11 @@ const search = ref("");
 
 const filteredOptions = computed(() => {
     if (props.searchable && search.value.length > 0) {
-        return props.options.filter(
+        return props.options?.filter(
             (option) =>
-                !props.modelValue.some((item) => item.value === option.value) &&
+                !props.modelValue?.some(
+                    (item) => item.value === option.value
+                ) &&
                 option.label
                     .toLowerCase()
                     .includes(search.value.toLowerCase().trim())
@@ -92,7 +94,7 @@ const filteredOptions = computed(() => {
     } else {
         return props.options.filter(
             (option) =>
-                !props.modelValue.some((item) => item.value === option.value)
+                !props.modelValue?.some((item) => item.value === option.value)
         );
     }
 });
@@ -187,7 +189,7 @@ const searchDebounce = useDebounce();
                             @click="
                                 if (!option.disabled) {
                                     emit('update:modelValue', [
-                                        ...props.modelValue,
+                                        ...(props.modelValue || []),
                                         option,
                                     ]);
                                     isDropdownOpen = false;

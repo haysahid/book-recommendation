@@ -276,6 +276,12 @@ class BookRepository
             $book = $existingBook;
         }
 
+        if (isset($data['image'])) {
+            // Save image
+            $book->image = $data['image']->store('book', 'public');
+            $book->save();
+        }
+
         if (!empty($data['category_slug'])) {
             $category = CategoryRepository::findCategoryBySlug($data['category_slug']);
             if ($category) {
@@ -300,6 +306,12 @@ class BookRepository
     public static function updateBook($book, $data)
     {
         $book->update($data);
+
+        if (isset($data['image'])) {
+            // Save new image
+            $book->image = $data['image']->store('book', 'public');
+            $book->save();
+        }
 
         if (array_key_exists('categories', $data)) {
             if (!empty($data['categories'])) {

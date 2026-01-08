@@ -341,16 +341,30 @@ class OrderController extends Controller
             'voucher_code.exists' => 'Kode voucher tidak ditemukan',
         ]);
 
-        return $this->checkoutUseCase->execute(
-            data: $validated,
-            isGuestCheckout: false,
-        )->fold(
-            onSuccess: function ($data, $code) {
-                $this->autoTrainModelUseCase->execute();
-                return ResponseFormatter::success($data, 'Pesanan berhasil dibuat', $code);
-            },
-            onError: fn($error, $code) => ResponseFormatter::error($error, $code)
-        );
+        try {
+            $result = $this->checkoutUseCase->execute(
+                data: $validated,
+                isGuestCheckout: false,
+            );
+
+            // Auto train model after successful checkout
+            $this->autoTrainModelUseCase->execute();
+
+            return ResponseFormatter::success(
+                $result,
+                'Pesanan berhasil dibuat',
+                201
+            );
+        } catch (Exception $e) {
+            Log::error('Checkout failed: ' . $e->getMessage(), [
+                'user_id' => Auth::id(),
+            ]);
+
+            return ResponseFormatter::error(
+                $e->getMessage(),
+                $e->getCode() ?: 500
+            );
+        }
     }
 
     public function checkoutGuest(Request $request)
@@ -413,16 +427,32 @@ class OrderController extends Controller
             'guest_phone.max' => 'Nomor telepon maksimal 20 karakter',
         ]);
 
-        return $this->checkoutUseCase->execute(
-            data: $validated,
-            isGuestCheckout: true,
-        )->fold(
-            onSuccess: function ($data, $code) {
-                $this->autoTrainModelUseCase->execute();
-                return ResponseFormatter::success($data, 'Pesanan berhasil dibuat', $code);
-            },
-            onError: fn($error, $code) => ResponseFormatter::error($error, $code)
-        );
+        try {
+            $result = $this->checkoutUseCase->execute(
+                data: $validated,
+                isGuestCheckout: true,
+            );
+
+            // Auto train model after successful checkout
+            $this->autoTrainModelUseCase->execute();
+
+            Log::info('Guest checkout successful', [
+                'guest_email' => $validated['guest_email'],
+            ]);
+
+            return ResponseFormatter::success(
+                $result,
+                'Pesanan berhasil dibuat',
+                201
+            );
+        } catch (Exception $e) {
+            Log::error('Guest checkout failed: ' . $e->getMessage());
+
+            return ResponseFormatter::error(
+                $e->getMessage(),
+                $e->getCode() ?: 500
+            );
+        }
     }
 
     public function cancelOrder(Request $request)

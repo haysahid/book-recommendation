@@ -84,16 +84,23 @@ class OrderController extends Controller
             'guest_phone.max' => 'Phone number may not be greater than 20 characters',
         ]);
 
-        return $this->checkoutUseCase->execute(
-            data: $validated,
-            isStoreCheckout: true,
-        )->fold(
-            onSuccess: function ($data, $code) {
-                $this->autoTrainModelUseCase->execute();
-                return ResponseFormatter::success($data, 'Order created successfully', $code);
-            },
-            onError: fn($error, $code) => ResponseFormatter::error($error, $code)
-        );
+        try {
+            $result = $this->checkoutUseCase->execute(
+                data: $validated,
+                isStoreCheckout: true,
+            );
+
+            return ResponseFormatter::success(
+                $result,
+                'Order created successfully',
+                201
+            );
+        } catch (Exception $e) {
+            return ResponseFormatter::error(
+                'Failed to create order: ' . $e->getMessage(),
+                $e->getCode() ?: 500
+            );
+        }
     }
 
     public function changeStatus(Request $request)

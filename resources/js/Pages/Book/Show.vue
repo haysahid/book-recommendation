@@ -67,7 +67,7 @@ onMounted(async () => {
                     >
                         <img
                             v-if="props.book.image"
-                            :src="props.book.image"
+                            :src="$getImageUrl(props.book.image)"
                             :alt="`Cover image of ${book.title}`"
                             class="w-full h-full object-contain rounded-lg hover:scale-105 transition-transform duration-300 ease-in-out shrink-0"
                         />

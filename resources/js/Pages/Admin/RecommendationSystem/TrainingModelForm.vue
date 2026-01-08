@@ -6,7 +6,7 @@ import TextInput from "@/Components/TextInput.vue";
 import Chip from "@/Components/Chip.vue";
 import FileInput from "@/Components/FileInput.vue";
 import { useTrainingStore } from "@/stores/training-store";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import TrainingResult from "./TrainingResult.vue";
 import DialogModal from "@/Components/DialogModal.vue";
 import CustomPageProps from "@/types/model/CustomPageProps";
@@ -33,8 +33,22 @@ const showAutoTrainingModelDialog = ref(false);
 const page = usePage<CustomPageProps>();
 
 const isAutoTrainingEnabled = computed(() => {
-    return page.props.setting.model.auto_training === true;
+    return page.props.setting?.model?.auto_training === true;
 });
+
+watch(
+    () => trainingStore.models,
+    (newValue) => {
+        // Overwrite trainedModel with latest model if different
+        const latestModel = trainingStore.models.length
+            ? trainingStore.models[0]
+            : null;
+
+        if (latestModel?.id > trainingStore.trainedModel?.id) {
+            trainingStore.trainedModel = latestModel;
+        }
+    }
+);
 
 onMounted(() => {
     trainingStore.clearErrors();
@@ -371,14 +385,31 @@ onMounted(() => {
                 <div
                     class="flex items-center justify-between gap-4 mb-2 text-green-800"
                 >
-                    <h2 class="font-semibold">Training Result</h2>
+                    <h2 class="font-semibold">
+                        Training Result
+                        <span class="text-gray-400 text-sm"> - </span>
+                        <span
+                            class="italic text-sm"
+                            :class="
+                                trainingStore.trainedModel.created_by === 'auto'
+                                    ? 'text-blue-500'
+                                    : 'text-gray-500'
+                            "
+                        >
+                            {{
+                                trainingStore.trainedModel.created_by === "auto"
+                                    ? "Auto"
+                                    : "Manual"
+                            }}
+                        </span>
+                    </h2>
                     <div class="flex gap-4">
-                        <button
+                        <!-- <button
                             class="whitespace-nowrap text-sm text-red-700 hover:underline hover:text-red-600"
                             @click="trainingStore.clearTrainingResult"
                         >
                             Clear Result
-                        </button>
+                        </button> -->
                     </div>
                 </div>
 

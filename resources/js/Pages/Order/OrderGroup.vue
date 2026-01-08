@@ -109,6 +109,7 @@ const detailLink =
                 v-for="(item, index) in props.orderGroup.items"
                 :key="index"
                 :item="item"
+                :invoiceStatus="props.orderGroup.invoice?.status"
                 :showDivider="index !== props.orderGroup.items.length - 1"
             />
         </div>

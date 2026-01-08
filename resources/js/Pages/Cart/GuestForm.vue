@@ -25,18 +25,7 @@ const emit = defineEmits(["submit"]);
 
 const orderStore = useOrderStore();
 
-const form = useForm({
-    guest_name: orderStore.form.guest_name,
-    guest_email: orderStore.form.guest_email,
-    guest_phone: orderStore.form.guest_phone,
-});
-
 function submit() {
-    orderStore.updateForm({
-        ...orderStore.form,
-        ...form.data(),
-    });
-
     emit("submit");
 }
 
@@ -59,7 +48,7 @@ onMounted(() => {
                 <InputGroup label="Full Name" id="guest-name">
                     <TextInput
                         id="guest-name"
-                        v-model="form.guest_name"
+                        v-model="orderStore.form.guest_name"
                         type="text"
                         placeholder="Enter full name"
                         required
@@ -71,7 +60,7 @@ onMounted(() => {
                 <InputGroup label="Email" id="email">
                     <TextInput
                         id="email"
-                        v-model="form.guest_email"
+                        v-model="orderStore.form.guest_email"
                         type="email"
                         placeholder="Enter email address"
                         required
@@ -82,7 +71,7 @@ onMounted(() => {
                 <InputGroup label="Phone Number (WA)" id="phone">
                     <TextInput
                         id="phone"
-                        v-model="form.guest_phone"
+                        v-model="orderStore.form.guest_phone"
                         type="text"
                         placeholder="Enter phone number (WA)"
                         required

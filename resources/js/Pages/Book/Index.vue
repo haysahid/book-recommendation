@@ -481,7 +481,7 @@ onMounted(() => {
                                 >
                                     <img
                                         v-if="book.image"
-                                        :src="book.image"
+                                        :src="$getImageUrl(book.image)"
                                         :alt="book.title"
                                         class="w-full h-full object-cover"
                                     />

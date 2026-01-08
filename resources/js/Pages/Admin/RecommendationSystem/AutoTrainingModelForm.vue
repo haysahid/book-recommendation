@@ -15,8 +15,8 @@ const page = usePage<CustomPageProps>();
 
 const emit = defineEmits(["enabled", "updated", "disabled"]);
 
-const currentConfig = page.props.setting.model || null;
-const isActive = page.props.setting.model?.auto_training;
+const currentConfig = page.props.setting?.model || null;
+const isActive = page.props.setting?.model?.auto_training;
 
 const trainingStore = useTrainingStore();
 
@@ -33,8 +33,8 @@ const form = useForm({
     n_epochs: currentConfig?.n_epochs || null,
     lr_all: currentConfig?.lr_all || null,
     reg_all: currentConfig?.reg_all || null,
-    auto_training_interval: currentConfig.auto_training_interval,
-    interval_unit: currentConfig.interval_unit || "seconds",
+    auto_training_interval: currentConfig?.auto_training_interval || null,
+    interval_unit: currentConfig?.interval_unit || "seconds",
 });
 
 const validate = () => {

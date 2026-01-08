@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { defineStore } from "pinia";
 
 export const useOrderStore = defineStore("order", () => {
@@ -10,19 +10,15 @@ export const useOrderStore = defineStore("order", () => {
             : ({} as OrderDetailFormModel)
     );
 
-    const updateForm = (updatedForm: OrderDetailFormModel) => {
-        form.value = updatedForm;
-        localStorage.setItem("order_form", JSON.stringify(updatedForm));
-    };
-
-    const clearForm = () => {
-        form.value = {} as OrderDetailFormModel;
-        localStorage.setItem("order_form", JSON.stringify(form.value));
-    };
+    watch(
+        form,
+        (newForm) => {
+            localStorage.setItem("order_form", JSON.stringify(newForm));
+        },
+        { deep: true }
+    );
 
     return {
         form,
-        updateForm,
-        clearForm,
     };
 });

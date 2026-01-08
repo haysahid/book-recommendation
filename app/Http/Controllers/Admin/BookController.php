@@ -10,6 +10,7 @@ use App\Repositories\BookRepository;
 use App\Repositories\CategoryRepository;
 use App\UseCases\AutoTrainModelUseCase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -61,7 +62,10 @@ class BookController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/Book/CreateBook');
+        $categories = CategoryRepository::getCategoryDropdown();
+        return Inertia::render('Admin/Book/Add', [
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -72,20 +76,40 @@ class BookController extends Controller
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'translated_title' => 'nullable|string|max:255',
-            'image' => 'nullable|string|max:255',
+            'image' => 'nullable|file|image|max:2048',
             'slug' => 'nullable|string|max:255|unique:books,slug',
             'author' => 'nullable|string|max:255',
+            'slice_price' => 'nullable|numeric',
+            'discount' => 'nullable|numeric',
             'store_name' => 'nullable|string|max:255',
             'isbn' => 'nullable|string|max:255',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
         ]);
 
+        $slug = $data['slug'] ?? Str::slug($data['title']);
+        $data['slug'] = $slug;
+
+        if (isset($data['discount'])) {
+            $data['final_price'] = isset($data['slice_price'])
+                ? $data['slice_price'] - ($data['slice_price'] * $data['discount']) / 100
+                : null;
+        } else {
+            $data['final_price'] = $data['slice_price'];
+        }
+
+        // Check if slug already exists
+        $existingBook = Book::where('slug', $slug)->first();
+        if ($existingBook) {
+            // Append a unique identifier to the slug
+            $data['slug'] = $slug . '-' . uniqid();
+        }
+
         BookRepository::createBook($data);
 
         $this->autoTrainModelUseCase->execute();
 
-        return redirect()->route('admin.books.index')->with('success', 'Book created successfully.');
+        return redirect()->route('admin.book.index')->with('success', 'Book created successfully.');
     }
 
     /**
@@ -120,16 +144,28 @@ class BookController extends Controller
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'translated_title' => 'nullable|string|max:255',
-            'image' => 'nullable|string|max:255',
+            'image' => 'nullable|file|image|max:2048',
             'slug' => 'nullable|string|max:255|unique:books,slug,' . $book->id,
             'author' => 'nullable|string|max:255',
+            'slice_price' => 'nullable|numeric',
+            'discount' => 'nullable|numeric',
             'store_name' => 'nullable|string|max:255',
             'isbn' => 'nullable|string|max:255',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
         ]);
 
+        if (isset($data['discount'])) {
+            $data['final_price'] = isset($data['slice_price'])
+                ? $data['slice_price'] - ($data['slice_price'] * $data['discount']) / 100
+                : null;
+        } else {
+            $data['final_price'] = $data['slice_price'];
+        }
+
         BookRepository::updateBook($book, $data);
+
+        $this->autoTrainModelUseCase->execute();
 
         return redirect()->route('admin.book.index')->with('success', 'Book updated successfully.');
     }

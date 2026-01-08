@@ -33,6 +33,7 @@ type BookForm = {
     author: string | null;
     image: string | File | null;
     slice_price: number | null;
+    final_price: number | null;
     discount: number | null;
     is_oos: boolean | null;
     sku: string | null;
@@ -49,6 +50,7 @@ const form = useForm<BookForm>({
     author: props.book?.author || null,
     image: props.book?.image || null,
     slice_price: props.book?.slice_price || null,
+    final_price: null,
     discount: props.book?.discount || null,
     is_oos: props.book?.is_oos || false,
     sku: props.book?.sku || null,
@@ -67,14 +69,46 @@ function validate() {
 const submit = () => {
     if (!validate()) return;
 
+    form.slice_price = form.slice_price ? Number(form.slice_price) : null;
+    form.discount = form.discount ? Number(form.discount) : null;
+
+    // If has discount, then adjust the slice_price and final_price
+    if (form.discount) {
+        form.final_price = form.slice_price
+            ? form.slice_price - (form.slice_price * form.discount) / 100
+            : null;
+    } else {
+        form.final_price = form.slice_price;
+    }
+
     if (props.book?.id) {
         form.transform((data) => {
             const formData = new FormData();
             formData.append("_method", "PUT");
             Object.keys(data).forEach((key) => {
-                if (key === "image" && data[key] instanceof File) {
-                    formData.append("image", data[key] as File);
+                if (key === "discount" && !data[key]) {
                     return;
+                }
+
+                if (key === "is_oos" && !data[key]) {
+                    return;
+                }
+
+                if (key === "isbn" && !data[key]) {
+                    return;
+                }
+
+                if (key === "store_name" && !data[key]) {
+                    return;
+                }
+
+                if (key === "image") {
+                    if (data[key] instanceof File) {
+                        formData.append("image", data[key] as File);
+                        return;
+                    } else {
+                        return;
+                    }
                 }
 
                 if (key === "categories") {
@@ -98,7 +132,8 @@ const submit = () => {
         form.transform((data) => {
             return {
                 ...data,
-                profile_photo: data.image instanceof File ? data.image : null,
+                discount: data.discount ? Number(data.discount) : null,
+                image: data.image instanceof File ? data.image : null,
                 categories:
                     data.categories?.map((category) => category.id) || [],
                 is_dialog: props.isDialog ? 1 : 0,
@@ -173,6 +208,34 @@ const submit = () => {
                             placeholder="Enter discount"
                             :error="form.errors.discount"
                             @update:modelValue="form.errors.discount = null"
+                        />
+                        <template #suffix>
+                            <InfoTooltip
+                                id="discount-info"
+                                text="
+                                Discount percentage to be applied to the book's price.
+                                For example, enter 10 for a 10% discount.
+                            "
+                            />
+                        </template>
+                    </InputGroup>
+
+                    <!-- Final Price -->
+                    <InputGroup id="final_price" label="Final Price">
+                        <TextInput
+                            id="final_price"
+                            :modelValue="
+                                form.slice_price && form.discount
+                                    ? form.slice_price -
+                                      (form.slice_price * form.discount) / 100
+                                    : form.slice_price
+                            "
+                            type="number"
+                            placeholder="Enter final price"
+                            disabled
+                            :error="form.errors.final_price"
+                            @update:modelValue="form.errors.final_price = null"
+                            bgClass="bg-gray-100!"
                         />
                     </InputGroup>
 
@@ -264,7 +327,7 @@ const submit = () => {
                         <DropdownSearchInputMultiple
                             id="categories"
                             :modelValue="
-                                form.categories.map((c) => {
+                                form.categories?.map((c) => {
                                     return {
                                         label: c.title,
                                         value: c.id,
@@ -272,7 +335,7 @@ const submit = () => {
                                 })
                             "
                             :options="
-                                props.categories.map((category) => {
+                                props.categories?.map((category) => {
                                     return {
                                         label: category.title,
                                         value: category.id,
@@ -284,7 +347,7 @@ const submit = () => {
                             :error="form.errors.categories"
                             @update:modelValue="
                                 (options) => {
-                                    form.categories = options.map((option) =>
+                                    form.categories = options?.map((option) =>
                                         categories.find(
                                             (category) =>
                                                 category.id === option.value

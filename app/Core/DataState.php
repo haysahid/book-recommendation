@@ -15,7 +15,7 @@ class DataState
         $instance = new self();
         $instance->isSuccess = true;
         $instance->data = $data;
-        $instance->code = $code;
+        $instance->code = (int) $code;
         return $instance;
     }
 
@@ -24,7 +24,7 @@ class DataState
         $instance = new self();
         $instance->isSuccess = false;
         $instance->error = $error;
-        $instance->code = $code;
+        $instance->code = (int) $code;
         return $instance;
     }
 

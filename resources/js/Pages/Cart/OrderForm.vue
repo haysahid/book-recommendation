@@ -71,17 +71,8 @@ watch(
     }
 );
 
-const form = useForm({
-    payment_method: orderStore.form.payment_method,
-    shipping_method: orderStore.form.shipping_method,
-    destination_id: orderStore.form.destination_id || null,
-    destination: orderStore.form.destination,
-    address: orderStore.form.address,
-    estimated_delivery: null,
-});
-
 function getShippingCost() {
-    if (form.shipping_method?.slug !== "courier") {
+    if (orderStore.form.shipping_method?.slug !== "courier") {
         cartStore.updateGroups(
             cartStore.groups.map((group) => {
                 group.shipping = null;
@@ -98,7 +89,7 @@ function getShippingCost() {
     axios
         .get("/api/shipping-cost", {
             params: {
-                destination: form.destination_id,
+                destination: orderStore.form.destination_id,
                 store_ids: cartStore.groupHasSelectedItems
                     .map((group) => group.store_id)
                     .join(","),
@@ -126,31 +117,13 @@ function getShippingCost() {
         });
 }
 
-const updateLocalForm = () => {
-    orderStore.updateForm({
-        ...orderStore.form,
-        payment_method: form.payment_method,
-        shipping_method: form.shipping_method,
-        destination_id: form.destination_id,
-        destination: form.destination,
-        address: form.address,
-    } as OrderDetailFormModel);
-};
-
 // Initialize form with existing order data if available
 if (orderStore.form.destination_id) {
     getShippingCost();
 }
 
-watch(
-    () => form.data(),
-    (newForm) => {
-        updateLocalForm();
-    }
-);
-
 const total = computed(() => {
-    if (form.shipping_method?.slug == "courier") {
+    if (orderStore.form.shipping_method?.slug == "courier") {
         return (
             cartStore.subTotal -
             cartStore.totalGroupDiscount +
@@ -164,21 +137,24 @@ const showAuthWarning = ref(false);
 
 function validateForm() {
     let valid = true;
-    if (!form.payment_method) {
-        form.errors.payment_method = "Metode pembayaran harus dipilih";
+    if (!orderStore.form.payment_method) {
+        orderStore.form.errors.payment_method =
+            "Metode pembayaran harus dipilih";
         valid = false;
     }
-    if (!form.shipping_method) {
-        form.errors.shipping_method = "Metode pengiriman harus dipilih";
+    if (!orderStore.form.shipping_method) {
+        orderStore.form.errors.shipping_method =
+            "Metode pengiriman harus dipilih";
         valid = false;
     }
-    if (form.shipping_method?.slug == "courier") {
-        if (!form.destination_id) {
-            form.errors.destination_id = "Alamat pengiriman harus dipilih";
+    if (orderStore.form.shipping_method?.slug == "courier") {
+        if (!orderStore.form.destination_id) {
+            orderStore.form.errors.destination_id =
+                "Alamat pengiriman harus dipilih";
             valid = false;
         }
-        if (!form.address) {
-            form.errors.address = "Alamat lengkap harus diisi";
+        if (!orderStore.form.address) {
+            orderStore.form.errors.address = "Alamat lengkap harus diisi";
             valid = false;
         }
     }
@@ -208,16 +184,16 @@ const submit = () => {
                     quantity: item.quantity,
                 })),
         })),
-        payment_method_id: form.payment_method?.id,
-        shipping_method_id: form.shipping_method?.id,
-        destination_id: form.destination_id,
-        destination_label: form.destination?.label,
-        province_name: form.destination?.province_name,
-        city_name: form.destination?.city_name,
-        district_name: form.destination?.district_name,
-        subdistrict_name: form.destination?.subdistrict_name,
-        zip_code: form.destination?.zip_code,
-        address: form.address,
+        payment_method_id: orderStore.form.payment_method?.id,
+        shipping_method_id: orderStore.form.shipping_method?.id,
+        destination_id: orderStore.form.destination_id,
+        destination_label: orderStore.form.destination?.label,
+        province_name: orderStore.form.destination?.province_name,
+        city_name: orderStore.form.destination?.city_name,
+        district_name: orderStore.form.destination?.district_name,
+        subdistrict_name: orderStore.form.destination?.subdistrict_name,
+        zip_code: orderStore.form.destination?.zip_code,
+        address: orderStore.form.address,
     };
 
     if (isGuest) {
@@ -242,7 +218,7 @@ const submit = () => {
 
             router.visit(
                 isGuest
-                    ? `/order-success/guest?transaction_code=${
+                    ? `/order-success-guest?transaction_code=${
                           result.transaction.code
                       }&show_snap=${
                           result.payment.midtrans_snap_token ? "true" : "false"
@@ -257,7 +233,7 @@ const submit = () => {
         .catch((error) => {
             checkoutStatus.value = "error";
             if (error.response.status == 422) {
-                form.errors = error.response.data.errors || {};
+                orderStore.form.errors = error.response.data.errors || {};
             } else {
                 openErrorDialog(
                     error.response.data.meta.message || "Terjadi kesalahan"
@@ -283,8 +259,10 @@ const currentPath = window.location.pathname;
                         v-for="payment in paymentMethods"
                         :key="payment.id"
                         :label="payment.name"
-                        :selected="form.payment_method?.id == payment.id"
-                        @click="form.payment_method = payment"
+                        :selected="
+                            orderStore.form.payment_method?.id == payment.id
+                        "
+                        @click="orderStore.form.payment_method = payment"
                     />
                 </div>
             </InputGroup>
@@ -296,25 +274,27 @@ const currentPath = window.location.pathname;
                         v-for="shipping in shippingMethods"
                         :key="shipping.id"
                         :label="shipping.name"
-                        :selected="form.shipping_method?.id == shipping.id"
+                        :selected="
+                            orderStore.form.shipping_method?.id == shipping.id
+                        "
                         @click="
-                            form.shipping_method = shipping;
+                            orderStore.form.shipping_method = shipping;
                             getShippingCost();
                         "
                     />
                 </div>
             </InputGroup>
 
-            <template v-if="form.shipping_method?.slug == 'courier'">
+            <template v-if="orderStore.form.shipping_method?.slug == 'courier'">
                 <!-- Destination -->
                 <InputGroup id="destination" label="Shipping Address">
                     <DropdownSearchInput
                         id="destination"
                         :modelValue="
-                            form.destination_id
+                            orderStore.form.destination_id
                                 ? {
-                                      label: form.destination?.label,
-                                      value: form.destination_id,
+                                      label: orderStore.form.destination?.label,
+                                      value: orderStore.form.destination_id,
                                   }
                                 : null
                         "
@@ -327,23 +307,23 @@ const currentPath = window.location.pathname;
                         placeholder="Search Shipping Address"
                         required
                         type="textarea"
-                        :error="form.errors.destination_id"
+                        :error="orderStore.form.errors.destination_id"
                         @update:modelValue="
                             (option) => {
-                                form.destination_id = option.value;
-                                form.destination = destinations.find(
+                                orderStore.form.destination_id = option.value;
+                                orderStore.form.destination = destinations.find(
                                     (d) => d.id === option.value
                                 );
-                                form.errors.destination_id = null;
+                                orderStore.form.errors.destination_id = null;
 
                                 getShippingCost();
                             }
                         "
                         @search="destinationSearch = $event"
                         @clear="
-                            form.destination_id = null;
-                            form.destination = null;
-                            form.errors.destination_id = null;
+                            orderStore.form.destination_id = null;
+                            orderStore.form.destination = null;
+                            orderStore.form.errors.destination_id = null;
                         "
                     />
                 </InputGroup>
@@ -352,17 +332,20 @@ const currentPath = window.location.pathname;
                 <InputGroup id="address" label="Full Address">
                     <TextAreaInput
                         id="address"
-                        v-model="form.address"
+                        v-model="orderStore.form.address"
                         class="w-full"
                         placeholder="Enter full address"
-                        @update:modelValue="form.errors.address = null"
-                        :error="form.errors?.address"
+                        @update:modelValue="
+                            orderStore.form.errors.address = null
+                        "
+                        :error="orderStore.form.errors?.address"
                     />
                     <p
-                        v-if="form.estimated_delivery"
+                        v-if="orderStore.form.estimated_delivery"
                         class="text-sm text-gray-500"
                     >
-                        *Estimated {{ form.estimated_delivery }} business days
+                        *Estimated
+                        {{ orderStore.form.estimated_delivery }} business days
                     </p>
                 </InputGroup>
             </template>
@@ -402,7 +385,7 @@ const currentPath = window.location.pathname;
                     name="Shipping Cost"
                     :value="
                         (cartStore.selectedItems.length > 0 &&
-                        form.shipping_method?.slug == 'courier'
+                        orderStore.form.shipping_method?.slug == 'courier'
                             ? cartStore.totalShippingCost
                             : 0
                         ).toLocaleString('id-ID', {
@@ -433,8 +416,8 @@ const currentPath = window.location.pathname;
                 <PrimaryButton
                     class="w-full py-3 mt-2"
                     :disabled="
-                        !form.payment_method ||
-                        !form.shipping_method ||
+                        !orderStore.form.payment_method ||
+                        !orderStore.form.shipping_method ||
                         cartStore.selectedItems.length == 0 ||
                         checkoutStatus === 'loading'
                     "

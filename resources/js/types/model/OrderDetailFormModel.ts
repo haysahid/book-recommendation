@@ -12,4 +12,10 @@ interface OrderDetailFormModel {
 
     // Customer Info
     customer: UserEntity | null;
+
+    // Delivery Info
+    estimated_delivery: string | null;
+
+    // Additional Attributes
+    errors?: Record<string, string>;
 }

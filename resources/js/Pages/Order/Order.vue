@@ -154,6 +154,7 @@ const currentPath = window.location.pathname;
                     v-for="(item, index) in items.slice(0, props.limitItems)"
                     :key="index"
                     :item="item"
+                    :invoiceStatus="props.invoice?.status"
                     :showDivider="false"
                 />
                 <div
@@ -168,6 +169,7 @@ const currentPath = window.location.pathname;
                     v-for="(item, index) in items"
                     :key="index"
                     :item="item"
+                    :invoiceStatus="props.invoice?.status"
                     :showDivider="false"
                 />
             </template>

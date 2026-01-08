@@ -94,7 +94,7 @@ class OrderController extends Controller
             return redirect()->route('my-order')->with('error', 'Invalid order details.');
         }
 
-        return Inertia::render('OrderSuccess', [
+        return Inertia::render('Order/OrderSuccess', [
             'transaction' => $transaction,
             'groups' => $groups,
             'isGuest' => true,

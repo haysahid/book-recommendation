@@ -54,7 +54,7 @@ const hasActions = computed(() => {
                         v-if="props.item.image"
                         :src="getImageUrl(props.item.image)"
                         alt="Product Image"
-                        class="object-contain w-[60px] sm:w-20 lg:w-[120px] rounded-lg aspect-3/4 shadow-sm hover:scale-105 transition-transform duration-200 ease-in-out"
+                        class="object-cover w-[60px] sm:w-20 lg:w-[120px] rounded-lg aspect-3/4 shadow-sm hover:scale-105 transition-transform duration-200 ease-in-out"
                     />
                     <div
                         v-else

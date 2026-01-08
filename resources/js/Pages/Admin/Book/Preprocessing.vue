@@ -67,7 +67,7 @@ onMounted(() => {
     <AdminLayout title="Pre-processing Data" :showTitle="true">
         <div class="p-4">
             <h1 class="text-2xl font-bold mb-1">Pre-processing Data</h1>
-            <p class="text-base mb-6 text-gray-600">
+            <p class="text-sm mb-6 text-gray-600">
                 Select books or leave unselected to process all books.
             </p>
 

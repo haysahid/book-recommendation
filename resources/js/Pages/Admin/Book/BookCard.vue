@@ -66,7 +66,7 @@ const hasDeleteCallback = computed(() => {
             <div class="relative w-full">
                 <img
                     v-if="props.book.image"
-                    :src="props.book.image"
+                    :src="$getImageUrl(props.book.image)"
                     :alt="props.book.title"
                     class="object-cover rounded w-full shrink-0 group-hover:scale-105 aspect-3/4 transition-all duration-300 ease-in-out"
                 />

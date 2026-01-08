@@ -4,7 +4,6 @@ import TrainingModelForm from "./TrainingModelForm.vue";
 import DefaultCard from "@/Components/DefaultCard.vue";
 import ModelHistory from "./ModelHistory.vue";
 import { useTrainingStore } from "@/stores/training-store";
-import TrainingResult from "./TrainingResult.vue";
 
 const trainingStore = useTrainingStore();
 </script>

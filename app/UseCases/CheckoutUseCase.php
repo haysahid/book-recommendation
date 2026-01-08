@@ -2,10 +2,8 @@
 
 namespace App\UseCases;
 
-use App\Core\DataState;
 use App\Models\Book;
 use App\Models\PaymentMethod;
-use App\Models\ProductVariant;
 use App\Models\ShippingMethod;
 use App\Models\Store;
 use App\Models\TransactionItem;
@@ -51,14 +49,14 @@ class CheckoutUseCase
         array $data,
         bool $isGuestCheckout = false,
         bool $isStoreCheckout = false,
-    ): DataState {
+    ) {
         try {
             DB::beginTransaction();
 
             if ($isStoreCheckout) {
                 if (isset($data['customer_id'])) {
                     $customer = User::find($data['customer_id']);
-                } else if (isset($data['guest_name'], $data['guest_email'], $data['guest_phone'])) {
+                } elseif (isset($data['guest_name'], $data['guest_email'], $data['guest_phone'])) {
                     $customer = $this->userRepository->createGuestUser([
                         'name' => $data['guest_name'],
                         'email' => $data['guest_email'],
@@ -67,7 +65,7 @@ class CheckoutUseCase
                 } else {
                     $customer = User::find(Auth::id());
                 }
-            } else if ($isGuestCheckout) {
+            } elseif ($isGuestCheckout) {
                 $customer = $this->userRepository->createGuestUser([
                     'name' => $data['guest_name'],
                     'email' => $data['guest_email'],
@@ -83,7 +81,7 @@ class CheckoutUseCase
                 $transactionVoucher = $this->voucherRepository->getVoucherByCode($data['voucher_code']);
                 if (!$transactionVoucher) {
                     DB::rollBack();
-                    return DataState::error('Voucher not found: ' . $data['voucher_code'], 400);
+                    throw new Exception('Voucher not found: ' . $data['voucher_code'], 400);
                 }
             }
 
@@ -122,7 +120,7 @@ class CheckoutUseCase
                     if (!$shipping) {
                         DB::rollBack();
                         Log::error('Failed to get shipping cost for origin_id: ' . $originId . ', destination_id: ' . $destinationId);
-                        return DataState::error('Failed to get shipping cost', 500);
+                        throw new Exception('Failed to get shipping cost', 500);
                     }
 
                     $rajaongkirDestinationId = $data['destination_id'] ?? null;
@@ -257,7 +255,7 @@ class CheckoutUseCase
                     if (!$storeVoucher) {
                         DB::rollBack();
                         Log::error('Store voucher not found: ' . $group['voucher_code']);
-                        return DataState::error('Store voucher not found: ' . $group['voucher_code']);
+                        throw new Exception('Store voucher not found: ' . $group['voucher_code'], 400);
                     }
                 }
 
@@ -360,7 +358,7 @@ class CheckoutUseCase
                 if (!$snapToken) {
                     DB::rollBack();
                     Log::error('Failed to create snap token for transaction: ' . $transaction->code);
-                    return DataState::error('Failed to create snap token', 500);
+                    throw new Exception('Failed to create snap token', 500);
                 }
 
                 // Create payment record
@@ -383,16 +381,15 @@ class CheckoutUseCase
             }
 
             DB::commit();
-
-            return DataState::success([
+            return [
                 'transaction' => $transaction,
                 'invoices' => $invoices,
                 'payment' => $payment,
-            ], 201);
+            ];
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Failed to checkout: ' . $e->getMessage());
-            return DataState::error($e->getMessage(), $e->getCode() ?: 500);
+            throw $e;
         }
     }
 }
