@@ -1,105 +1,140 @@
 # Book Recommendation System
 
-This project is a **Book Recommendation System** built using modern web technologies. It aims to provide book recommendations based on user search keywords. The system is underdevelopment and includes features for scraping book data, preprocessing it, and generating recommendations.
+This repository contains a Book Recommendation System implemented with Laravel on the backend and a modern frontend stack. The project supports content-based recommendations (TF-IDF + Cosine Similarity) and model-based collaborative filtering for user-based recommendations using SVD (matrix factorization).
 
-This project is developed as part of a study on recommendation systems, focusing on how content-based filtering techniques can be applied to provide personalized suggestions. The default target for scraping book data is [Gramedia](https://www.gramedia.com/), utilizing its publicly available API to fetch book information.
+The system is intended for research and demonstration of recommendation techniques and includes tools for scraping, preprocessing, training, and serving recommendations.
 
 ## Features
 
-- Book recommendations.
-- User-friendly interface for browsing and searching books.
-- Integration with a database for storing book information.
-- Using TF-IDF and Cosine Similarity for content-based filtering.
+-   Book management (CRUD): title, author, categories, ISBN, cover image.
+-   Content-based recommendations using TF-IDF + Cosine Similarity on book metadata.
+-   Collaborative Filtering (Model-Based) — User-Based filtering using SVD (matrix factorization).
+-   Cold Start handling for new users (no transaction history): popularity fallback (recommend books ranked by transaction count or rating counts).
+-   Reviews and ratings; user interactions are stored and used by recommendation models.
+-   Transaction flow: cart, checkout, invoices, transaction items.
+-   Data export to Excel/CSV (books, transactions, users).
+-   Payment gateway and shipping integrations (repository/adapter pattern).
+-   Admin dashboard: analytics, scraping tools, preprocessing utilities, tools for training and tuning the Collaborative Filtering model, and configuration for auto-training when data changes.
+-   Background jobs / queue system for auto-training model.
+-   Authentication and authorization (roles & permissions).
+
+Note: The default target for scraping book data is [Gramedia](https://www.gramedia.com/), utilizing its publicly available API to fetch book information.
+
+## Collaborative Filtering (Model-Based) — SVD Matrix Factorization
+
+This project implements a model-based collaborative filtering pipeline using matrix factorization (SVD-style) for user-based recommendations. The model learns latent factors for users and items from historical interactions (such as ratings and purchases) to predict scores for unseen items.
+
+**Core steps:**
+
+1. Collect and aggregate user interaction signals (ratings, purchases).
+2. Build a sparse user-item interaction matrix.
+3. Train an SVD or matrix factorization model.
+4. Save the trained model (embeddings or factor matrices) to disk or database for inference.
+5. For each user, compute predicted scores for candidate items and return the top-N recommendations.
+
+**Cold Start Handling:**
+
+-   For users with no interaction history, the system falls back to popularity-based recommendations. Popularity is determined by the total number of transactions or ratings for each book. The top-N most popular books are returned as fallback recommendations. No onboarding questionnaire, hybrid reranking, or demographic personalization is applied for cold-start users.
+
+**Implementation Notes:**
+
+-   The Admin dashboard provides tools for manually training and tuning the collaborative filtering model, as well as options to configure auto-training triggers when book, transaction, or rating data changes.
+-   `RecommendationSystemRepository` manages retrieval of model artifacts and generates recommendation results.
+-   When using the Model Training Microservice, model artifacts are managed and persisted by the microservice itself. The main application interacts with the microservice via API to trigger training, fetch model artifacts, and update recommendations. Adjust integration settings in your `.env` file (`RECOMMENDATION_SYSTEM_API_URL`).
+
+### Model Training Microservice Integration
+
+A dedicated Model Training Microservice is available at [https://github.com/haysahid/book-reco-model](https://github.com/haysahid/book-reco-model). This microservice handles model training, tuning, model history management, and model serving in a decoupled and centralized manner.
+
+When integrated, the Admin dashboard and background jobs (such as `TrainModel.php`) can trigger training, fetch model artifacts, and update recommendations by communicating with the microservice via API endpoints. This ensures that model lifecycle management is consistent and centralized, while the main application focuses on serving recommendations and user interactions.
 
 ## Installation
 
-Follow these steps to set up the project on your local machine:
+1. Clone the repository:
 
-1. **Clone the Repository**:
     ```bash
     git clone https://github.com/haysahid/book-recommendation.git
     cd book-recommendation
     ```
 
-2. **Install Dependencies**:
-    Ensure you have [Composer](https://getcomposer.org/) and [Node.js](https://nodejs.org/) installed. Then run:
+2. Install dependencies:
+
     ```bash
     composer install
     npm install
     ```
 
-3. **Set Up Environment**:
-    Copy the `.env.example` file to `.env` and configure your database and other environment variables:
+3. Environment setup:
+
     ```bash
     cp .env.example .env
-    ```
-
-4. **Generate Application Key**:
-    ```bash
     php artisan key:generate
     ```
 
-5. **Run Migrations**:
-    Set up the database schema:
+    Configure the following in your `.env` file:
+
+    - **Database credentials** and queue/driver settings.
+    - **Midtrans keys** for payment integration:
+        ```
+        MIDTRANS_SERVER_KEY=your_midtrans_server_key
+        MIDTRANS_CLIENT_KEY=your_midtrans_client_key
+        ```
+    - **RajaOngkir API key** for shipping:
+        ```
+        RAJAONGKIR_API_KEY=your_rajaongkir_api_key
+        ```
+    - **Model Training Microservice API URL**:
+        ```
+        RECOMMENDATION_SYSTEM_API_URL=https://your-model-microservice-url
+        ```
+
+4. Database migrations and seeding (optional):
+
     ```bash
     php artisan migrate
-    ```
-
-6. **Seed the Database** (Optional):
-    Populate the database with sample data:
-    ```bash
     php artisan db:seed
     ```
 
-7. ** Build Frontend Assets**:
-    Compile the frontend assets using:
+5. Start queue worker (recommended for model auto-training jobs):
+
+    ```bash
+    php artisan queue:work
+    ```
+
+6. Build frontend assets and run the application:
+
     ```bash
     npm run dev
-    ```
-
-    or for production:
-    ```bash
-    npm run build
-    ```
-
-8. **Run the Application**:
-    Start the development server:
-    ```bash
     php artisan serve
     ```
 
-    Open your browser and navigate to `http://localhost`.
+    Open `http://localhost` in your browser.
+
+7. For Model Training Microservice, clone and set it up from [https://github.com/haysahid/book-reco-model](https://github.com/haysahid/book-reco-model).
 
 ## Usage
-### Admin Login
-To manage the system, log in as an admin using the default credentials:
 
-- **Username**: `admin`
-- **Password**: `admin2025`
+-   Admin login: if seeded, default admin credentials may be present (for development seeds). Otherwise create an admin user via seeders or tinker.
+-   Scraping: use the Admin -> Scraping panel to fetch and review book data before saving.
+-   Preprocessing: run the preprocessing utilities from the Admin panel to normalize metadata used by content-based models.
+-   Training recommendations: use the Admin -> Model Training panel to manually trigger training or configure auto-training.
 
-Access the login page at [http://localhost/login](http://localhost/login). Once logged in, you can manage the system via the admin panel at [http://localhost/admin](http://localhost/admin).
+## Example Recommendation Flow
 
-Once logged in, you can add new books by scraping data, preprocessing it, and then using the recommendation system.
-
-### Scraping Data
-The system supports scraping book data from external sources (Gramedia). Use the built-in scraping tool:
-1. Go to the "Scraping" section in the admin panel.
-2. Start the scraping process and review the fetched data before saving it to the database.
-
-### Preprocessing
-Before generating recommendations, the system preprocesses data to ensure accuracy:
-1. Navigate to the "Preprocessing" section.
-2. Run the preprocessing tool to clean and structure the data.
-3. Verify the processed data in the "Data Overview" section.
-
-### Trying Out the Recommendation System
-1. Browse the available books and interact with the system by searching for titles you like.
-2. The system will provide recommendations based on your search keywords including its recommendation score.
+1. User interacts with the site (searches, views, purchases, rates).
+2. Interaction events are stored and optionally queued for batch aggregation.
+3. The training job consumes aggregated interactions and updates model artifacts.
+4. When a recommendation request arrives, the repository loads the model and returns top-N items.
+5. If the user is new (cold start), fallback strategies are applied (popularity, onboarding, hybrid).
 
 ## Contributing
 
-Contributions are welcome! If you'd like to contribute, please fork the repository and submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
+Contributions are welcome. Suggested workflow:
+
+1. Fork the repository.
+2. Create a feature branch: `git checkout -b feature/your-feature`.
+3. Commit changes and open a pull request. For larger changes, open an issue first to discuss design.
 
 ## License
 
-This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License.
