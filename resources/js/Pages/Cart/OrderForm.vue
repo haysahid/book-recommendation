@@ -307,7 +307,7 @@ const currentPath = window.location.pathname;
                         placeholder="Search Shipping Address"
                         required
                         type="textarea"
-                        :error="orderStore.form.errors.destination_id"
+                        :error="orderStore.form.errors?.destination_id"
                         @update:modelValue="
                             (option) => {
                                 orderStore.form.destination_id = option.value;

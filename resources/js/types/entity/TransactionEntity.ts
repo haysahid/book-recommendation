@@ -10,6 +10,11 @@ interface TransactionEntity {
     province_name: string | null;
     city_id: number | null;
     city_name: string | null;
+    district_id: number | null;
+    district_name: string | null;
+    subdistrict_id: number | null;
+    subdistrict_name: string | null;
+    zip_code: string | null;
     address: string | null;
     shipping_cost: number;
     shipping_estimate: string | null;

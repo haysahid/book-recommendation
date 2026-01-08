@@ -273,6 +273,18 @@ onMounted(() => {
                         :value="props.invoice.transaction.city_name"
                     />
                     <OrderContentRow
+                        label="District"
+                        :value="props.invoice.transaction.district_name"
+                    />
+                    <OrderContentRow
+                        label="Subdistrict"
+                        :value="props.invoice.transaction.subdistrict_name"
+                    />
+                    <OrderContentRow
+                        label="Zip Code"
+                        :value="props.invoice.transaction.zip_code"
+                    />
+                    <OrderContentRow
                         label="Address"
                         :value="props.invoice.transaction.address"
                     />
