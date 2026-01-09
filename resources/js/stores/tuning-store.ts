@@ -34,8 +34,8 @@ export const useTuningStore = defineStore("tuning", () => {
             n_epochs: [],
             lr_all: [],
             reg_all: [],
-            cv: null,
-            n_jobs: null,
+            cv: 2,
+            n_jobs: 0,
             errors: {
                 books_file: null,
                 transactions_file: null,
