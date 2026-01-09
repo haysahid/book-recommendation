@@ -112,6 +112,11 @@ class SettingRepository
     public static function getSettingByPrefix($prefix): object
     {
         $settings = Setting::where('key', 'like', $prefix . '%')->get()->pluck('value', 'key')->toArray();
+
+        if (empty($settings)) {
+            return self::arrayToObject([]); // Return empty object if no settings found
+        }
+
         $result = self::processSettingsItems($settings);
         return self::arrayToObject($result)->model;
     }
@@ -125,6 +130,11 @@ class SettingRepository
     public static function getSettingByGroup($group): object
     {
         $settings = Setting::where('group', $group)->get()->pluck('value', 'key')->toArray();
+
+        if (empty($settings)) {
+            return self::arrayToObject([]); // Return empty object if no settings found
+        }
+
         $result = self::processSettingsItems($settings);
         return self::arrayToObject($result)->model;
     }

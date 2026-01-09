@@ -7,6 +7,7 @@ use App\Models\ReviewAttachmentFileType;
 use App\Models\TransactionItem;
 use Exception;
 use GuzzleHttp\Client;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -276,7 +277,8 @@ class BookRepository
             $book = $existingBook;
         }
 
-        if (isset($data['image'])) {
+        // Save image if image file provided
+        if (isset($data['image']) && $data['image'] instanceof UploadedFile) {
             // Save image
             $book->image = $data['image']->store('book', 'public');
             $book->save();
@@ -299,6 +301,15 @@ class BookRepository
     public static function insertBooks($books)
     {
         foreach ($books as $bookData) {
+            // Set final price
+            if (isset($bookData['discount'])) {
+                $bookData['final_price'] = isset($bookData['slice_price'])
+                    ? $bookData['slice_price'] - ($bookData['slice_price'] * $bookData['discount']) / 100
+                    : null;
+            } else {
+                $bookData['final_price'] = $bookData['slice_price'];
+            }
+
             self::createBook($bookData);
         }
     }

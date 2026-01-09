@@ -18,16 +18,17 @@ class DatabaseSeeder extends Seeder
     {
         // Call
         $this->call([
+            SettingSeeder::class,
             RoleAndPermissionSeeder::class,
             UserSeeder::class,
             StoreSeeder::class,
-            BookSeeder::class,
+            // BookSeeder::class,
             TransactionSeeder::class,
 
         ]);
 
         // Run factories if needed (comment out if not needed)
-        $this->runFactories();
+        // $this->runFactories();
     }
 
     public function runFactories(): void

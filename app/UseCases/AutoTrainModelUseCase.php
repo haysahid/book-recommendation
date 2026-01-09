@@ -19,6 +19,11 @@ class AutoTrainModelUseCase
     {
         $modelSetting = $this->settingRepository->getSettingByPrefix('model.');
 
+        if (empty((array)$modelSetting)) {
+            Log::warning('AutoTrainModelUseCase: No model settings found, skipping auto training.');
+            return;
+        }
+
         Log::info('AutoTrainModelUseCase: Retrieved model settings', ['settings' => $modelSetting]);
 
         // Debounce: Only allow training if last training was more than interval ago

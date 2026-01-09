@@ -41,6 +41,8 @@ class BookController extends Controller
             'books.*.image' => 'nullable|string|max:255',
             'books.*.slug' => 'required|string|max:255',
             'books.*.author' => 'nullable|string|max:255',
+            'books.*.slice_price' => 'nullable|numeric',
+            'books.*.discount' => 'nullable|numeric',
             'books.*.store_name' => 'nullable|string|max:255',
             'books.*.isbn' => 'nullable|string|max:255',
             'books.*.category_slug' => 'nullable|string|max:255',
