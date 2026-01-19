@@ -5,7 +5,7 @@ import AdminLayout from "@/Layouts/AdminLayout.vue";
 import DefaultCard from "@/Components/DefaultCard.vue";
 import ThreeDotsLoading from "@/Components/ThreeDotsLoading.vue";
 import SummaryCard from "@/Components/SummaryCard.vue";
-import CheckBox from "@/Components/CheckBox.vue";
+import Checkbox from "@/Components/Checkbox.vue";
 import { useScrapingStore } from "@/stores/scraping-store";
 
 const scrapingStore = useScrapingStore();
@@ -49,7 +49,7 @@ const scrapingStore = useScrapingStore();
                                             scrapingStore.getCategoriesStatus =
                                                 status;
                                         },
-                                    }
+                                    },
                                 )
                             "
                         >
@@ -66,7 +66,7 @@ const scrapingStore = useScrapingStore();
                                             scrapingStore.saveCategoriesStatus =
                                                 status;
                                         },
-                                    }
+                                    },
                                 )
                             "
                         >
@@ -100,7 +100,7 @@ const scrapingStore = useScrapingStore();
                     for="select_all_categories"
                     class="flex items-center mb-2 cursor-pointer"
                 >
-                    <CheckBox
+                    <Checkbox
                         id="select_all_categories"
                         :checked="
                             scrapingStore.selectedCategories.length ===
@@ -135,11 +135,11 @@ const scrapingStore = useScrapingStore();
                             :for="`category_${category.slug}`"
                             class="text-gray-700 hover:text-gray-900 cursor-pointer flex items-center"
                         >
-                            <CheckBox
+                            <Checkbox
                                 :id="`category_${category.slug}`"
                                 :checked="
                                     scrapingStore.selectedCategories.some(
-                                        (cat) => cat.slug === category.slug
+                                        (cat) => cat.slug === category.slug,
                                     )
                                 "
                                 :value="category.title"
@@ -149,14 +149,14 @@ const scrapingStore = useScrapingStore();
                                     (isChecked) => {
                                         if (isChecked) {
                                             scrapingStore.selectedCategories.push(
-                                                category
+                                                category,
                                             );
                                         } else {
                                             scrapingStore.selectedCategories =
                                                 scrapingStore.selectedCategories.filter(
                                                     (cat) =>
                                                         cat.slug !==
-                                                        category.slug
+                                                        category.slug,
                                                 );
                                         }
                                     }
@@ -186,7 +186,7 @@ const scrapingStore = useScrapingStore();
                                     (total, category) =>
                                         total +
                                         (category.count_loaded_books || 0),
-                                    0
+                                    0,
                                 ) > 0
                             "
                             class="bg-green-600! hover:bg-green-600/80! focus:ring-green-500!"
@@ -200,7 +200,7 @@ const scrapingStore = useScrapingStore();
                                     (total, category) =>
                                         total +
                                         (category.count_loaded_books || 0),
-                                    0
+                                    0,
                                 ) > 0 &&
                                 $page.props.auth.user.roles
                                     .map((role) => role.name)
@@ -225,7 +225,7 @@ const scrapingStore = useScrapingStore();
                             scrapingStore.selectedCategories.reduce(
                                 (total, category) =>
                                     total + (category.total_data_books || 0),
-                                0
+                                0,
                             )
                         "
                     />
@@ -241,7 +241,7 @@ const scrapingStore = useScrapingStore();
                                     total +
                                     ((category.total_data_books || 0) -
                                         (category.count_loaded_books || 0)),
-                                0
+                                0,
                             )
                         "
                     />
@@ -306,7 +306,7 @@ const scrapingStore = useScrapingStore();
                                         scrapingStore.loadBookCurrentPage = 0;
                                         scrapingStore.loadBookPage = 1;
                                         scrapingStore.loadBooksByCategory(
-                                            category
+                                            category,
                                         );
                                     "
                                     class="whitespace-nowrap h-fit"
@@ -326,7 +326,7 @@ const scrapingStore = useScrapingStore();
                                                     scrapingStore.saveBooksStatus =
                                                         status;
                                                 },
-                                            }
+                                            },
                                         )
                                     "
                                 >

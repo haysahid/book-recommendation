@@ -22,13 +22,14 @@ class DatabaseSeeder extends Seeder
             RoleAndPermissionSeeder::class,
             UserSeeder::class,
             StoreSeeder::class,
-            // BookSeeder::class,
             TransactionSeeder::class,
-
+            
+            // Optional Seeders
+            BookSeeder::class,
         ]);
 
         // Run factories if needed (comment out if not needed)
-        // $this->runFactories();
+        $this->runFactories();
     }
 
     public function runFactories(): void

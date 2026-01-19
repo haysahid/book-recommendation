@@ -1,5 +1,5 @@
 # === STAGE 1: Build Frontend Assets (Node.js) ===
-FROM node:18-alpine AS frontend-builder
+FROM node:25-alpine AS frontend-builder
 WORKDIR /app
 
 # Salin file package untuk install dependencies
@@ -11,7 +11,7 @@ COPY . .
 RUN npm run build
 
 # === STAGE 2: Setup Laravel Application (PHP) ===
-FROM php:8.2-fpm-alpine
+FROM php:8.3-fpm-alpine
 
 # Set working directory
 WORKDIR /var/www
