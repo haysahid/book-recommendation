@@ -18,6 +18,9 @@ WORKDIR /var/www
 
 # Install system dependencies yang ringan (alpine)
 RUN apk add --no-cache \
+    $PHPIZE_DEPS \
+    autoconf \
+    build-base \
     libpng-dev \
     libjpeg-turbo-dev \
     freetype-dev \
@@ -30,6 +33,13 @@ RUN apk add --no-cache \
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring zip gd
+
+# Install Redis via PECL
+RUN pecl install redis \
+    && docker-php-ext-enable redis
+
+# Hapus kembali build tools agar image tetap ringan (optional tapi disarankan)
+RUN apk del autoconf build-base $PHPIZE_DEPS
 
 # Ambil Composer terbaru
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
